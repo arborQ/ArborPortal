@@ -13,6 +13,12 @@ services:
       - "SQL_PASSWORD=D.`(>q8'5d,ngL>H"
     links:
       - db
+  node:
+    build: ./NodeStart
+    command: npm run start
+    container_name: api_node
+    ports:
+      - "3000:3000"
   nginx: 
     image: nginx:latest
     container_name: nginx
@@ -23,6 +29,7 @@ services:
     links:
       - web
       - api
+      - node
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
       - ./logs:/var/log/nginx/
