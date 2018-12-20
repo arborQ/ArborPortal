@@ -7,25 +7,25 @@ services:
     build: ./CoreStart
     container_name: api_core
     ports:
-      - "8081:80"
+      - "5000:5000"
     environment:
       - "SQL_HOST=db"
       - "SQL_PASSWORD=D.`(>q8'5d,ngL>H"
     links:
       - db
-  node:
-    build: ./NodeStart
-    command: npm run start
-    container_name: api_node
-    ports:
-      - "3000:3000"
-  python:
-    build: ./PythonStart
-    container_name: api_python
-    volumes:
-      - ./PythonStart:/mnt
-    ports:
-      - "4000:4000"
+  # node:
+  #   build: ./NodeStart
+  #   command: npm run start
+  #   container_name: api_node
+  #   ports:
+  #     - "3000:3000"
+  # python:
+  #   build: ./PythonStart
+  #   container_name: api_python
+  #   volumes:
+  #     - ./PythonStart:/mnt
+  #   ports:
+  #     - "4000:4000"
   nginx: 
     image: nginx:latest
     container_name: nginx
@@ -36,8 +36,8 @@ services:
     links:
       - web
       - api
-      - node
-      - python
+      # - node
+      # - python
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
       - ./logs:/var/log/nginx/
