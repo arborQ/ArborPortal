@@ -19,6 +19,13 @@ services:
     container_name: api_node
     ports:
       - "3000:3000"
+  python:
+    build: ./PythonStart
+    container_name: api_python
+    volumes:
+      - ./PythonStart:/mnt
+    ports:
+      - "4000:4000"
   nginx: 
     image: nginx:latest
     container_name: nginx
@@ -30,6 +37,7 @@ services:
       - web
       - api
       - node
+      - python
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
       - ./logs:/var/log/nginx/
