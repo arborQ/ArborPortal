@@ -1,0 +1,43 @@
+version: '3'
+services:
+  web:
+    build: ./ReactFrontEnd
+    container_name: web
+  api:
+    build: ./CoreStart
+    container_name: api_core
+    ports:
+      - "8081:80"
+    environment:
+      - "SQL_HOST=db"
+      - "SQL_PASSWORD=D.`(>q8'5d,ngL>H"
+    links:
+      - db
+  nginx: 
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - "9000:9000"
+    expose:
+      - 9000
+    links:
+      - web
+      - api
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./logs:/var/log/nginx/
+  db:
+    container_name: db
+    image: "microsoft/mssql-server-linux"
+    ports:
+      - "1433:1433"
+    expose: 
+      - 1433
+    volumes:
+      - ./db/data:/var/opt/mssql/data
+      - ./db/logs:/var/opt/mssql/logs
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "D.`(>q8'5d,ngL>H"
+  # redis:
+  #     image: "redis:alpine"

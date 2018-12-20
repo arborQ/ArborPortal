@@ -1,0 +1,13 @@
+{
+  "plugins": [
+    [
+      "transform-imports",
+      {
+        "antd" : {
+            "transform": "antd/lib/${member}",
+            "preventFullImport": true
+        }
+      }
+    ]
+  ]
+}
