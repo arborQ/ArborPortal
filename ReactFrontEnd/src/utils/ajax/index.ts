@@ -42,7 +42,7 @@ export function update<T>(url: string, data: any): Promise<T> {
   return handleAjax(fetch(request));
 }
 
-export function remove<T>(url: string, data: any): Promise<T> {
+export function remove(url: string, data?: any): Promise<void> {
   const request = new Request(url, {
     body: !!data ? JSON.stringify(data) : null,
     headers: new Headers({

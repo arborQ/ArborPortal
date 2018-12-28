@@ -1,10 +1,10 @@
-using System.Linq;
 using Data.Entity;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Structure.Services;
+using System.Linq;
 using WebApi.Services;
 
 namespace CoreStart.WebApi

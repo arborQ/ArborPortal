@@ -4,12 +4,14 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Structure.Services;
 using System;
+using System.Net;
 using System.Text;
 using WebApi.Models;
 using WebApi.Services;
@@ -58,6 +60,12 @@ namespace CoreStart
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<IUserPrincipalService, CurrentUserPrincipalProvider>();
+
+            services.Configure<ForwardedHeadersOptions>(options =>
+            {
+                options.KnownProxies.Add(IPAddress.Parse("10.0.0.100"));
+                options.KnownProxies.Add(IPAddress.Parse("172.22.0.1"));
+            });
 
             services
                 .RegisterServices(Configuration)

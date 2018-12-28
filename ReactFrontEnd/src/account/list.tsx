@@ -1,8 +1,8 @@
 import * as React from "react";
-import { Card, Table, Button, Input } from "antd";
+import { Card, Table, Button, Input, Popconfirm } from "antd";
 import { RouteComponentProps } from "react-router";
 import { Route } from "react-router-dom";
-import { loadUsers } from "bx-services/users";
+import { loadUsers, deleteUser } from "bx-services/users";
 import CreateUser from "./create";
 import EditUser from "./edit";
 
@@ -43,13 +43,23 @@ export default class UserList extends React.PureComponent<
       key: "action",
       render: (text, record: Areas.Account.IUser) => {
         return (
-          <Button
-            onClick={() => {
-              this.props.history.push(`/account/list/edit/${record.id}`);
-            }}
-          >
-            Edit
-          </Button>
+          <Button.Group>
+            <Button
+              onClick={() => {
+                this.props.history.push(`/account/list/edit/${record.id}`);
+              }}
+            >
+              Edit
+            </Button>
+            <Popconfirm
+                    title={`Are you sure you want to remove ${record.firstName} ${record.lastName}?`}
+                    onConfirm={() => { if (!!record.id) {this.removeUser(record.id);} }}
+                    okText="Yes"
+                    cancelText="No"
+                  >
+            <Button>Remove</Button>
+            </Popconfirm>
+          </Button.Group>
         );
       }
     }
@@ -93,5 +103,9 @@ export default class UserList extends React.PureComponent<
         <Route path="/account/list/edit/:id" component={EditUser} />
       </div>
     );
+  }
+
+  private removeUser(userId: number): void {
+    deleteUser(userId).then(() => { alert('deleted'); });
   }
 }

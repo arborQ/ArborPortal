@@ -3,15 +3,16 @@ services:
   web:
     build: ./ReactFrontEnd
     container_name: web
+    # volumes:
+    #   - ./ReactFrontEnd/src:/usr/src/app/src
   api:
     build: ./CoreStart
     container_name: api_core
     ports:
       - "5000:5000"
-    environment:
-      - "SQL_HOST=db"
-      - "SQL_PASSWORD=D.`(>q8'5d,ngL>H"
-    links:
+    # volumes:
+    #   - ./db/connectionString.json:/app/WebApi/connectionString.json
+    depends_on:
       - db
   # node:
   #   build: ./NodeStart
@@ -39,8 +40,8 @@ services:
       # - node
       # - python
     volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf
-      - ./logs:/var/log/nginx/
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/logs:/var/log/nginx/
   db:
     container_name: db
     image: "microsoft/mssql-server-linux"
@@ -50,9 +51,7 @@ services:
       - 1433
     volumes:
       - ./db/data:/var/opt/mssql/data
-      - ./db/logs:/var/opt/mssql/logs
+      - ./db/logs:/var/opt/mssql/log
     environment:
       ACCEPT_EULA: "Y"
       SA_PASSWORD: "D.`(>q8'5d,ngL>H"
-  # redis:
-  #     image: "redis:alpine"

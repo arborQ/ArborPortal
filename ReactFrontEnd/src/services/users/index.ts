@@ -1,4 +1,4 @@
-import { get, post, update } from "bx-utils/ajax";
+import { get, post, update, remove } from "bx-utils/ajax";
 
 export function loadUsers(): Promise<Areas.Account.IUser[]> {
   return get("/api/account/users");
@@ -18,4 +18,10 @@ export function createUser(
   user: Areas.Account.IUser
 ): Promise<Areas.Account.IUser> {
   return post("/api/account/users", user);
+}
+
+export function deleteUser(
+  userId: number
+): Promise<void> {
+  return remove(`/api/account/users/${userId}`);
 }

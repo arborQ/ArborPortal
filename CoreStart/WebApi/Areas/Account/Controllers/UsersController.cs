@@ -51,5 +51,11 @@ namespace WebApi.Areas.Account.Controllers
 
             return user;
         }
+
+        [HttpDelete]
+        public async Task DeleteUser(long id)
+        {
+            await _mediator.Send(new DeleteUserViewModel { Id = id });
+        }
     }
 }
