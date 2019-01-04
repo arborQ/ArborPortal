@@ -3,8 +3,6 @@ services:
   web:
     build: ./ReactFrontEnd
     container_name: web
-    # volumes:
-    #   - ./ReactFrontEnd/src:/usr/src/app/src
   api:
     build: ./CoreStart
     container_name: api_core

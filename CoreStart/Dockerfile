@@ -1,4 +1,4 @@
-FROM microsoft/dotnet:sdk AS build-env
+FROM microsoft/dotnet:2.1-sdk AS build-env
 WORKDIR /app
 
 # Copy everything else and build
