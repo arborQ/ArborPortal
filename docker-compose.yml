@@ -1,15 +1,19 @@
 version: '3'
+volumes:
+  node_modules:
 services:
   web:
+    image: webpack
     build: ./ReactFrontEnd
     container_name: web
+    restart: always
+    volumes:
+      - ./ReactFrontEnd:/usr/src/app
+      - node_modules:/usr/src/app/node_modules
   api:
     build: ./CoreStart
     container_name: api_core
-    ports:
-      - "5000:5000"
-    # volumes:
-    #   - ./db/connectionString.json:/app/WebApi/connectionString.json
+    restart: always
     depends_on:
       - db
   # node:
@@ -18,6 +22,8 @@ services:
   #   container_name: api_node
   #   ports:
   #     - "3000:3000"
+  #   depends_on:
+  #     - mongodb
   # python:
   #   build: ./PythonStart
   #   container_name: api_python
@@ -28,6 +34,7 @@ services:
   nginx: 
     image: nginx:latest
     container_name: nginx
+    restart: always
     ports:
       - "9000:9000"
     expose:
@@ -40,16 +47,25 @@ services:
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
       - ./nginx/logs:/var/log/nginx/
+  # mongodb:
+  #   image: mongo:3.6.1
+  #   container_name: uv-mongodb
+  #   volumes:
+  #     - mongodb:/data/db
+  #     - mongodb_config:/data/configdb
+  #   volumes:
+  #     - ./db/data/mongo:/data/db
   db:
     container_name: db
     image: "microsoft/mssql-server-linux"
+    restart: always
     ports:
       - "1433:1433"
     expose: 
       - 1433
     volumes:
-      - ./db/data:/var/opt/mssql/data
-      - ./db/logs:/var/opt/mssql/log
+      - ./db/data/mssql:/var/opt/mssql/data
+      - ./db/logs/mssql:/var/opt/mssql/log
     environment:
       ACCEPT_EULA: "Y"
       SA_PASSWORD: "D.`(>q8'5d,ngL>H"

@@ -119,7 +119,14 @@ var config = {
     fs: 'empty',
     net: 'empty',
     tls: 'empty',
-  }
+  },
+  devServer: {
+    historyApiFallback: true
+  },
+  watchOptions: {
+    aggregateTimeout: 300,
+    poll: 1000
+  },
 };
 
 module.exports = config;

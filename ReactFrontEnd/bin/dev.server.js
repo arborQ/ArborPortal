@@ -6,9 +6,11 @@ var compiler = webpack(config);
 var port = 8080;
 
 var server = new webpackDevServer(compiler, {
-  bonjour: true,
   historyApiFallback: true,
-  inline: true
+  watchOptions: {
+    aggregateTimeout: 300,
+    poll: 1000
+  }
 });
 
 server.listen(port);

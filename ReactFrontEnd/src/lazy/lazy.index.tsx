@@ -13,6 +13,6 @@ export default function renderHook(): JSX.Element {
         <div>counter {c.count} <button onClick={() => {
 update([ { count: c.count + 2, name: c.name }])
 
-        } }>add 2</button></div>
+        } }>OK</button></div>
     );
 }
