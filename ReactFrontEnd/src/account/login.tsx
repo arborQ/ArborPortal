@@ -2,17 +2,12 @@ import * as React from "react";
 import { Alert, Drawer, Form, Input, Icon, Button, Popconfirm } from "antd";
 import { RouteComponentProps } from "react-router";
 import { login as ValidateUser } from "bx-services/account";
+import LoginForm from "./components/loginForm";
 
-interface ILoginState {
-  loading: boolean;
-  login: string;
-  password: string;
-  error?: string;
-}
 
 export default class Login extends React.PureComponent<
   RouteComponentProps,
-  ILoginState
+  Areas.Account.ILoginState
 > {
   componentWillMount(): void {
     this.setState({
@@ -33,64 +28,8 @@ export default class Login extends React.PureComponent<
         style={{ maxWidth: 600 }}
         onClose={this.cancel.bind(this)}
       >
-        {!!this.state.error ? (
-          <Alert
-            message={this.state.error}
-            description={this.state.error}
-            type="error"
-          />
-        ) : null}
         <Form onSubmit={this.submit.bind(this)}>
-          <Form.Item
-            help="give email?"
-            validateStatus={this.state.login === "" ? "error" : "success"}
-          >
-            <Input
-              disabled={this.state.loading}
-              prefix={<Icon type="user" />}
-              placeholder="Email"
-              value={this.state.login}
-              onChange={v =>
-                this.setState({ ...this.state, login: v.target.value })
-              }
-            />
-          </Form.Item>
-          <Form.Item
-            help="give passowrd?"
-            validateStatus={this.state.password === "" ? "error" : "success"}
-          >
-            <Input
-              disabled={this.state.loading}
-              prefix={<Icon type="lock" />}
-              type="password"
-              placeholder="Password"
-              value={this.state.password}
-              onChange={v =>
-                this.setState({ ...this.state, password: v.target.value })
-              }
-            />
-          </Form.Item>
-          <Form.Item>
-            <Button.Group>
-              <Button
-                loading={this.state.loading}
-                type="primary"
-                htmlType="submit"
-              >
-                Submit
-              </Button>
-              <Popconfirm
-                title="Are you sure you want to cancel?"
-                onConfirm={this.cancel.bind(this)}
-                okText="Yes"
-                cancelText="No"
-              >
-                <Button type="dashed" htmlType="button">
-                  Cancel
-                </Button>
-              </Popconfirm>
-            </Button.Group>
-          </Form.Item>
+          <LoginForm {...this.state} cancel={this.cancel.bind(this)} />
         </Form>
       </Drawer>
     );
