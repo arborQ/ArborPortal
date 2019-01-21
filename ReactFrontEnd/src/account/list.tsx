@@ -6,6 +6,8 @@ import { loadUsers, deleteUser } from "bx-services/users";
 import CreateUser from "./create";
 import EditUser from "./edit";
 
+import UserListComponent from "./components/userList";
+
 interface IUserListState {
   loading: boolean;
   list: Areas.Account.IUser[];
@@ -15,55 +17,7 @@ export default class UserList extends React.PureComponent<
   RouteComponentProps,
   IUserListState
 > {
-  columns = [
-    {
-      title: "Name",
-      dataIndex: "fullName",
-      key: "fullName"
-    },
-    {
-      title: "Email",
-      dataIndex: "email",
-      key: "email"
-    },
-    {
-      title: "Login",
-      dataIndex: "login",
-      key: "login",
-      filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => {
-        return (
-         <div className="custom-filter-dropdown">
-          <Input ref={item => { if(item !== null) { item.focus(); } }} placeholder="Search by login" onPressEnter={() => {confirm();}} />
-         </div>
-        );
-      }
-    },
-    {
-      title: "",
-      key: "action",
-      render: (text, record: Areas.Account.IUser) => {
-        return (
-          <Button.Group>
-            <Button
-              onClick={() => {
-                this.props.history.push(`/account/list/edit/${record.id}`);
-              }}
-            >
-              Edit
-            </Button>
-            <Popconfirm
-                    title={`Are you sure you want to remove ${record.firstName} ${record.lastName}?`}
-                    onConfirm={() => { if (!!record.id) {this.removeUser(record.id);} }}
-                    okText="Yes"
-                    cancelText="No"
-                  >
-            <Button>Remove</Button>
-            </Popconfirm>
-          </Button.Group>
-        );
-      }
-    }
-  ];
+  
   componentWillReceiveProps(n: RouteComponentProps) {
     const oldPath = this.props.location.pathname;
     const newPath = n.location.pathname;
@@ -93,10 +47,9 @@ export default class UserList extends React.PureComponent<
     return (
       <div>
         <Card title="List of users">
-          <Table
+          <UserListComponent
             loading={this.state.loading}
-            dataSource={this.state.list}
-            columns={this.columns}
+            list={this.state.list}
           />
         </Card>
         <Route path="/account/list/create" component={CreateUser} />
