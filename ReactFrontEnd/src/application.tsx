@@ -7,6 +7,7 @@ import { Route, Link } from "react-router-dom";
 import UserList from "./account/list";
 import { withRouter, RouteComponentProps } from "react-router";
 import "antd/dist/antd.css";
+import { RecipesRoutes } from "./recipes/recipes.index";
 
 const LoginComponent = lazy(() => import("./account/login"));
 const CreateUser =  lazy(() => import("./account/create"));
@@ -24,39 +25,17 @@ class ReactApplication extends React.PureComponent<RouteComponentProps> {
               defaultSelectedKeys={[this.props.location.pathname]}
             >
               <Menu.ItemGroup key="g1" title="Unauthorized">
-                <Menu.Item key="/account/login">
-                  <Link to="/account/login">
-                    <Icon type="user" /> Log In
-                  </Link>
-                </Menu.Item>
-                <Menu.Item key="/account/create">
-                  <Link to="/account/list/create">
-                    <Icon type="user-add" />
-                    Create
-                  </Link>
-                </Menu.Item>
-                <Menu.Item key="/about">
-                  <Link to="/account/list">
-                    <Icon type="bulb" />
-                    User list
-                  </Link>
-                </Menu.Item>
-                <Menu.Item key="/react16">
-                  <Link to="/react16">
-                    <Icon type="bulb" />
-                    React 16
+                <Menu.Item key="/recipes">
+                  <Link to="/recipes">
+                    <Icon type="book" />
+                    Recipes
                   </Link>
                 </Menu.Item>
               </Menu.ItemGroup>
             </Menu>
           </Layout.Sider>
           <Layout.Content style={{ padding: 10 }}>
-            <Suspense fallback={<div>Loading...</div>}>
-              <Route path="/account/login" component={LoginComponent} />
-              <Route path="/account/list/create" component={CreateUser} />
-              <Route path="/account/list" component={UserList} />
-              <Route path="/react16" component={LazyComponent} />
-            </Suspense>
+            <RecipesRoutes />
           </Layout.Content>
         </Layout>
       </Layout>
