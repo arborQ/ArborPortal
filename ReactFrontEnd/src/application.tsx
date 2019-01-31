@@ -1,17 +1,10 @@
 import * as React from "react";
-import { lazy, Suspense } from "react";
 import { Layout, Menu, Icon } from "antd";
-import { Route, Link } from "react-router-dom";
-// import LoginComponent from "./account/login";
-// import CreateUser from "./account/create";
-import UserList from "./account/list";
+import { Link } from "react-router-dom";
 import { withRouter, RouteComponentProps } from "react-router";
 import "antd/dist/antd.css";
 import { RecipesRoutes } from "./recipes/recipes.index";
-
-const LoginComponent = lazy(() => import("./account/login"));
-const CreateUser =  lazy(() => import("./account/create"));
-const LazyComponent =  lazy(() => import("./lazy/lazy.index"));
+import { AccountRoutes, ListUsersPath, CreateUserPath } from "./account/account.index";
 
 class ReactApplication extends React.PureComponent<RouteComponentProps> {
   render(): JSX.Element {
@@ -28,7 +21,19 @@ class ReactApplication extends React.PureComponent<RouteComponentProps> {
                 <Menu.Item key="/recipes">
                   <Link to="/recipes">
                     <Icon type="book" />
-                    Recipes
+                    Recipesz
+                  </Link>
+                </Menu.Item>
+                <Menu.Item key={ListUsersPath}>
+                  <Link to={ListUsersPath}>
+                    <Icon type="team" />
+                    Users
+                  </Link>
+                </Menu.Item>
+                <Menu.Item key={CreateUserPath}>
+                  <Link to={CreateUserPath}>
+                    <Icon type="plus-circle" />
+                    Add User
                   </Link>
                 </Menu.Item>
               </Menu.ItemGroup>
@@ -36,6 +41,7 @@ class ReactApplication extends React.PureComponent<RouteComponentProps> {
           </Layout.Sider>
           <Layout.Content style={{ padding: 10 }}>
             <RecipesRoutes />
+            <AccountRoutes />
           </Layout.Content>
         </Layout>
       </Layout>
