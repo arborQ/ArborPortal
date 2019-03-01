@@ -1,9 +1,10 @@
 FROM node:8
-WORKDIR /usr/src/vue
+WORKDIR /usr/src/app
 
 COPY package*.json ./
+
 RUN npm install -qy
 COPY . .
 
-EXPOSE 8081:8081
+EXPOSE 8080
 CMD [ "npm", "run", "dev" ]

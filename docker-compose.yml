@@ -4,12 +4,14 @@ volumes:
   node_modules_vue:
   esdata1:
 services:
-  # vue:
-  #   build: ./VueFrontEnd
-  #   container_name: vueweb
-  #   restart: always
-  #   volumes:
-  #     - ./VueFrontEnd:/usr/src/vue
+  vue:
+    build: ./VueFrontEnd
+    container_name: vueweb
+    restart: always
+    volumes:
+      - ./VueFrontEnd:/usr/src/vue
+    ports:
+      - "8080:8080"
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:6.5.4
     container_name: elasticsearch
@@ -32,14 +34,14 @@ services:
     expose:
       - 9299
       - 9399
-  web:
-    build: ./ReactFrontEnd
-    container_name: web
-    restart: always
-    volumes:
-      - ./ReactFrontEnd:/usr/src/app
-    ports:
-      - "8080:8080"
+  # web:
+  #   build: ./ReactFrontEnd
+  #   container_name: web
+  #   restart: always
+  #   volumes:
+  #     - ./ReactFrontEnd:/usr/src/app
+  #   ports:
+  #     - "8080:8080"
   api:
     build: ./CoreStart
     container_name: api_core
@@ -74,7 +76,8 @@ services:
     expose:
       - 9000
     links:
-      - web
+      # - web
+      - vue
       - api
       # - node
       # - python

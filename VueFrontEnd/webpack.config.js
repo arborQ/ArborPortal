@@ -1,5 +1,3 @@
-// webpack.config.js
-
 var HtmlWebpackPlugin = require('html-webpack-plugin'); //installed via npm
 var webpack = require('webpack'); //to access built-in plugins
 var path = require('path');
@@ -9,7 +7,7 @@ var sourcePath = path.join(__dirname, './src');
 var config = {
   entry: {
     main: [
-      './src/index.tsx'
+      './src/main.js'
     ],
   },
   output: {
@@ -20,11 +18,11 @@ var config = {
 
   },
   resolve: {
-    extensions: ['.js', '.ts', '.tsx'],
+    extensions: ['.js', '.vue'],
     mainFields: ['main'],
     alias: {
-      "bx-utils": path.resolve(__dirname, './src/utils'),
-      "bx-services": path.resolve(__dirname, './src/services'),
+      // 'vue$': 'vue/dist/vue.esm.js',
+      // '@': resolve('src'),
     }
   },
   mode: 'development',
@@ -38,17 +36,28 @@ var config = {
     },
   },
   module: {
-    rules: [{
-      test: /\.tsx?$/,
-      use: 'awesome-typescript-loader'
-    },
-    { test: /\.png$/, loader: 'file-loader' },
-    { test: /\.pug$/, loader: 'pug-loader' },
-    {
-      test: /\.css$/,
-      use: [ 'style-loader', 'css-loader' ]
-    }
-  ]
+    // rules: [{
+    //     test: /\.vue$/,
+    //     loader: 'vue-loader',
+    //     options: vueLoaderConfig
+    //   },
+    //   {
+    //     test: /\.tsx?$/,
+    //     use: 'awesome-typescript-loader'
+    //   },
+    //   {
+    //     test: /\.png$/,
+    //     loader: 'file-loader'
+    //   },
+    //   {
+    //     test: /\.pug$/,
+    //     loader: 'pug-loader'
+    //   },
+    //   {
+    //     test: /\.css$/,
+    //     use: ['style-loader', 'css-loader']
+    //   }
+    // ]
   },
   optimization: {
     runtimeChunk: 'single',
@@ -70,14 +79,14 @@ var config = {
           minChunks: 2,
           priority: -20,
           reuseExistingChunk: true
-        } 
+        }
       }
     }
   },
   plugins: [
     new webpack.optimize.AggressiveMergingPlugin(),
     new HtmlWebpackPlugin({
-      template: './src/index.pug',
+      template: './src/index.html',
       filename: 'index.html',
       title: 'Webpack + Typescript',
       favicon: "content/icon.ico",
