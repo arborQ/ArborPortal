@@ -4,69 +4,54 @@ volumes:
   node_modules_vue:
   esdata1:
 services:
-  vue:
-    build: ./VueFrontEnd
-    container_name: vueweb
-    restart: always
-    volumes:
-      - ./VueFrontEnd:/usr/src/vue
-    ports:
-      - "8080:8080"
-  elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:6.5.4
-    container_name: elasticsearch
-    environment:
-      - cluster.name=docker-cluster
-      - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-    ulimits:
-      nofile:
-        soft: 65536
-        hard: 65536
-      memlock:
-        soft: -1
-        hard: -1
-    volumes:
-      - esdata1:/usr/share/elasticsearch/data
-    ports:
-      - "9299:9200"
-      - "9399:9300"
-    expose:
-      - 9299
-      - 9399
-  # web:
-  #   build: ./ReactFrontEnd
-  #   container_name: web
+  # vue:
+  #   build: ./VueFrontEnd
+  #   container_name: vueweb
   #   restart: always
   #   volumes:
-  #     - ./ReactFrontEnd:/usr/src/app
+  #     - ./VueFrontEnd:/usr/src/vue
   #   ports:
-  #     - "8080:8080"
-  api:
-    build: ./CoreStart
-    container_name: api_core
+  #     - "8082:8080"
+  web:
+    build: ./ReactFrontEnd
+    container_name: web
     restart: always
-    environment:
-      - ConnectionStrings:DefaultConnection=Data Source=db;Initial Catalog=CoreStart;Persist Security Info=True;User ID=sa;Password=D.`(>q8'5d,ngL>H
-      - ElasticSearch:DefaultNode=http://localhost:9299
-    depends_on:
-      - db
-      - elasticsearch
-  # node:
-  #   build: ./NodeStart
-  #   command: npm run start
-  #   container_name: api_node
-  #   ports:
-  #     - "3000:3000"
-  #   depends_on:
-  #     - mongodb
-  # python:
-  #   build: ./PythonStart
-  #   container_name: api_python
+    volumes:
+      - ./ReactFrontEnd:/usr/src/app
+    ports:
+      - "8080:8080"
+  # elasticsearch:
+  #   image: docker.elastic.co/elasticsearch/elasticsearch:6.5.4
+  #   container_name: elasticsearch
+  #   environment:
+  #     - cluster.name=docker-cluster
+  #     - bootstrap.memory_lock=true
+  #     - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+  #   ulimits:
+  #     nofile:
+  #       soft: 65536
+  #       hard: 65536
+  #     memlock:
+  #       soft: -1
+  #       hard: -1
   #   volumes:
-  #     - ./PythonStart:/mnt
+  #     - esdata1:/usr/share/elasticsearch/data
   #   ports:
-  #     - "4000:4000"
+  #     - "9299:9200"
+  #     - "9399:9300"
+  #   expose:
+  #     - 9299
+  #     - 9399
+  # api:
+  #   build: ./CoreStart
+  #   container_name: api_core
+  #   restart: always
+  #   environment:
+  #     - ConnectionStrings:DefaultConnection=Data Source=db;Initial Catalog=CoreStart;Persist Security Info=True;User ID=sa;Password=D.`(>q8'5d,ngL>H
+  #     - ElasticSearch:DefaultNode=http://localhost:9299
+  #   depends_on:
+  #     - db
+  #     - elasticsearch
   nginx: 
     image: nginx:latest
     container_name: nginx
@@ -76,33 +61,25 @@ services:
     expose:
       - 9000
     links:
-      # - web
-      - vue
-      - api
+      - web
+      # - vue
+      # - api
       # - node
       # - python
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
       - ./nginx/logs:/var/log/nginx/
-  # mongodb:
-  #   image: mongo:3.6.1
-  #   container_name: uv-mongodb
+  # db:
+  #   container_name: db
+  #   image: "microsoft/mssql-server-linux"
+  #   restart: always
+  #   ports:
+  #     - "1433:1433"
+  #   expose: 
+  #     - 1433
   #   volumes:
-  #     - mongodb:/data/db
-  #     - mongodb_config:/data/configdb
-  #   volumes:
-  #     - ./db/data/mongo:/data/db
-  db:
-    container_name: db
-    image: "microsoft/mssql-server-linux"
-    restart: always
-    ports:
-      - "1433:1433"
-    expose: 
-      - 1433
-    volumes:
-      - ./db/data/mssql:/var/opt/mssql/data
-      - ./db/logs/mssql:/var/opt/mssql/log
-    environment:
-      ACCEPT_EULA: "Y"
-      SA_PASSWORD: "D.`(>q8'5d,ngL>H"
+  #     - ./db/data/mssql:/var/opt/mssql/data
+  #     - ./db/logs/mssql:/var/opt/mssql/log
+  #   environment:
+  #     ACCEPT_EULA: "Y"
+  #     SA_PASSWORD: "D.`(>q8'5d,ngL>H"
