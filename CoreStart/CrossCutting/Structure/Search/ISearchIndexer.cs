@@ -5,7 +5,7 @@ namespace Structure.Search
 {
     public interface ISearchIndexer
     {
-        Task AddItem<T>(T item, string indexName) where T : class;
+        Task AddItem<T>(T item, string indexName = "usersindex") where T : class;
 
         Task AddItem<T>(T item) where T : class;
 

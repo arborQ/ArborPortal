@@ -8,6 +8,9 @@ using WebApi.Models;
 
 namespace WebApi.Areas.Account.Controllers
 {
+    /// <summary>
+    /// User CRUD controller
+    /// </summary>
     [Route("api/[area]/[controller]")]
     [Area("Account")]
     [ApiController]
@@ -20,6 +23,10 @@ namespace WebApi.Areas.Account.Controllers
             _mediator = mediator;
         }
 
+        /// <summary>
+        /// Get all users
+        /// </summary>
+        /// <returns>List of users</returns>
         [HttpGet]
         public async Task<IUser[]> Values()
         {
@@ -28,6 +35,11 @@ namespace WebApi.Areas.Account.Controllers
             return users.ToArray();
         }
 
+        /// <summary>
+        /// Get user by id
+        /// </summary>
+        /// <param name="id">Id of user</param>
+        /// <returns>Single user</returns>
         [HttpGet("{id}")]
         public async Task<IUser> Value(long id)
         {
@@ -36,6 +48,11 @@ namespace WebApi.Areas.Account.Controllers
             return user;
         }
 
+        /// <summary>
+        /// Edit user data
+        /// </summary>
+        /// <param name="model">Model representing new user</param>
+        /// <returns>Single edited user</returns>
         [HttpPut]
         public async Task<IUser> EditUser([FromBody]EditUserViewModel model)
         {
@@ -44,6 +61,11 @@ namespace WebApi.Areas.Account.Controllers
             return user;
         }
 
+        /// <summary>
+        /// Create new user
+        /// </summary>
+        /// <param name="model">Model representing new user</param>
+        /// <returns>Single edited user</returns>
         [HttpPost]
         public async Task<IUser> CreateUser([FromBody]CreateUserViewModel model)
         {
@@ -52,6 +74,11 @@ namespace WebApi.Areas.Account.Controllers
             return user;
         }
 
+        /// <summary>
+        /// Remove user
+        /// </summary>
+        /// <param name="id">Id of user</param>
+        /// <returns>None</returns>
         [HttpDelete]
         public async Task DeleteUser(long id)
         {

@@ -10,8 +10,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Structure.Services;
+using Swashbuckle.AspNetCore.Swagger;
 using System;
+using System.IO;
 using System.Net;
+using System.Reflection;
 using System.Text;
 using WebApi.Models;
 using WebApi.Services;
@@ -61,10 +64,18 @@ namespace CoreStart
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<IUserPrincipalService, CurrentUserPrincipalProvider>();
 
-            services.Configure<ForwardedHeadersOptions>(options =>
+            services.AddSwaggerGen(c =>
             {
-                options.KnownProxies.Add(IPAddress.Parse("10.0.0.100"));
-                options.KnownProxies.Add(IPAddress.Parse("172.22.0.1"));
+                c.SwaggerDoc("v1", new Info
+                {
+                    Title = "Swagger XML Api Demo",
+                    Version = "v1"
+                });
+
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.XML";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+
+                c.IncludeXmlComments(xmlPath);
             });
 
             services
@@ -84,6 +95,12 @@ namespace CoreStart
             {
                 app.UseHsts();
             }
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Swagger XML Api Demo v1");
+            });
 
             //app.UseHttpsRedirection();
             app.UseAuthentication();

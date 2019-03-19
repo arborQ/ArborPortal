@@ -15,7 +15,7 @@ namespace CoreStart.Data.Search
             _elasticClient = elasticClient;
         }
 
-        public async Task AddItem<T>(T item, string indexName) where T : class
+        public async Task AddItem<T>(T item, string indexName = "usersindex") where T : class
         {
             var itemresponse = await _elasticClient.IndexDocumentAsync(item);
 

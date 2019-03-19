@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>WebApi</name>
+    </assembly>
+    <members>
+        <member name="T:WebApi.Areas.Account.Controllers.UsersController">
+            <summary>
+            User CRUD controller
+            </summary>
+        </member>
+        <member name="M:WebApi.Areas.Account.Controllers.UsersController.Values">
+            <summary>
+            Get all users
+            </summary>
+            <returns>List of users</returns>
+        </member>
+        <member name="M:WebApi.Areas.Account.Controllers.UsersController.Value(System.Int64)">
+            <summary>
+            Get user by id
+            </summary>
+            <param name="id">Id of user</param>
+            <returns>Single user</returns>
+        </member>
+        <member name="M:WebApi.Areas.Account.Controllers.UsersController.EditUser(WebApi.Areas.Account.Models.EditUserViewModel)">
+            <summary>
+            Edit user data
+            </summary>
+            <param name="model">Model representing new user</param>
+            <returns>Single edited user</returns>
+        </member>
+        <member name="M:WebApi.Areas.Account.Controllers.UsersController.CreateUser(WebApi.Areas.Account.Models.CreateUserViewModel)">
+            <summary>
+            Create new user
+            </summary>
+            <param name="model">Model representing new user</param>
+            <returns>Single edited user</returns>
+        </member>
+        <member name="M:WebApi.Areas.Account.Controllers.UsersController.DeleteUser(System.Int64)">
+            <summary>
+            Remove user
+            </summary>
+            <param name="id">Id of user</param>
+            <returns>None</returns>
+        </member>
+    </members>
+</doc>

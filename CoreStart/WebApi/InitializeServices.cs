@@ -1,6 +1,7 @@
 using Data.Entity;
 using Elasticsearch.Net;
 using MediatR;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -8,6 +9,7 @@ using Nest;
 using Structure.Services;
 using System;
 using System.Linq;
+using System.Net;
 using WebApi.Services;
 
 namespace CoreStart.WebApi
@@ -53,6 +55,21 @@ namespace CoreStart.WebApi
 
                 options.UseSqlServer(conString);
             }, ServiceLifetime.Scoped);
+
+            services.Configure<ForwardedHeadersOptions>(options =>
+            {
+                var forwardedHeaders = ConfigurationExtensions
+                       .GetConnectionString(configuration, "ForwardedHeaders");
+
+                Console.WriteLine($"ForwardedHeaders: {forwardedHeaders}");
+
+                if (!string.IsNullOrEmpty(forwardedHeaders))
+                {
+                    //options.KnownProxies.Add(IPAddress.Parse("10.0.0.100"));
+                    //options.KnownProxies.Add(IPAddress.Parse("172.22.0.1"));
+                    options.KnownProxies.Add(IPAddress.Parse(forwardedHeaders));
+                }
+            });
 
             return services;
         }
