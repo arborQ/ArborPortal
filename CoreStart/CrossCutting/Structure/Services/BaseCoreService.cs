@@ -50,10 +50,12 @@ namespace Structure.Services
         public TInterface EditElement(long id, TInterface contract)
         {
             var repository = UnitOfWork.CreateRepository<TEntity>();
-            var mapper = MapFromInterface(contract);
-            var entity = mapper(repository.GetRecordById(id));
+            var dbItem = repository.GetRecordById(id);
 
-            repository.Update(entity);
+            var mapper = MapFromInterface(contract);
+            var entity = mapper(dbItem);
+
+            //repository.Update(entity);
 
             UnitOfWork.Commit();
 

@@ -54,7 +54,7 @@ namespace WebApi.Areas.Account.Controllers
         /// <param name="model">Model representing new user</param>
         /// <returns>Single edited user</returns>
         [HttpPut]
-        public async Task<IUser> EditUser([FromBody]EditUserViewModel model)
+        public async Task<IUser> EditUser(EditUserViewModel model)
         {
             var user = await _mediator.Send(model);
 

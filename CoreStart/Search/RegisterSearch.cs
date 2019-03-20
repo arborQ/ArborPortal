@@ -18,8 +18,13 @@ namespace CoreStart.Data.Search
                 var nodes = searchNodes.Select(n => new Uri(n)).ToArray();
 
                 var pool = new StaticConnectionPool(nodes);
-                var settings = new ConnectionSettings(pool).DefaultIndex("defaultindex");
+                var settings = new ConnectionSettings(pool);
                 var client = new ElasticClient(settings);
+
+                if (!client.IndexExists("users").Exists)
+                {
+                    client.CreateIndex("users", c => c.InitializeUsing(new IndexState { Settings = new IndexSettings { NumberOfReplicas = 1, NumberOfShards = 2 } }));
+                }
 
                 return client;
             });

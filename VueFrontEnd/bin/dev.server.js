@@ -3,7 +3,7 @@ var webpack = require("webpack");
 var config = require("../webpack.config.js");
 var compiler = webpack(config);
 
-var port = 8080;
+var port = 8082;
 
 var server = new webpackDevServer(compiler, {
   historyApiFallback: true,

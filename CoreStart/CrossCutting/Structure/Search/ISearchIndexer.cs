@@ -1,16 +1,19 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Structure.Repository;
 
 namespace Structure.Search
 {
     public interface ISearchIndexer
     {
-        Task AddItem<T>(T item, string indexName = "usersindex") where T : class;
+        Task AddItem<T>(T item) where T : class, IEntity;
 
-        Task AddItem<T>(T item) where T : class;
+        Task RemoveItem<T>(long itemId) where T : class, IEntity;
 
-        Task<IReadOnlyCollection<T>> GetItems<T>() where T : class;
+        Task<IReadOnlyCollection<T>> GetItems<T>() where T : class, IEntity;
 
-        Task<IReadOnlyCollection<T>> GetItems<T>(string index) where T : class;
+        Task ReIndex<T>(IReadOnlyCollection<T> items) where T : class, IEntity;
+
+        Task EditItem<T>(T item) where T : class, IEntity;
     }
 }

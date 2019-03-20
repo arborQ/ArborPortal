@@ -24,17 +24,12 @@ namespace WebApi.Areas.Account.Handlers
         {
             var newUser = _usersCoreService.AddElement(request);
 
-            await _searchIndexer.AddItem(new UserViewModel
+            if (newUser.IsActive)
             {
-                Email = newUser.Email,
-                FirstName = newUser.FirstName,
-                LastName = newUser.LastName,
-                FullName = newUser.FirstName,
-                Id = newUser.Id,
-                Login = newUser.Login
-            }, "xxx");
+                await _searchIndexer.AddItem(newUser);
+            }
 
-            return newUser;
+            return await Task.FromResult(newUser);
         }
     }
 }

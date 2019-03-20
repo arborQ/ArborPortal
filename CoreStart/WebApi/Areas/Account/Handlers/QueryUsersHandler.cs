@@ -23,21 +23,10 @@ namespace WebApi.Areas.Account.Handlers
 
         public async Task<IReadOnlyCollection<IUser>> Handle(QueryUsersFilterModel request, CancellationToken cancellationToken)
         {
-            var users = await _searchIndexer.GetItems<UserViewModel>("xxx");
+            //await _searchIndexer.ReIndex<IUser>(new IUser[0]);
+            var users = await _searchIndexer.GetItems<UserViewModel>();
 
             return users;
-
-            //var items = _usersCoreService.GetElements().Select(u => new UserViewModel
-            //{
-            //    Email = u.Email,
-            //    FirstName = u.FirstName,
-            //    LastName = u.LastName,
-            //    FullName = u.FullName,
-            //    Id = u.Id,
-            //    Login = u.Login
-            //}).ToArray();
-
-            //return await Task.FromResult(items as IReadOnlyCollection<IUser>);
         }
     }
 }

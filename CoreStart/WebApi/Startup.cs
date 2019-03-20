@@ -71,11 +71,6 @@ namespace CoreStart
                     Title = "Swagger XML Api Demo",
                     Version = "v1"
                 });
-
-                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.XML";
-                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-
-                c.IncludeXmlComments(xmlPath);
             });
 
             services
@@ -99,7 +94,7 @@ namespace CoreStart
 
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Swagger XML Api Demo v1");
+                c.SwaggerEndpoint("/api/swagger/v1/swagger.json", "Swagger XML Api Demo v1");
             });
 
             //app.UseHttpsRedirection();

@@ -1,6 +1,8 @@
-﻿namespace Structure.Business.Account.Models
+﻿using Structure.Repository;
+
+namespace Structure.Business.Account.Models
 {
-    public interface IUser
+    public interface IUser : IEntity
     {
         long Id { get; }
 

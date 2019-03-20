@@ -1,3 +1,9 @@
+const headers = {
+    // "Accept": "application/json",
+    "Content-Type": "application/json; charset=utf-8",
+    "Data-Type" : "json"
+};
+
 function handleAjax<T>(ajax: Promise<Response>): Promise<T> {
   return ajax
     .then(response => {
@@ -19,10 +25,7 @@ function handleAjax<T>(ajax: Promise<Response>): Promise<T> {
 export function post<T>(url: string, data?: any): Promise<T> {
   const request = new Request(url, {
     body: !!data ? JSON.stringify(data) : null,
-    headers: new Headers({
-      "Accept": "application/json",
-      "Content-Type": "application/json"
-    }),
+    headers: new Headers(headers),
     method: "POST"
   });
 
@@ -32,10 +35,7 @@ export function post<T>(url: string, data?: any): Promise<T> {
 export function update<T>(url: string, data: any): Promise<T> {
   const request = new Request(url, {
     body: !!data ? JSON.stringify(data) : null,
-    headers: new Headers({
-      "Accept": "application/json",
-      "Content-Type": "application/json"
-    }),
+    headers: new Headers(headers),
     method: "PUT"
   });
 
@@ -45,10 +45,7 @@ export function update<T>(url: string, data: any): Promise<T> {
 export function remove(url: string, data?: any): Promise<void> {
   const request = new Request(url, {
     body: !!data ? JSON.stringify(data) : null,
-    headers: new Headers({
-      "Accept": "application/json",
-      "Content-Type": "application/json"
-    }),
+    headers: new Headers(headers),
     method: "DELETE"
   });
 
