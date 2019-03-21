@@ -23,7 +23,10 @@ namespace CoreStart.Business.Account.Validators
                 .MustAsync(ValidateUserLogin)
                 .When(u => u.Id == 0)
                 .WithMessage(user => $"Login '{user.Login}' already exists");
-            RuleFor(u => u.IsActive).Must(isActive => !isActive).When(u => u.DeletedAt.HasValue);
+            RuleFor(u => u.IsActive)
+                .Must(isActive => !isActive)
+                .When(u => u.DeletedAt.HasValue)
+                .WithMessage("Can't remove active element");
         }
 
         private async Task<bool> ValidateUserLogin(string login, CancellationToken cancellationToken)

@@ -14,18 +14,18 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CoreStart.Business.Account.Handlers.Users
 {
-    internal class EditUserDatabaseHandler : UserBaseHandler,
-        IRequestHandler<EditUserRequestModel<IUser>, EditResponse<IUser>>
+    internal class DeleteUserDatabaseHandler : UserBaseHandler,
+        IRequestHandler<DeleteUserRequestModel<IUser>, DeleteResponse<IUser>>
     {
         private readonly AccountUnitOfWork _unitOfWork;
 
-        public EditUserDatabaseHandler(AccountUnitOfWork unitOfWork, IReadOnlyCollection<IValidator<IUser>> validators)
+        public DeleteUserDatabaseHandler(AccountUnitOfWork unitOfWork, IReadOnlyCollection<IValidator<IUser>> validators)
             : base(validators)
         {
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<EditResponse<IUser>> Handle(EditUserRequestModel<IUser> request, CancellationToken cancellationToken)
+        public async Task<DeleteResponse<IUser>> Handle(DeleteUserRequestModel<IUser> request, CancellationToken cancellationToken)
         {
             var user = await _unitOfWork.Users
                 .Query()
@@ -38,13 +38,13 @@ namespace CoreStart.Business.Account.Handlers.Users
                 throw new Exception($"No user for given Id={request.Id}");
             }
 
-            var updatedUser = DtoToModel(user, request.EditUser);
+            var updatedUser = DtoToModel(user, null);
 
             var validationResult = Validate(updatedUser);
 
             if (validationResult.Any())
             {
-                var failureResponse = new EditResponse<IUser>()
+                var failureResponse = new DeleteResponse<IUser>()
                 {
                     IsSuccessful = false,
                     ValidationErrors = validationResult
@@ -58,19 +58,17 @@ namespace CoreStart.Business.Account.Handlers.Users
                 await _unitOfWork.CommitAsync();
             }
 
-            return new EditResponse<IUser>
+            return new DeleteResponse<IUser>
             {
                 IsSuccessful = true,
-                EditedUser = ModelToDto(updatedUser)
             };
         }
 
         protected override User DtoToModel(User user, IUser userDto)
         {
-            user.FirstName = userDto.FirstName;
-            user.LastName = userDto.LastName;
-            user.Email = userDto.Email;
-            user.IsActive = userDto.IsActive;
+            user.Login = Guid.NewGuid().ToString();
+            user.IsActive = false;
+            user.DeletedAt = DateTime.UtcNow;
 
             return user;
         }

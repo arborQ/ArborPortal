@@ -84,9 +84,11 @@ namespace WebApi.Areas.Account.Controllers
         /// <param name="id">Id of user</param>
         /// <returns>None</returns>
         [HttpDelete]
-        public async Task DeleteUser(long id)
+        public async Task<DeleteResponse<IUser>> DeleteUser(long id)
         {
-            await _mediator.Send(new DeleteUserViewModel { Id = id });
+            var response = await _mediator.Send(new DeleteUserRequestModel<IUser> { Id = id });
+
+            return response;
         }
     }
 }
