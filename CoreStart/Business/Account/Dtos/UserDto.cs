@@ -1,4 +1,5 @@
-﻿using CoreStart.CrossCutting.Structure.Business.Account.Models;
+﻿using System;
+using CoreStart.CrossCutting.Structure.Business.Account.Models;
 
 namespace CoreStart.Business.Account.Dtos
 {
@@ -17,5 +18,7 @@ namespace CoreStart.Business.Account.Dtos
         public string LastName { get; set; }
 
         public bool IsActive { get; set; }
+
+        public DateTime? DeletedAt { get; set; }
     }
 }

@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using CoreStart.CrossCutting.Structure.Business.Account.Models;
+using CoreStart.CrossCutting.Structure.Responses;
 using MediatR;
 
 namespace CoreStart.CrossCutting.Structure.Requests.Users
 {
-    public class QueryUsersRequestModel<T>: IRequest<IReadOnlyCollection<T>> where T: IUser
+    public class QueryUsersRequestModel<T> : IRequest<QueryResponse<T>> where T : class, IUser
     {
         public QueryUsersRequestModel()
         {

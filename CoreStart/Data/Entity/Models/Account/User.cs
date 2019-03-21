@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using CoreStart.CrossCutting.Structure.Business.Account.Models;
@@ -33,5 +34,7 @@ namespace CoreStart.Data.Entity.Models.Account
         public string PasswordHash { get; set; }
 
         public byte[] PasswordSalt { get; set; }
+
+        public DateTime? DeletedAt { get; set; }
     }
 }

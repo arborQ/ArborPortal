@@ -1,4 +1,6 @@
-﻿namespace WebApi.Areas.Account.Models
+﻿using System;
+
+namespace WebApi.Areas.Account.Models
 {
     public abstract class BaseUserModel
     {
@@ -15,5 +17,8 @@
         public string Email { get; set; }
 
         public bool IsActive { get; set; }
+
+        public DateTime? DeletedAt { get; set; }
+
     }
 }

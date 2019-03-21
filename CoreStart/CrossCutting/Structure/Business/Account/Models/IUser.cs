@@ -1,4 +1,5 @@
-﻿using CoreStart.CrossCutting.Structure.Repository;
+﻿using System;
+using CoreStart.CrossCutting.Structure.Repository;
 
 namespace CoreStart.CrossCutting.Structure.Business.Account.Models
 {
@@ -17,5 +18,7 @@ namespace CoreStart.CrossCutting.Structure.Business.Account.Models
         string Email { get; }
 
         bool IsActive { get; }
+
+        DateTime? DeletedAt { get; }
     }
 }

@@ -109,5 +109,10 @@ namespace CoreStart.Data.Entity.Repository
         {
             return await dbSet.CountAsync(predicate);
         }
+
+        public IQueryable<TSource> Query()
+        {
+            return dbSet.AsNoTracking();
+        }
     }
 }

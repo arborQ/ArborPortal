@@ -1,11 +1,10 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using CoreStart.CrossCutting.Structure.Business.Account.Models;
 using CoreStart.CrossCutting.Structure.Requests.Users;
+using CoreStart.CrossCutting.Structure.Responses;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Areas.Account.Models;
-using WebApi.Models;
 
 namespace WebApi.Areas.Account.Controllers
 {
@@ -29,11 +28,11 @@ namespace WebApi.Areas.Account.Controllers
         /// </summary>
         /// <returns>List of users</returns>
         [HttpGet]
-        public async Task<IUser[]> Values()
+        public async Task<QueryResponse<IUser>> Values([FromQuery]QueryUsersRequestModel<IUser> model)
         {
-            var users = await _mediator.Send(new QueryUsersRequestModel<IUser>());
+            var users = await _mediator.Send(model);
 
-            return users.ToArray();
+            return users;
         }
 
         /// <summary>
@@ -41,10 +40,10 @@ namespace WebApi.Areas.Account.Controllers
         /// </summary>
         /// <param name="id">Id of user</param>
         /// <returns>Single user</returns>
-        [HttpGet("{id}")]
+        [HttpGet("{Id}")]
         public async Task<IUser> Value(long id)
         {
-            var user = await _mediator.Send(GetRecordModel.ById(id));
+            var user = await _mediator.Send(new GetUserRequestModel<IUser> { Id = id });
 
             return user;
         }
@@ -55,9 +54,13 @@ namespace WebApi.Areas.Account.Controllers
         /// <param name="model">Model representing new user</param>
         /// <returns>Single edited user</returns>
         [HttpPut]
-        public async Task<IUser> EditUser(EditUserViewModel model)
+        public async Task<EditResponse<IUser>> EditUser([FromBody]EditUserViewModel model)
         {
-            var user = await _mediator.Send(model);
+            var user = await _mediator.Send(new EditUserRequestModel<IUser>
+            {
+                Id = model.Id,
+                EditUser = model
+            });
 
             return user;
         }
@@ -68,9 +71,9 @@ namespace WebApi.Areas.Account.Controllers
         /// <param name="model">Model representing new user</param>
         /// <returns>Single edited user</returns>
         [HttpPost]
-        public async Task<IUser> CreateUser([FromBody]CreateUserViewModel model)
+        public async Task<CreateResponse<IUser>> CreateUser([FromBody]CreateUserViewModel model)
         {
-            var user = await _mediator.Send(model);
+            var user = await _mediator.Send(new CreateUserRequestModel<IUser> { CreatedUser = model });
 
             return user;
         }

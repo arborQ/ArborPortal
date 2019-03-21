@@ -22,6 +22,8 @@ namespace CoreStart.CrossCutting.Structure.Repository
 
         IQueryable<TSource> GetRecords(Expression<Func<TSource, bool>> predicate);
 
+        IQueryable<TSource> Query();
+
         TSource GetRecordById(long id);
 
         IQueryable<TSource> GetRecordsByIds(IEnumerable<long> ids);

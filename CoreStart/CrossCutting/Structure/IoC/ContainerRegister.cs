@@ -24,10 +24,19 @@ namespace CoreStart.CrossCutting.Structure.IoC
 
         public Type DeclarationType { get; private set; }
 
-        public static ContainerRegister Service<TInstance, TDeclaration>(string componentName = null)
+        public static ContainerRegister Service<TInstance, TDeclaration>(string componentName = null) where TInstance: TDeclaration 
         {
             return new ContainerRegister(typeof(TInstance), typeof(TDeclaration), componentName);
         }
+
+        public static ContainerRegister Validator(Type instanceType, Type declarationType)
+        {
+            return new ContainerRegister(instanceType, declarationType);
+        }
+        //public static ContainerRegister Validator<TInstance, TDeclaration>()
+        //{
+        //    return Service<TInstance, TDeclaration>();
+        //}
 
         public static ContainerRegister UnitOfWork<TInstance>() where TInstance: IUnitOfWork
         {

@@ -4,6 +4,7 @@ using Castle.Windsor;
 using Castle.Windsor.MsDependencyInjection;
 using CoreStart.CrossCutting.Structure.Services;
 using CoreStart.WebApi;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -76,6 +77,7 @@ namespace CoreStart
             services
                 .RegisterServices(Configuration, castleContainer)
                 .AddMvc()
+                .AddFluentValidation()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             return WindsorRegistrationHelper.CreateServiceProvider(castleContainer, services);
