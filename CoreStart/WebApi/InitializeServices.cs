@@ -1,3 +1,6 @@
+using Castle.Facilities.TypedFactory;
+using Castle.MicroKernel.Registration;
+using Castle.Windsor;
 using Data.Entity;
 using Elasticsearch.Net;
 using MediatR;
@@ -6,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Nest;
+using Structure.Search;
 using Structure.Services;
 using System;
 using System.Linq;
@@ -16,7 +20,7 @@ namespace CoreStart.WebApi
 {
     internal static class InitializeServices
     {
-        public static IServiceCollection RegisterServices(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection RegisterServices(this IServiceCollection services, IConfiguration configuration, IWindsorContainer castle)
         {
             var declarations = Business.Authorize.InitializeServices.Register()
                 .Concat(Business.Account.InitializeServices.Register())
@@ -30,17 +34,21 @@ namespace CoreStart.WebApi
             var functionDeclarations = Data.Search.RegisterSearch.ResolveIndexerFunctions(new[] { esNode })
                 .ToList();
 
-            services.AddSingleton<ICryptography, CryptographyService>();
+            castle.AddFacility<TypedFactoryFacility>();
+
+            castle.Register(Component.For<ICryptography>().ImplementedBy<CryptographyService>().LifestyleSingleton());
 
             foreach (var functionDeclaration in functionDeclarations)
             {
-                services.AddTransient(functionDeclaration.InstanceType, (sp) => functionDeclaration.ResolveService());
+                castle.Register(Component.For(functionDeclaration.InstanceType).Instance(functionDeclaration.ResolveService()).LifestyleSingleton());
             }
 
             foreach (var declaration in declarations)
             {
-                services.AddTransient(declaration.DeclarationType, declaration.InstanceType);
+                castle.Register(Component.For(declaration.DeclarationType).ImplementedBy(declaration.InstanceType).Named(declaration.ComponentName).LifestyleTransient());
             }
+
+            castle.Register(Component.For<ISearchIndexerFactory>().AsFactory());
 
             services.AddMediatR();
             services.AddHttpContextAccessor();

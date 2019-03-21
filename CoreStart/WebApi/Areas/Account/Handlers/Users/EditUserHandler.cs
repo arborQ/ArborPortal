@@ -6,17 +6,17 @@ using System.Threading;
 using System.Threading.Tasks;
 using WebApi.Areas.Account.Models;
 
-namespace WebApi.Areas.Account.Handlers
+namespace WebApi.Areas.Account.Handlers.Users
 {
     public class EditUserHandler : IRequestHandler<EditUserViewModel, IUser>
     {
         private readonly IUsersCoreService _usersCoreService;
         private readonly ISearchIndexer _searchIndexer;
 
-        public EditUserHandler(IUsersCoreService usersCoreService, ISearchIndexer searchIndexer)
+        public EditUserHandler(IUsersCoreService usersCoreService, ISearchIndexerFactory searchIndexerFactory)
         {
             _usersCoreService = usersCoreService;
-            _searchIndexer = searchIndexer;
+            _searchIndexer = searchIndexerFactory.GetSearchIndexer("users");
         }
 
         public Task<IUser> Handle(EditUserViewModel request, CancellationToken cancellationToken)

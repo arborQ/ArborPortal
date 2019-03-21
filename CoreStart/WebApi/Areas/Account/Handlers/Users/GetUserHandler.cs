@@ -5,7 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using WebApi.Models;
 
-namespace WebApi.Areas.Account.Handlers
+namespace WebApi.Areas.Account.Handlers.Users
 {
     public class GetUserHandler : IRequestHandler<GetRecordModel, IUser>
     {
@@ -16,11 +16,11 @@ namespace WebApi.Areas.Account.Handlers
             _usersCoreService = usersCoreService;
         }
 
-        public Task<IUser> Handle(GetRecordModel request, CancellationToken cancellationToken)
+        public async Task<IUser> Handle(GetRecordModel request, CancellationToken cancellationToken)
         {
             var user = _usersCoreService.GetElement(request.Id);
 
-            return Task.FromResult(user);
+            return await Task.FromResult(user);
         }
     }
 }

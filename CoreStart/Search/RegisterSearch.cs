@@ -21,17 +21,13 @@ namespace CoreStart.Data.Search
                 var settings = new ConnectionSettings(pool);
                 var client = new ElasticClient(settings);
 
-                if (!client.IndexExists("users").Exists)
-                {
-                    client.CreateIndex("users", c => c.InitializeUsing(new IndexState { Settings = new IndexSettings { NumberOfReplicas = 1, NumberOfShards = 2 } }));
-                }
-
                 return client;
             });
         }
+
         public static IEnumerable<ContainerRegister> ResolveIndexer()
         {
-            yield return ContainerRegister.Service<SearchIndexer, ISearchIndexer>();
+            yield return ContainerRegister.Service<SearchIndexer, ISearchIndexer>(nameof(SearchIndexer));
         }
 
     }

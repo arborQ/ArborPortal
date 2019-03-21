@@ -1,21 +1,19 @@
-﻿using CoreStart.WebApi;
+﻿using System;
+using System.Text;
+using Castle.Windsor;
+using Castle.Windsor.MsDependencyInjection;
+using CoreStart.WebApi;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Structure.Services;
 using Swashbuckle.AspNetCore.Swagger;
-using System;
-using System.IO;
-using System.Net;
-using System.Reflection;
-using System.Text;
 using WebApi.Models;
 using WebApi.Services;
 
@@ -31,8 +29,10 @@ namespace CoreStart
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
+            var castleContainer = new WindsorContainer();
+
             services.Configure<WebConfiguration>(Configuration);
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
@@ -74,9 +74,11 @@ namespace CoreStart
             });
 
             services
-                .RegisterServices(Configuration)
+                .RegisterServices(Configuration, castleContainer)
                 .AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            return WindsorRegistrationHelper.CreateServiceProvider(castleContainer, services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

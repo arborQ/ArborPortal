@@ -1,12 +1,14 @@
-﻿using MediatR;
-using Structure.Business.Account.Models;
+﻿using System;
 using System.Collections.Generic;
+using System.Text;
+using MediatR;
+using Structure.Business.Account.Models;
 
-namespace WebApi.Areas.Account.Models
+namespace Structure.Requests.Users
 {
-    public class QueryUsersFilterModel : IRequest<IReadOnlyCollection<IUser>>
+    internal class QueryUsersRequestModel<T>: IRequest<IReadOnlyCollection<T>> where T: IUser
     {
-        public QueryUsersFilterModel()
+        public QueryUsersRequestModel()
         {
             Page = 0;
             PageSize = 10;

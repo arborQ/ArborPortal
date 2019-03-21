@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using WebApi.Areas.Account.Models;
 
-namespace WebApi.Areas.Account.Handlers
+namespace WebApi.Areas.Account.Handlers.Users
 {
     public class DeleteUserHandler : IRequestHandler<DeleteUserViewModel, long>
     {

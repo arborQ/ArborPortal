@@ -4,6 +4,7 @@ using Structure.Business.Account.Models;
 using Structure.Business.Account.Services;
 using Structure.Services;
 using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 
 namespace Account.Services
@@ -13,6 +14,11 @@ namespace Account.Services
         public UsersCoreService(AccountUnitOfWork unitOfWork)
             : base(unitOfWork)
         {
+        }
+
+        protected override Expression<Func<User, bool>> FilterExpression()
+        {
+            return base.FilterExpression();
         }
 
         protected override IUser MapFromEntity(User entity)

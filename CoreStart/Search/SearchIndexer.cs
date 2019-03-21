@@ -15,10 +15,10 @@ namespace CoreStart.Data.Search
         protected string _indexName;
 
 
-        public SearchIndexer(IElasticClient elasticClient)
+        public SearchIndexer(IElasticClient elasticClient, string indexName)
         {
             _elasticClient = elasticClient;
-            _indexName = "users";
+            _indexName = indexName;
         }
 
         public async Task CreateIndex(IElasticClient elasticClient, string indexName)
