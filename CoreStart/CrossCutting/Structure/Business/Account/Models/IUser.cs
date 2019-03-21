@@ -1,6 +1,6 @@
-﻿using Structure.Repository;
+﻿using CoreStart.CrossCutting.Structure.Repository;
 
-namespace Structure.Business.Account.Models
+namespace CoreStart.CrossCutting.Structure.Business.Account.Models
 {
     public interface IUser : IEntity
     {

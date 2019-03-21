@@ -1,9 +1,11 @@
 ﻿using MediatR;
-using Structure.Business.Account.Models;
+using CoreStart.CrossCutting.Structure.Business.Account.Models;
+using System;
 using System.Collections.Generic;
 
 namespace WebApi.Areas.Account.Models
 {
+    [Obsolete("DONT", true)]
     public class QueryUsersFilterModel : IRequest<IReadOnlyCollection<IUser>>
     {
         public QueryUsersFilterModel()

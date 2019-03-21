@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Structure.Services
+namespace CoreStart.CrossCutting.Structure.Services
 {
     public interface IBaseCoreService<TDto> where TDto : class
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace Structure.Repository
+namespace CoreStart.CrossCutting.Structure.Repository
 {
     public interface IAsyncRepository<TSource> where TSource : class, IEntity
     {

@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>CoreStart.CrossCutting.Structure</AssemblyName>
+    <RootNamespace>CoreStart.CrossCutting.Structure</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

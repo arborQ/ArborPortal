@@ -1,9 +1,9 @@
-﻿using MediatR;
-using Structure.Business.Account.Models;
-using Structure.Business.Account.Services;
-using Structure.Search;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
+using CoreStart.CrossCutting.Structure.Business.Account.Models;
+using CoreStart.CrossCutting.Structure.Business.Account.Services;
+using CoreStart.CrossCutting.Structure.Search;
+using MediatR;
 using WebApi.Areas.Account.Models;
 
 namespace WebApi.Areas.Account.Handlers.Users

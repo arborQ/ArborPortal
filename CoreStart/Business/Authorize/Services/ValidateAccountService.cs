@@ -1,12 +1,11 @@
-using Authorize.Services;
-using CrossCutting.Structure.Business.Authorize;
-using Microsoft.EntityFrameworkCore;
-using Structure.Models;
-using Structure.Services;
 using System;
 using System.Threading.Tasks;
+using CoreStart.CrossCutting.Structure.Business.Authorize;
+using CoreStart.CrossCutting.Structure.Models;
+using CoreStart.CrossCutting.Structure.Services;
+using Microsoft.EntityFrameworkCore;
 
-namespace Business.Authorize.Services
+namespace CoreStart.Business.Authorize.Services
 {
     internal class ValidateAccountService : IValidateAccountService
     {

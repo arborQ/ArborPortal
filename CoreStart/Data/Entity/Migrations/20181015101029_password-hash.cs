@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Entity.Migrations
+namespace CoreStart.Data.Entity
 {
     public partial class passwordhash : Migration
     {

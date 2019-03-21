@@ -1,7 +1,7 @@
-﻿using Structure.Business.Account.Models;
-using Structure.Services;
+﻿using CoreStart.CrossCutting.Structure.Business.Account.Models;
+using CoreStart.CrossCutting.Structure.Services;
 
-namespace Structure.Business.Account.Services
+namespace CoreStart.CrossCutting.Structure.Business.Account.Services
 {
     public interface IUsersCoreService : IBaseCoreService<IUser>
     {

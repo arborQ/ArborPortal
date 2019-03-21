@@ -1,6 +1,4 @@
-﻿using Structure.Models;
-
-namespace WebApi.Models
+﻿namespace WebApi.Models
 {
     public class WebConfiguration
     {

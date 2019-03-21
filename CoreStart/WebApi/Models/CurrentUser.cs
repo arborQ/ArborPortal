@@ -1,8 +1,8 @@
-﻿using GraphQL.Types;
-using Structure.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using CoreStart.CrossCutting.Structure.Models;
+using GraphQL.Types;
 
 namespace WebApi.Models
 {

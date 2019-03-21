@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace Structure.Repository
+namespace CoreStart.CrossCutting.Structure.Repository
 {
     public interface IRepository<TSource> : IAsyncRepository<TSource>
         where TSource : class, IEntity

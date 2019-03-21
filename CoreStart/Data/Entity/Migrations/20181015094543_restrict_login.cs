@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Entity.Migrations
+namespace CoreStart.Data.Entity.Migrations
 {
     public partial class restrict_login : Migration
     {

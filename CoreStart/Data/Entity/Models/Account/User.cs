@@ -1,10 +1,10 @@
-using Structure.Business.Account.Models;
-using Structure.Models;
-using Structure.Repository;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using CoreStart.CrossCutting.Structure.Business.Account.Models;
+using CoreStart.CrossCutting.Structure.Models;
+using CoreStart.CrossCutting.Structure.Repository;
 
-namespace Data.Entity.Models.Account
+namespace CoreStart.Data.Entity.Models.Account
 {
     [Table("User", Schema = "Account")]
     public class User : IEntity, ICurrentUser, IUser

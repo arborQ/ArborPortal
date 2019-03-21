@@ -1,7 +1,7 @@
-using Structure.Models;
 using System.Threading.Tasks;
+using CoreStart.CrossCutting.Structure.Models;
 
-namespace CrossCutting.Structure.Business.Authorize
+namespace CoreStart.CrossCutting.Structure.Business.Authorize
 {
     public interface IValidateAccountService {
         Task<ICurrentUser> IsAccoutValid (string login, string password);

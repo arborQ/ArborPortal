@@ -1,7 +1,7 @@
-using Data.Entity.Models.Account;
+using CoreStart.Data.Entity.Models.Account;
 using Microsoft.EntityFrameworkCore;
 
-namespace Data.Entity
+namespace CoreStart.Data.Entity
 {
     public class ApplicationDbContext : DbContext
     {

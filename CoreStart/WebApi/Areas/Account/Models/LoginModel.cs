@@ -1,5 +1,5 @@
-﻿using MediatR;
-using Structure.Models;
+﻿using CoreStart.CrossCutting.Structure.Models;
+using MediatR;
 
 namespace WebApi.Areas.Account.Models
 {

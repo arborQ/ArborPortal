@@ -1,8 +1,8 @@
-﻿using CrossCutting.Structure.Business.Authorize;
-using MediatR;
-using Structure.Models;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
+using CoreStart.CrossCutting.Structure.Business.Authorize;
+using CoreStart.CrossCutting.Structure.Models;
+using MediatR;
 using WebApi.Areas.Account.Models;
 
 namespace WebApi.Areas.Account.Handlers

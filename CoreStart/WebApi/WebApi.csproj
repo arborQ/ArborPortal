@@ -28,10 +28,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Business\Account\Account.csproj" />
     <ProjectReference Include="..\Business\Authorize\Authorize.csproj" />
     <ProjectReference Include="..\CrossCutting\Structure\Structure.csproj" />
-    <ProjectReference Include="..\Data\Entity\Entity.csproj" />
-    <ProjectReference Include="..\Business\Account\Account.csproj" />
     <ProjectReference Include="..\Search\Search.csproj" />
   </ItemGroup>
 

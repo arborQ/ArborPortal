@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using Structure.Models;
-using Structure.Services;
-using System;
+﻿using System;
 using System.Security.Claims;
+using CoreStart.CrossCutting.Structure.Models;
+using CoreStart.CrossCutting.Structure.Services;
+using Microsoft.AspNetCore.Http;
 using WebApi.Models;
 
 namespace WebApi.Services

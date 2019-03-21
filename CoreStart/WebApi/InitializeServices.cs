@@ -1,19 +1,17 @@
+using System;
+using System.Linq;
+using System.Net;
 using Castle.Facilities.TypedFactory;
 using Castle.MicroKernel.Registration;
 using Castle.Windsor;
-using Data.Entity;
-using Elasticsearch.Net;
+using CoreStart.CrossCutting.Structure.Search;
+using CoreStart.CrossCutting.Structure.Services;
+using CoreStart.Data.Entity;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Nest;
-using Structure.Search;
-using Structure.Services;
-using System;
-using System.Linq;
-using System.Net;
 using WebApi.Services;
 
 namespace CoreStart.WebApi
@@ -23,7 +21,7 @@ namespace CoreStart.WebApi
         public static IServiceCollection RegisterServices(this IServiceCollection services, IConfiguration configuration, IWindsorContainer castle)
         {
             var declarations = Business.Authorize.InitializeServices.Register()
-                .Concat(Business.Account.InitializeServices.Register())
+                .Concat(Business.Account.Account.InitializeServices.Register())
                 .Concat(Data.Search.RegisterSearch.ResolveIndexer())
                 .ToList();
 

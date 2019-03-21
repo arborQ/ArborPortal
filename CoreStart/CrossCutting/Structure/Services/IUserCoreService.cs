@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Structure.Services
+namespace CoreStart.CrossCutting.Structure.Services
 {
     public interface IUserCoreService
     {

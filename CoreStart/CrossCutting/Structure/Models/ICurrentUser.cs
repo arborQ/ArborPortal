@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace Structure.Models
+namespace CoreStart.CrossCutting.Structure.Models
 {
     public interface ICurrentUser : IRequest<string>
     {

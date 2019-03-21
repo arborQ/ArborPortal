@@ -1,6 +1,6 @@
-﻿using MediatR;
-using Structure.Business.Account.Models;
-using Structure.Repository;
+﻿using CoreStart.CrossCutting.Structure.Business.Account.Models;
+using CoreStart.CrossCutting.Structure.Repository;
+using MediatR;
 
 namespace WebApi.Areas.Account.Models
 {

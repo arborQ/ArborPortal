@@ -1,12 +1,12 @@
-﻿using Structure.Repository;
-using Structure.UnitOfWork;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using CoreStart.CrossCutting.Structure.Repository;
+using CoreStart.CrossCutting.Structure.UnitOfWork;
 
-namespace Structure.Services
+namespace CoreStart.CrossCutting.Structure.Services
 {
     public abstract class BaseCoreService<TInterface, TEntity>
         where TInterface : class

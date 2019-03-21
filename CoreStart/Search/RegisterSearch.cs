@@ -1,11 +1,10 @@
-﻿using CrossCutting.Structure.IoC;
-using Elasticsearch.Net;
-using Nest;
-using Structure.IoC;
-using Structure.Search;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using CoreStart.CrossCutting.Structure.IoC;
+using CoreStart.CrossCutting.Structure.Search;
+using Elasticsearch.Net;
+using Nest;
 
 namespace CoreStart.Data.Search
 {

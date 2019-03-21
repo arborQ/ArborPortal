@@ -1,9 +1,10 @@
-﻿using Account.Services;
-using CrossCutting.Structure.IoC;
-using Structure.Business.Account.Services;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Account.Services;
+using CoreStart.Business.Account.Services;
+using CoreStart.CrossCutting.Structure.Business.Account.Services;
+using CoreStart.CrossCutting.Structure.IoC;
 
-namespace Business.Account
+namespace CoreStart.Business.Account.Account
 {
     public static class InitializeServices
     {

@@ -1,4 +1,4 @@
-﻿namespace Structure.Search
+﻿namespace CoreStart.CrossCutting.Structure.Search
 {
     public interface ISearchIndexerFactory
     {

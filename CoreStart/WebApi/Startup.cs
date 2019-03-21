@@ -2,6 +2,7 @@
 using System.Text;
 using Castle.Windsor;
 using Castle.Windsor.MsDependencyInjection;
+using CoreStart.CrossCutting.Structure.Services;
 using CoreStart.WebApi;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -12,7 +13,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using Structure.Services;
 using Swashbuckle.AspNetCore.Swagger;
 using WebApi.Models;
 using WebApi.Services;

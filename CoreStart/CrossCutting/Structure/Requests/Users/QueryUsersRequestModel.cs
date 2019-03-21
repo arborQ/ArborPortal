@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
+using CoreStart.CrossCutting.Structure.Business.Account.Models;
 using MediatR;
-using Structure.Business.Account.Models;
 
-namespace Structure.Requests.Users
+namespace CoreStart.CrossCutting.Structure.Requests.Users
 {
-    internal class QueryUsersRequestModel<T>: IRequest<IReadOnlyCollection<T>> where T: IUser
+    public class QueryUsersRequestModel<T>: IRequest<IReadOnlyCollection<T>> where T: IUser
     {
         public QueryUsersRequestModel()
         {

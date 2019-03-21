@@ -1,12 +1,12 @@
-﻿using MediatR;
+﻿using System.Threading.Tasks;
+using CoreStart.CrossCutting.Structure.Models;
+using CoreStart.CrossCutting.Structure.Services;
+using MediatR;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using Structure.Models;
-using Structure.Services;
-using System.Threading.Tasks;
 using WebApi.Areas.Account.Models;
 using WebApi.Models;
 

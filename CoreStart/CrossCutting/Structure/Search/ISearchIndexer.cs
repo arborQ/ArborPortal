@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Structure.Repository;
+using CoreStart.CrossCutting.Structure.Repository;
 
-namespace Structure.Search
+namespace CoreStart.CrossCutting.Structure.Search
 {
     public interface ISearchIndexer
     {

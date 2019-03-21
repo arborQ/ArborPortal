@@ -1,11 +1,10 @@
-﻿using Nest;
-using Structure.Business.Account.Models;
-using Structure.Repository;
-using Structure.Search;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CoreStart.CrossCutting.Structure.Repository;
+using CoreStart.CrossCutting.Structure.Search;
+using Nest;
 
 namespace CoreStart.Data.Search
 {
@@ -63,7 +62,7 @@ namespace CoreStart.Data.Search
 
         public async Task<IReadOnlyCollection<T>> GetItems<T>() where T : class, IEntity
         {
-            var result = await _elasticClient.SearchAsync<T>(new SearchRequest(_indexName, typeof(IUser)) { });
+            var result = await _elasticClient.SearchAsync<T>(new SearchRequest(_indexName, typeof(T)) { });
 
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine(result.DebugInformation);

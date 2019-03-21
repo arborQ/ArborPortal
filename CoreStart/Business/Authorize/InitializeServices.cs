@@ -1,12 +1,11 @@
 using System.Collections.Generic;
-using Authorize.Services;
-using Business.Authorize.Services;
-using CrossCutting.Structure.Business.Authorize;
-using CrossCutting.Structure.IoC;
-using Data.Entity;
+using CoreStart.Business.Authorize.Services;
+using CoreStart.CrossCutting.Structure.Business.Authorize;
+using CoreStart.CrossCutting.Structure.IoC;
+using CoreStart.Data.Entity;
 using Microsoft.EntityFrameworkCore;
 
-namespace Business.Authorize
+namespace CoreStart.Business.Authorize
 {
     public static class InitializeServices
     {

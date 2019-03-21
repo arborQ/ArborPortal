@@ -1,11 +1,11 @@
-﻿using Account.Dtos;
-using Data.Entity.Models.Account;
-using Structure.Business.Account.Models;
-using Structure.Business.Account.Services;
-using Structure.Services;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq.Expressions;
+using CoreStart.Business.Account.Dtos;
+using CoreStart.Business.Account.Services;
+using CoreStart.CrossCutting.Structure.Business.Account.Models;
+using CoreStart.CrossCutting.Structure.Business.Account.Services;
+using CoreStart.CrossCutting.Structure.Services;
+using CoreStart.Data.Entity.Models.Account;
 
 namespace Account.Services
 {

@@ -1,10 +1,10 @@
-﻿using Data.Entity.Models.Account;
-using Data.Entity.Repository;
+﻿using CoreStart.CrossCutting.Structure.Repository;
+using CoreStart.CrossCutting.Structure.UnitOfWork;
+using CoreStart.Data.Entity.Models.Account;
+using CoreStart.Data.Entity.Repository;
 using Microsoft.EntityFrameworkCore;
-using Structure.Repository;
-using Structure.UnitOfWork;
 
-namespace Authorize.Services
+namespace CoreStart.Business.Authorize.Services
 {
     internal class AuthorizeUnitOfWork : UnitOfWork, IUnitOfWork
     {

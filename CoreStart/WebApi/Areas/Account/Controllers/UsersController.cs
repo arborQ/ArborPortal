@@ -1,8 +1,9 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Mvc;
-using Structure.Business.Account.Models;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
+using CoreStart.CrossCutting.Structure.Business.Account.Models;
+using CoreStart.CrossCutting.Structure.Requests.Users;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
 using WebApi.Areas.Account.Models;
 using WebApi.Models;
 
@@ -30,7 +31,7 @@ namespace WebApi.Areas.Account.Controllers
         [HttpGet]
         public async Task<IUser[]> Values()
         {
-            var users = await _mediator.Send(new QueryUsersFilterModel());
+            var users = await _mediator.Send(new QueryUsersRequestModel<IUser>());
 
             return users.ToArray();
         }

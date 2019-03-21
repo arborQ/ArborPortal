@@ -1,8 +1,8 @@
-﻿using Structure.Repository;
-using System;
+﻿using System;
 using System.Threading.Tasks;
+using CoreStart.CrossCutting.Structure.Repository;
 
-namespace Structure.UnitOfWork
+namespace CoreStart.CrossCutting.Structure.UnitOfWork
 {
     public interface IUnitOfWork : IDisposable
     {

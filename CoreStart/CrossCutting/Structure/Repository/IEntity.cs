@@ -1,4 +1,4 @@
-﻿namespace Structure.Repository
+﻿namespace CoreStart.CrossCutting.Structure.Repository
 {
     public interface IEntity
     {

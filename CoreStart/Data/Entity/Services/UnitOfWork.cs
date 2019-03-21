@@ -1,9 +1,9 @@
 ﻿using System.Threading.Tasks;
+using CoreStart.CrossCutting.Structure.Repository;
+using CoreStart.CrossCutting.Structure.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
-using Structure.Repository;
-using Structure.UnitOfWork;
 
-namespace Data.Entity.Repository
+namespace CoreStart.Data.Entity.Repository
 {
     public abstract class UnitOfWork : IUnitOfWork
     {

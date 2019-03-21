@@ -1,6 +1,6 @@
-﻿using Structure.Business.Account.Models;
+﻿using CoreStart.CrossCutting.Structure.Business.Account.Models;
 
-namespace Account.Dtos
+namespace CoreStart.Business.Account.Dtos
 {
     internal class UserDto : IUser
     {

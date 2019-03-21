@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Structure.IoC
+namespace CoreStart.CrossCutting.Structure.IoC
 {
     public class ContainerRegisterFunction
     {

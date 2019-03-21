@@ -1,12 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Structure.Repository;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using CoreStart.CrossCutting.Structure.Repository;
+using Microsoft.EntityFrameworkCore;
 
-namespace Data.Entity.Repository
+namespace CoreStart.Data.Entity.Repository
 {
     internal class Repository<TSource> : IRepository<TSource>
         where TSource : class, IEntity

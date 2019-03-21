@@ -1,6 +1,6 @@
-﻿using Structure.Models;
+﻿using CoreStart.CrossCutting.Structure.Models;
 
-namespace Structure.Services
+namespace CoreStart.CrossCutting.Structure.Services
 {
     public interface IUserPrincipalService
     {

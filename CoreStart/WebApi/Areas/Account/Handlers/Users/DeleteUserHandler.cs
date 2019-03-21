@@ -1,7 +1,7 @@
-﻿using MediatR;
-using Structure.Business.Account.Services;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
+using CoreStart.CrossCutting.Structure.Business.Account.Services;
+using MediatR;
 using WebApi.Areas.Account.Models;
 
 namespace WebApi.Areas.Account.Handlers.Users

@@ -1,4 +1,4 @@
-﻿namespace Structure.Services
+﻿namespace CoreStart.CrossCutting.Structure.Services
 {
     public interface ICryptography
     {

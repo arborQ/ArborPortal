@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Cryptography.KeyDerivation;
-using Structure.Services;
-using System;
+﻿using System;
 using System.Security.Cryptography;
+using CoreStart.CrossCutting.Structure.Services;
+using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 
 namespace WebApi.Services
 {

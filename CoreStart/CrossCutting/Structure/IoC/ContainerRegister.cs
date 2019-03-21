@@ -1,7 +1,7 @@
-using Structure.UnitOfWork;
 using System;
+using CoreStart.CrossCutting.Structure.UnitOfWork;
 
-namespace CrossCutting.Structure.IoC
+namespace CoreStart.CrossCutting.Structure.IoC
 {
     public class ContainerRegister
     {
