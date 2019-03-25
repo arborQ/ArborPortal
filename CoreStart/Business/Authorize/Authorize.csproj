@@ -9,6 +9,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>CoreStart.Business.Authorize</AssemblyName>
     <RootNamespace>CoreStart.Business.Authorize</RootNamespace>
+    <Configurations>Debug;Release;Docker</Configurations>
   </PropertyGroup>
 
 </Project>

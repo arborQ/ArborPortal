@@ -4,6 +4,7 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <AssemblyName>CoreStart.Data.Search</AssemblyName>
     <RootNamespace>CoreStart.Data.Search</RootNamespace>
+    <Configurations>Debug;Release;Docker</Configurations>
   </PropertyGroup>
 
   <ItemGroup>

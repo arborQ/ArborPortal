@@ -1,46 +1,50 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
+using CoreStart.Business.Account.Dtos;
 using CoreStart.Business.Account.Services;
 using CoreStart.CrossCutting.Structure.Business.Account.Models;
 using CoreStart.CrossCutting.Structure.Requests.Users;
 using CoreStart.CrossCutting.Structure.Responses;
-using FluentValidation;
+using CoreStart.Data.Entity.Models.Account;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace CoreStart.Business.Account.Handlers.Users
 {
-    internal class QueryUsersDatabaseHandler : UserBaseHandler,
-        IRequestHandler<QueryUsersRequestModel<IUser>, QueryResponse<IUser>>
+    internal class QueryUsersDatabaseHandler : QueryBaseHandler<User, IUser>, IRequestHandler<QueryUsersRequestModel<IUser>, QueryResponse<IUser>>
     {
-        private readonly AccountUnitOfWork _unitOfWork;
-
         public QueryUsersDatabaseHandler(AccountUnitOfWork unitOfWork)
+            : base(unitOfWork.Users)
         {
-            _unitOfWork = unitOfWork;
         }
 
-        public async Task<QueryResponse<IUser>> Handle(QueryUsersRequestModel<IUser> request, CancellationToken cancellationToken)
+        public Task<QueryResponse<IUser>> Handle(QueryUsersRequestModel<IUser> request, CancellationToken cancellationToken)
         {
-            var users = _unitOfWork.Users.Query()
-                    .Where(u =>
-                        string.IsNullOrEmpty(request.Search) || u.FullName.Contains(request.Search)
-                    )
-                    .Where(DefaultItemFilter);
+            return QuerySearch(request, cancellationToken);
+        }
 
-            var count = await users.CountAsync();
+        //protected override Expression<Func<User, bool>> DefaultItemFilter(QueryUsersRequestModel<IUser> request)
+        //{
+        //    return user => user.FullName.Contains(request.Search);
+        //}
 
-            var items = await users
-                .Skip(request.PageSize * (request.Page - 1))
-                .Take(request.PageSize)
-                .ToListAsync();
-
-            return await Task.FromResult(new QueryResponse<IUser>
+        protected override Func<User, IUser> ModelToDto(QueryRequestModel<IUser> request)
+        {
+            return model =>
             {
-                TotalCount = count,
-                Items = items.Select(ModelToDto).ToList()
-            });
+                var userDto = new UserDto();
+
+                userDto.Id = model.Id;
+                userDto.FirstName = model.FirstName;
+                userDto.LastName = model.LastName;
+                userDto.FullName = model.FullName;
+                userDto.Email = model.Email;
+                userDto.IsActive = model.IsActive;
+                userDto.Login = model.Login;
+
+                return userDto;
+            };
         }
     }
 }

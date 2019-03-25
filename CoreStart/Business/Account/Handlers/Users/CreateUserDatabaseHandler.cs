@@ -16,11 +16,13 @@ namespace CoreStart.Business.Account.Handlers.Users
         IRequestHandler<CreateUserRequestModel<IUser>, CreateResponse<IUser>>
     {
         private readonly AccountUnitOfWork _unitOfWork;
+        private readonly IMediator _mediator;
 
-        public CreateUserDatabaseHandler(AccountUnitOfWork unitOfWork, IReadOnlyCollection<IValidator<IUser>> validators)
+        public CreateUserDatabaseHandler(AccountUnitOfWork unitOfWork, IMediator mediator, IReadOnlyCollection<IValidator<IUser>> validators)
             : base(validators)
         {
             _unitOfWork = unitOfWork;
+            _mediator = mediator;
         }
 
         public async Task<CreateResponse<IUser>> Handle(CreateUserRequestModel<IUser> request, CancellationToken cancellationToken)
@@ -43,6 +45,11 @@ namespace CoreStart.Business.Account.Handlers.Users
             {
                 await _unitOfWork.Users.AddAsAsync(createdUser);
                 await _unitOfWork.CommitAsync();
+            }
+
+            if (createdUser.IsActive)
+            {
+                await _mediator.Publish(request);
             }
 
             return new CreateResponse<IUser>

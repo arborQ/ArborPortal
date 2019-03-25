@@ -71,8 +71,6 @@ namespace CoreStart.WebApi
 
                 if (!string.IsNullOrEmpty(forwardedHeaders))
                 {
-                    //options.KnownProxies.Add(IPAddress.Parse("10.0.0.100"));
-                    //options.KnownProxies.Add(IPAddress.Parse("172.22.0.1"));
                     options.KnownProxies.Add(IPAddress.Parse(forwardedHeaders));
                 }
             });

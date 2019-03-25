@@ -18,11 +18,13 @@ namespace CoreStart.Business.Account.Handlers.Users
         IRequestHandler<DeleteUserRequestModel<IUser>, DeleteResponse<IUser>>
     {
         private readonly AccountUnitOfWork _unitOfWork;
+        private readonly IMediator _mediator;
 
-        public DeleteUserDatabaseHandler(AccountUnitOfWork unitOfWork, IReadOnlyCollection<IValidator<IUser>> validators)
+        public DeleteUserDatabaseHandler(AccountUnitOfWork unitOfWork, IMediator mediator, IReadOnlyCollection<IValidator<IUser>> validators)
             : base(validators)
         {
             _unitOfWork = unitOfWork;
+            _mediator = mediator;
         }
 
         public async Task<DeleteResponse<IUser>> Handle(DeleteUserRequestModel<IUser> request, CancellationToken cancellationToken)
@@ -57,6 +59,8 @@ namespace CoreStart.Business.Account.Handlers.Users
                 _unitOfWork.Users.Update(updatedUser);
                 await _unitOfWork.CommitAsync();
             }
+
+            await _mediator.Publish(request);
 
             return new DeleteResponse<IUser>
             {

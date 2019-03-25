@@ -16,6 +16,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>CoreStart.Data.Entity</AssemblyName>
     <RootNamespace>CoreStart.Data.Entity</RootNamespace>
+    <Configurations>Debug;Release;Docker</Configurations>
   </PropertyGroup>
 
 </Project>

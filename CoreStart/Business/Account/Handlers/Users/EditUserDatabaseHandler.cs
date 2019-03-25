@@ -18,11 +18,13 @@ namespace CoreStart.Business.Account.Handlers.Users
         IRequestHandler<EditUserRequestModel<IUser>, EditResponse<IUser>>
     {
         private readonly AccountUnitOfWork _unitOfWork;
+        private readonly IMediator _mediator;
 
-        public EditUserDatabaseHandler(AccountUnitOfWork unitOfWork, IReadOnlyCollection<IValidator<IUser>> validators)
+        public EditUserDatabaseHandler(AccountUnitOfWork unitOfWork, IMediator mediator, IReadOnlyCollection<IValidator<IUser>> validators)
             : base(validators)
         {
             _unitOfWork = unitOfWork;
+            _mediator = mediator;
         }
 
         public async Task<EditResponse<IUser>> Handle(EditUserRequestModel<IUser> request, CancellationToken cancellationToken)
@@ -57,6 +59,8 @@ namespace CoreStart.Business.Account.Handlers.Users
                 _unitOfWork.Users.Update(updatedUser);
                 await _unitOfWork.CommitAsync();
             }
+
+            await _mediator.Publish(request);
 
             return new EditResponse<IUser>
             {

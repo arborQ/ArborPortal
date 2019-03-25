@@ -4,7 +4,7 @@ using MediatR;
 
 namespace CoreStart.CrossCutting.Structure.Requests.Users
 {
-    public class EditUserRequestModel<T> : SingleItemRequestModel<long>, IRequest<EditResponse<T>> where T : class, IUser
+    public class EditUserRequestModel<T> : SingleItemRequestModel<long>, IRequest<EditResponse<T>>, INotification where T : class, IUser
     {
         public T EditUser { get; set; }
     }

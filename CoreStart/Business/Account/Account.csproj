@@ -13,6 +13,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>CoreStart.Business.Account</AssemblyName>
     <RootNamespace>CoreStart.Business.Account</RootNamespace>
+    <Configurations>Debug;Release;Docker</Configurations>
   </PropertyGroup>
 
 </Project>
