@@ -8,14 +8,9 @@ import EditUser from "./edit";
 
 import UserListComponent from "./components/userList";
 
-interface IUserListState {
-  loading: boolean;
-  list: Areas.Account.IUser[];
-}
-
 export default class UserList extends React.PureComponent<
   RouteComponentProps,
-  IUserListState
+  Areas.Account.IUserListProps
 > {
   
   componentWillReceiveProps(n: RouteComponentProps) {
@@ -35,7 +30,7 @@ export default class UserList extends React.PureComponent<
       loading: true
     });
 
-    loadUsers().then(list => {
+    loadUsers({ page: 1 }).then(list => {
       this.setState({
         ...this.state,
         loading: false,
@@ -50,6 +45,9 @@ export default class UserList extends React.PureComponent<
           <UserListComponent
             loading={this.state.loading}
             list={this.state.list}
+            onFilterChanged={filter => {
+              this.props.history.replace(`/users?login=${filter.loginSearch}`);
+            }}
           />
         </Card>
         <Route path="/account/list/create" component={CreateUser} />

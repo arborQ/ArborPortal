@@ -5,8 +5,14 @@ interface IQueryResponse<T> {
   totalCount: number;
 }
 
-export function loadUsers(): Promise<Areas.Account.IUser[]> {
-  return get<IQueryResponse<Areas.Account.IUser>>("/api/account/users?search=&page=1&pageSize=2").then(response => response.items);
+interface IUserSearch {
+  loginSearch?: string;
+  emailSearch?: string;
+  page: number;
+}
+
+export function loadUsers(search: IUserSearch): Promise<Areas.Account.IUser[]> {
+  return get<IQueryResponse<Areas.Account.IUser>>(`/api/account/users?search=&page=${search.loginSearch || ""}&pageSize=10`).then(response => response.items);
 }
 
 export function getUser(userId: number): Promise<Areas.Account.IUser> {

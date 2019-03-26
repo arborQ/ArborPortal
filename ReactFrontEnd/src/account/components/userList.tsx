@@ -1,7 +1,9 @@
 import * as React from "react";
 import { Card, Table, Button, Input, Popconfirm } from "antd";
+import { ColumnProps } from "antd/lib/table";
 
-const columns = [
+function CalculateColumnProps(state: Areas.Account.IUserListTableProps): ColumnProps<Areas.Account.IUser>[] {
+  return  [
     {
       title: "Name",
       dataIndex: "fullName",
@@ -16,10 +18,10 @@ const columns = [
       title: "Login",
       dataIndex: "login",
       key: "login",
-      filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => {
+      filterDropdown: (confirm: any) => {
         return (
          <div className="custom-filter-dropdown">
-          <Input ref={item => { if(item !== null) { item.focus(); } }} placeholder="Search by login" onPressEnter={() => {confirm();}} />
+          <Input ref={item => { if(item !== null) { item.focus(); } }} placeholder="Search by login" onPressEnter={() => {confirm(); state.onFilterChanged({ page: 1, pageSize: 10, loginSearch: "dsadsadsa" }) }} />
          </div>
         );
       }
@@ -50,13 +52,14 @@ const columns = [
       }
     }
   ];
+}
 
-export default function(state: any): JSX.Element {
+export default function(state: Areas.Account.IUserListTableProps): JSX.Element {
     return (
         <Table
             loading={state.loading}
             dataSource={state.list}
-            columns={columns}
+            columns={CalculateColumnProps(state)}
           />
     );
 }
