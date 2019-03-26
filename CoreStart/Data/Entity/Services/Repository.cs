@@ -114,5 +114,15 @@ namespace CoreStart.Data.Entity.Repository
         {
             return dbSet.AsNoTracking();
         }
+
+        public void Commit()
+        {
+            DataBaseContext.SaveChanges();
+        }
+
+        public async Task CommitAsync()
+        {
+            await DataBaseContext.SaveChangesAsync();
+        }
     }
 }

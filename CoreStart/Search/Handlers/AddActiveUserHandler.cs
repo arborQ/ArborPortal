@@ -7,18 +7,18 @@ using MediatR;
 
 namespace CoreStart.Data.Search.Handlers
 {
-    public class AddActiveUserHandler : INotificationHandler<CreateUserRequestModel<IUser>>
-    {
-        private readonly ISearchIndexer _searchIndexer;
+    //public class AddActiveUserHandler : INotificationHandler<CreateRequestModel<IUser>>
+    //{
+    //    private readonly ISearchIndexer _searchIndexer;
 
-        public AddActiveUserHandler(ISearchIndexerFactory searchIndexerFactory)
-        {
-            _searchIndexer = searchIndexerFactory.GetSearchIndexer("activeusers");
-        }
+    //    public AddActiveUserHandler(ISearchIndexerFactory searchIndexerFactory)
+    //    {
+    //        _searchIndexer = searchIndexerFactory.GetSearchIndexer("activeusers");
+    //    }
 
-        public async Task Handle(CreateUserRequestModel<IUser> notification, CancellationToken cancellationToken)
-        {
-            await _searchIndexer.AddItem(notification.CreatedUser);
-        }
-    }
+    //    public async Task Handle(CreateRequestModel<IUser> notification, CancellationToken cancellationToken)
+    //    {
+    //        await _searchIndexer.AddItem(notification.CreatedUser);
+    //    }
+    //}
 }

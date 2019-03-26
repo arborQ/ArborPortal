@@ -28,7 +28,7 @@ namespace WebApi.Areas.Account.Controllers
         /// </summary>
         /// <returns>List of users</returns>
         [HttpGet]
-        public async Task<QueryResponse<IUser>> Values([FromQuery]QueryUsersRequestModel<IUser> model)
+        public async Task<QueryResponse<IUser>> Values([FromQuery]QueryRequestModel<IUser> model)
         {
             var users = await _mediator.Send(model);
 
@@ -56,10 +56,10 @@ namespace WebApi.Areas.Account.Controllers
         [HttpPut]
         public async Task<EditResponse<IUser>> EditUser([FromBody]EditUserViewModel model)
         {
-            var user = await _mediator.Send(new EditUserRequestModel<IUser>
+            var user = await _mediator.Send(new EditRequestModel<IUser>
             {
                 Id = model.Id,
-                EditUser = model
+                EditContract = model
             });
 
             return user;
@@ -73,7 +73,7 @@ namespace WebApi.Areas.Account.Controllers
         [HttpPost]
         public async Task<CreateResponse<IUser>> CreateUser([FromBody]CreateUserViewModel model)
         {
-            var user = await _mediator.Send(new CreateUserRequestModel<IUser> { CreatedUser = model });
+            var user = await _mediator.Send(new CreateRequestModel<IUser> { NewItem = model });
 
             return user;
         }
@@ -86,7 +86,7 @@ namespace WebApi.Areas.Account.Controllers
         [HttpDelete]
         public async Task<DeleteResponse<IUser>> DeleteUser(long id)
         {
-            var response = await _mediator.Send(new DeleteUserRequestModel<IUser> { Id = id });
+            var response = await _mediator.Send(new DeleteRequestModel<IUser> { Id = id });
 
             return response;
         }

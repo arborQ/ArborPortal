@@ -8,7 +8,7 @@ using CoreStart.CrossCutting.Structure.Repository;
 namespace CoreStart.Data.Entity.Models.Account
 {
     [Table("User", Schema = "Account")]
-    public class User : IEntity, ICurrentUser, IUser
+    public class User : IEntity, ICurrentUser, IUser, ISoftDeletable
     {
         [Key]
         public long Id { get; set; }

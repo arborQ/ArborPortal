@@ -1,82 +1,53 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using CoreStart.Business.Account.Dtos;
 using CoreStart.Business.Account.Services;
 using CoreStart.CrossCutting.Structure.Business.Account.Models;
 using CoreStart.CrossCutting.Structure.Requests.Users;
 using CoreStart.CrossCutting.Structure.Responses;
+using CoreStart.Data.Entity.Handlers;
 using CoreStart.Data.Entity.Models.Account;
 using FluentValidation;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace CoreStart.Business.Account.Handlers.Users
 {
-    internal class EditUserDatabaseHandler : UserBaseHandler,
-        IRequestHandler<EditUserRequestModel<IUser>, EditResponse<IUser>>
+    internal class EditUserDatabaseHandler : EditBaseHandler<User, IUser>,
+        IRequestHandler<EditRequestModel<IUser>, EditResponse<IUser>>
     {
-        private readonly AccountUnitOfWork _unitOfWork;
-        private readonly IMediator _mediator;
-
-        public EditUserDatabaseHandler(AccountUnitOfWork unitOfWork, IMediator mediator, IReadOnlyCollection<IValidator<IUser>> validators)
-            : base(validators)
+        public EditUserDatabaseHandler(AccountUnitOfWork unitOfWork, IReadOnlyCollection<IValidator<IUser>> validators)
+            : base(unitOfWork.Users, validators)
         {
-            _unitOfWork = unitOfWork;
-            _mediator = mediator;
         }
 
-        public async Task<EditResponse<IUser>> Handle(EditUserRequestModel<IUser> request, CancellationToken cancellationToken)
+        public async Task<EditResponse<IUser>> Handle(EditRequestModel<IUser> request, CancellationToken cancellationToken)
         {
-            var user = await _unitOfWork.Users
-                .Query()
-                .Where(u => u.Id == request.Id)
-                .Where(DefaultItemFilter)
-                .FirstOrDefaultAsync();
+            return await EditItem(request);
+        }
 
-            if (user == null)
+        protected override User DtoToModel(User item, IUser itemDto)
+        {
+            item.FirstName = itemDto.FirstName;
+            item.LastName = itemDto.LastName;
+            item.Email = itemDto.Email;
+            item.IsActive = itemDto.IsActive;
+
+            return item;
+        }
+
+        protected override IUser ModelToDto(User item)
+        {
+            return new UserDto
             {
-                throw new Exception($"No user for given Id={request.Id}");
-            }
-
-            var updatedUser = DtoToModel(user, request.EditUser);
-
-            var validationResult = Validate(updatedUser);
-
-            if (validationResult.Any())
-            {
-                var failureResponse = new EditResponse<IUser>()
-                {
-                    IsSuccessful = false,
-                    ValidationErrors = validationResult
-                };
-
-                return await Task.FromResult(failureResponse);
-            }
-            else
-            {
-                _unitOfWork.Users.Update(updatedUser);
-                await _unitOfWork.CommitAsync();
-            }
-
-            await _mediator.Publish(request);
-
-            return new EditResponse<IUser>
-            {
-                IsSuccessful = true,
-                EditedUser = ModelToDto(updatedUser)
+                Id = item.Id,
+                FirstName = item.FirstName,
+                LastName = item.LastName,
+                FullName = item.FullName,
+                Email = item.Email,
+                IsActive = item.IsActive,
+                Login = item.Login
             };
-        }
-
-        protected override User DtoToModel(User user, IUser userDto)
-        {
-            user.FirstName = userDto.FirstName;
-            user.LastName = userDto.LastName;
-            user.Email = userDto.Email;
-            user.IsActive = userDto.IsActive;
-
-            return user;
         }
     }
 }

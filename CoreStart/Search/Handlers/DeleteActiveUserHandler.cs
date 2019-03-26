@@ -7,7 +7,7 @@ using MediatR;
 
 namespace CoreStart.Data.Search.Handlers
 {
-    public class DeleteActiveUserHandler : INotificationHandler<DeleteUserRequestModel<IUser>>
+    public class DeleteActiveUserHandler : INotificationHandler<DeleteRequestModel<IUser>>
     {
         private readonly ISearchIndexer _searchIndexer;
 
@@ -16,7 +16,7 @@ namespace CoreStart.Data.Search.Handlers
             _searchIndexer = searchIndexerFactory.GetSearchIndexer("activeusers");
         }
 
-        public async Task Handle(DeleteUserRequestModel<IUser> notification, CancellationToken cancellationToken)
+        public async Task Handle(DeleteRequestModel<IUser> notification, CancellationToken cancellationToken)
         {
             await _searchIndexer.RemoveItem<IUser>(notification.Id);
         }

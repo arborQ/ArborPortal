@@ -19,14 +19,14 @@ namespace CoreStart.CrossCutting.Structure.Requests.Users
         public int PageSize { get; set; }
     }
 
-    public class QueryUsersRequestModel<T> : QueryRequestModel<T> 
-        where T : class, IUser
-    {
-        public QueryUsersRequestModel()
-        {
-            Search = "";
-        }
+    //public class QueryRequestModel<T> : QueryRequestModel<T> 
+    //    where T : class, IUser
+    //{
+    //    public QueryRequestModel()
+    //    {
+    //        Search = "";
+    //    }
 
-        public string Search { get; set; }
-    }
+    //    public string Search { get; set; }
+    //}
 }

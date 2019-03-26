@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace CoreStart.CrossCutting.Structure.Repository
 {
@@ -29,5 +30,9 @@ namespace CoreStart.CrossCutting.Structure.Repository
         IQueryable<TSource> GetRecordsByIds(IEnumerable<long> ids);
 
         long Count(Expression<Func<TSource, bool>> predicate);
+
+        void Commit();
+
+        Task CommitAsync();
     }
 }

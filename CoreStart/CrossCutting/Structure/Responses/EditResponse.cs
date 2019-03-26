@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using CoreStart.CrossCutting.Structure.Business.Account.Models;
+using CoreStart.CrossCutting.Structure.Repository;
 
 namespace CoreStart.CrossCutting.Structure.Responses
 {
-    public class EditResponse<TModel> where TModel : class
+    public class EditResponse<TModel> where TModel : class, IEntity
     {
         public EditResponse()
         {
@@ -15,6 +15,6 @@ namespace CoreStart.CrossCutting.Structure.Responses
 
         public IDictionary<string, string[]> ValidationErrors { get; set; }
 
-        public IUser EditedUser { get; set; } 
+        public TModel EditedItem { get; set; } 
     }
 }

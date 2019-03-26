@@ -1,61 +1,58 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using CoreStart.Business.Account.Dtos;
 using CoreStart.Business.Account.Services;
 using CoreStart.CrossCutting.Structure.Business.Account.Models;
 using CoreStart.CrossCutting.Structure.Requests.Users;
 using CoreStart.CrossCutting.Structure.Responses;
+using CoreStart.Data.Entity.Handlers;
 using CoreStart.Data.Entity.Models.Account;
 using FluentValidation;
 using MediatR;
 
 namespace CoreStart.Business.Account.Handlers.Users
 {
-    internal class CreateUserDatabaseHandler : UserBaseHandler,
-        IRequestHandler<CreateUserRequestModel<IUser>, CreateResponse<IUser>>
+    internal class CreateUserDatabaseHandler : CreateBaseHandler<User, IUser> ,
+        IRequestHandler<CreateRequestModel<IUser>, CreateResponse<IUser>>
     {
-        private readonly AccountUnitOfWork _unitOfWork;
         private readonly IMediator _mediator;
 
         public CreateUserDatabaseHandler(AccountUnitOfWork unitOfWork, IMediator mediator, IReadOnlyCollection<IValidator<IUser>> validators)
-            : base(validators)
+            : base(unitOfWork.Users, validators)
         {
-            _unitOfWork = unitOfWork;
             _mediator = mediator;
         }
 
-        public async Task<CreateResponse<IUser>> Handle(CreateUserRequestModel<IUser> request, CancellationToken cancellationToken)
+        public async Task<CreateResponse<IUser>> Handle(CreateRequestModel<IUser> request, CancellationToken cancellationToken)
         {
-            var createdUser = DtoToModel(new User(), request.CreatedUser);
+            return await CreateItem(request);
+        }
 
-            var validationResult = Validate(createdUser);
+        protected override User DtoToModel(User item, IUser itemDto)
+        {
+            item.FirstName = itemDto.FirstName;
+            item.LastName = itemDto.LastName;
+            item.Email = itemDto.Email;
+            item.Login = itemDto.Login;
+            item.IsActive = itemDto.IsActive;
+            item.DeletedAt = null;
+            // CREATED ???
 
-            if (validationResult.Any())
+            return item;
+        }
+
+        protected override IUser ModelToDto(User item)
+        {
+            return new UserDto
             {
-                var failureResponse = new CreateResponse<IUser>()
-                {
-                    IsSuccessful = false,
-                    ValidationErrors = validationResult
-                };
-
-                return await Task.FromResult(failureResponse);
-            }
-            else
-            {
-                await _unitOfWork.Users.AddAsAsync(createdUser);
-                await _unitOfWork.CommitAsync();
-            }
-
-            if (createdUser.IsActive)
-            {
-                await _mediator.Publish(request);
-            }
-
-            return new CreateResponse<IUser>
-            {
-                IsSuccessful = true,
-                CreatedUser = ModelToDto(createdUser)
+                Id = item.Id,
+                FirstName = item.FirstName,
+                LastName = item.LastName,
+                FullName = item.FullName,
+                Email = item.Email,
+                IsActive = item.IsActive,
+                Login = item.Login
             };
         }
     }

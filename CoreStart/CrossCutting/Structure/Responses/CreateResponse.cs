@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using CoreStart.CrossCutting.Structure.Business.Account.Models;
 
 namespace CoreStart.CrossCutting.Structure.Responses
@@ -17,6 +15,6 @@ namespace CoreStart.CrossCutting.Structure.Responses
 
         public IDictionary<string, string[]> ValidationErrors { get; set; }
 
-        public IUser CreatedUser { get; set; }
+        public TModel CreatedItem { get; set; }
     }
 }
