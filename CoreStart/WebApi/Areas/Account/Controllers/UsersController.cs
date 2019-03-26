@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using CoreStart.Business.Account.Requests;
 using CoreStart.CrossCutting.Structure.Business.Account.Models;
 using CoreStart.CrossCutting.Structure.Requests.Users;
 using CoreStart.CrossCutting.Structure.Responses;
@@ -28,7 +29,7 @@ namespace WebApi.Areas.Account.Controllers
         /// </summary>
         /// <returns>List of users</returns>
         [HttpGet]
-        public async Task<QueryResponse<IUser>> Values([FromQuery]QueryRequestModel<IUser> model)
+        public async Task<QueryResponse<IUser>> Values([FromQuery]QueryUserRequestModel model)
         {
             var users = await _mediator.Send(model);
 
