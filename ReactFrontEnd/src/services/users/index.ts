@@ -12,7 +12,7 @@ interface IUserSearch {
 }
 
 export function loadUsers(search: IUserSearch): Promise<Areas.Account.IUser[]> {
-  return get<IQueryResponse<Areas.Account.IUser>>(`/api/account/users?search=&page=${search.loginSearch || ""}&pageSize=10`).then(response => response.items);
+  return get<IQueryResponse<Areas.Account.IUser>>(`/api/account/users?search=${search.loginSearch || ""}&page=${search.page || "1"}&pageSize=10`).then(response => response.items);
 }
 
 export function getUser(userId: number): Promise<Areas.Account.IUser> {

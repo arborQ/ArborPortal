@@ -1,9 +1,8 @@
 import * as React from "react";
 import { Alert, Drawer, Form, Input, Icon, Button, Popconfirm } from "antd";
 import { RouteComponentProps } from "react-router";
-import { login as ValidateUser } from "bx-services/account";
+import { login as AuthorizeUser } from "bx-services/account";
 import LoginForm from "./components/loginForm";
-
 
 export default class Login extends React.PureComponent<
   RouteComponentProps,
@@ -20,44 +19,19 @@ export default class Login extends React.PureComponent<
     });
   }
 
+  componentDidMount(): void {
+    if (!this.props.location.hash) {
+      
+    }
+  }
+
+  authorize(): void {
+    AuthorizeUser().then(() => {
+      alert("done");
+    });
+  }
+
   render() {
-    return (
-      <Drawer
-        title="Validate user"
-        visible={true}
-        style={{ maxWidth: 600 }}
-        onClose={this.cancel.bind(this)}
-      >
-        <Form onSubmit={this.submit.bind(this)}>
-          <LoginForm {...this.state} cancel={this.cancel.bind(this)} />
-        </Form>
-      </Drawer>
-    );
-  }
-
-  private cancel(e: Event): void {
-    e.preventDefault();
-    e.stopPropagation();
-
-    this.props.history.replace("/account/list");
-  }
-
-  private submit(e: Event): void {
-    e.preventDefault();
-    e.stopPropagation();
-
-    this.setState({ ...this.state, loading: true });
-
-    ValidateUser(this.state.login, this.state.password)
-      .then(response => {
-        this.setState({ ...this.state, loading: false });
-      })
-      .catch(() => {
-        this.setState({
-          ...this.state,
-          error: "Can't authorize",
-          loading: false,
-        });
-      });
+    return <div><button onClick={this.authorize.bind(this)}>Login</button></div>;
   }
 }

@@ -36,6 +36,12 @@ class ReactApplication extends React.PureComponent<RouteComponentProps> {
                     Add User
                   </Link>
                 </Menu.Item>
+                <Menu.Item key={"/login"}>
+                  <Link to={"/login"}>
+                    <Icon type="plus-circle" />
+                    Login
+                  </Link>
+                </Menu.Item>
               </Menu.ItemGroup>
             </Menu>
           </Layout.Sider>

@@ -9,8 +9,8 @@ import EditUser from "./edit";
 import UserListComponent from "./components/userList";
 
 export default class UserList extends React.PureComponent<
-  RouteComponentProps,
-  Areas.Account.IUserListProps
+  RouteComponentProps<Areas.Account.IUserListProps>,
+  Areas.Account.IUserListState
 > {
   
   componentWillReceiveProps(n: RouteComponentProps) {
@@ -20,6 +20,8 @@ export default class UserList extends React.PureComponent<
     if (newPath !== oldPath && oldPath.indexOf(newPath) === 0) {
       this.componentDidMount();
     }
+
+    this.loadData();
   }
   componentWillMount(): void {
     this.setState({ loading: false, list: [] });
@@ -30,7 +32,14 @@ export default class UserList extends React.PureComponent<
       loading: true
     });
 
-    loadUsers({ page: 1 }).then(list => {
+    this.loadData();
+  }
+
+  loadData(): void {
+    console.log("this.props.match.params", this.props.match.params);
+    console.log("this.props.location.search", this.props.location.search);
+    
+    loadUsers({ page: +(this.props.match.params.page || "1"), loginSearch: this.props.match.params.loginSearch }).then(list => {
       this.setState({
         ...this.state,
         loading: false,
@@ -38,6 +47,7 @@ export default class UserList extends React.PureComponent<
       });
     });
   }
+
   render() {
     return (
       <div>
@@ -46,7 +56,7 @@ export default class UserList extends React.PureComponent<
             loading={this.state.loading}
             list={this.state.list}
             onFilterChanged={filter => {
-              this.props.history.replace(`/users?login=${filter.loginSearch}`);
+              this.props.history.replace(`/users/${filter.loginSearch}/${filter.page}`);
             }}
           />
         </Card>

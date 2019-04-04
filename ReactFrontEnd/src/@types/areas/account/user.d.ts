@@ -8,19 +8,20 @@ declare namespace Areas.Account {
     email: string;
   }
 
-  export interface IUserListProps {
-    loading: boolean;
-    list: IUser[]
-  }
-
   export interface IUserFilterModel {
     loginSearch?: string;
     emailSearch?: string;
-    page: number;
-    pageSize: number;
+    page?: string;
   }
 
-  export interface IUserListTableProps extends IUserListProps {
+  export interface IUserListProps extends IUserFilterModel {}
+
+  export interface IUserListState {
+    loading: boolean;
+    list: IUser[];
+  }
+
+  export interface IUserListTableState extends IUserListState {
     onFilterChanged: (filter: IUserFilterModel) => void;
   }
 }
