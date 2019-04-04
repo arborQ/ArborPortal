@@ -5,6 +5,7 @@ using CoreStart.CrossCutting.Structure.Business.Account.Models;
 using CoreStart.CrossCutting.Structure.Requests.Users;
 using CoreStart.CrossCutting.Structure.Responses;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Areas.Account.Models;
 
@@ -13,6 +14,7 @@ namespace WebApi.Areas.Account.Controllers
     /// <summary>
     /// User CRUD controller
     /// </summary>
+    [Authorize]
     [Route("api/[area]/[controller]")]
     [Area("Account")]
     [ApiController]

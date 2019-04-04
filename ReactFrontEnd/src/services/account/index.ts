@@ -1,16 +1,26 @@
 import { get, post, remove } from "bx-utils/ajax";
 import Auth0Lock from "auth0-lock";
 
+const authorizeUrl = "/api/account/authorize";
+
 var auth0 = new Auth0Lock(
   "tylVqDVyD9wE9yOpy5vhablvx5mINM71",
   "dev-kg2va7y3.eu.auth0.com",
   {
     auth: {
-      responseType: 'id_token token',
+      responseType: "id_token token",
       redirect: false
     }
   }
 );
+
+auth0.on("authenticated", authResult => {
+  console.log(authResult);
+  post(authorizeUrl, { jwtToken: authResult.idToken }).then(result => {
+    console.log(result);
+    auth0.hide();
+  });
+});
 
 function setCurrentUser(user: Areas.Account.IUser): Areas.Account.IUser | null {
   localStorage.setItem("bx-storage-user", JSON.stringify(user));
@@ -32,19 +42,6 @@ export function isAuthorized(): Promise<boolean> {
 
 export function login(): Promise<{}> {
   return new Promise((resolve, reject) => {
-    auth0.on("authenticated", authResult => {
-      console.log(authResult);
-      auth0.getUserInfo(authResult.accessToken, (error, profile) => {
-        console.log(profile);
-        resolve();
-        auth0.hide();
-      });
-    });
-
-    auth0.on("authorization_error", error => {
-      reject();
-    });
-
     auth0.show();
   });
 }
