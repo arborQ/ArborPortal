@@ -47,6 +47,7 @@ namespace CoreStart.WebApi
             }
 
             castle.Register(Component.For<ISearchIndexerFactory>().AsFactory());
+            castle.Register(Component.For<IContextAccessor>().ImplementedBy<WebContextAccessor>().LifestyleSingleton());
 
             services.AddMediatR();
             services.AddHttpContextAccessor();

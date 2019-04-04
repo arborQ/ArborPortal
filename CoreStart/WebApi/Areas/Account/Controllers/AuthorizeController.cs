@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Security.Claims;
+using System.Threading.Tasks;
 using CoreStart.CrossCutting.Structure.Models;
 using CoreStart.CrossCutting.Structure.Services;
 using MediatR;
@@ -8,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using WebApi.Areas.Account.Models;
+using WebApi.Areas.Account.Responses;
 using WebApi.Models;
 
 namespace WebApi.Areas.Account
@@ -27,11 +29,12 @@ namespace WebApi.Areas.Account
         }
 
         [HttpPost]
-        public async Task<string> SignIn([FromBody]LoginModel model)
+        public async Task<AuthorizeResponseModel> SignIn([FromBody]JwtAuthorizeModel token)
         {
-            var token = await Mediator.Send<string>(model);
+            var response = await Mediator.Send(token);
+            await Mediator.Publish(response);
 
-            return token;
+            return response;
         }
 
         [HttpDelete]

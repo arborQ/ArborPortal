@@ -6,6 +6,7 @@ var auth0 = new Auth0Lock(
   "dev-kg2va7y3.eu.auth0.com",
   {
     auth: {
+      responseType: 'id_token token',
       redirect: false
     }
   }
@@ -36,6 +37,7 @@ export function login(): Promise<{}> {
       auth0.getUserInfo(authResult.accessToken, (error, profile) => {
         console.log(profile);
         resolve();
+        auth0.hide();
       });
     });
 
