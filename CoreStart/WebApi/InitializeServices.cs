@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Net;
 using Castle.Facilities.TypedFactory;
@@ -16,6 +17,7 @@ using WebApi.Services;
 
 namespace CoreStart.WebApi
 {
+    [ExcludeFromCodeCoverage]
     internal static class InitializeServices
     {
         public static IServiceCollection RegisterServices(this IServiceCollection services, IConfiguration configuration, IWindsorContainer castle)

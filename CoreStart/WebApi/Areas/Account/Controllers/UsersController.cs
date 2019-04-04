@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Threading.Tasks;
 using CoreStart.Business.Account.Requests;
 using CoreStart.CrossCutting.Structure.Business.Account.Models;
 using CoreStart.CrossCutting.Structure.Requests.Users;
@@ -15,6 +16,7 @@ namespace WebApi.Areas.Account.Controllers
     [Route("api/[area]/[controller]")]
     [Area("Account")]
     [ApiController]
+    [ExcludeFromCodeCoverage]
     public class UsersController : ControllerBase
     {
         private readonly IMediator _mediator;

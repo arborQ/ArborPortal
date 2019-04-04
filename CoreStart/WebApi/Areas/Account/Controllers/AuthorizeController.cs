@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using CoreStart.CrossCutting.Structure.Models;
 using CoreStart.CrossCutting.Structure.Services;
@@ -17,6 +18,7 @@ namespace WebApi.Areas.Account
     [Route("api/[area]/[controller]")]
     [Area("Account")]
     [ApiController]
+    [ExcludeFromCodeCoverage]
     public class AuthorizeController : ControllerBase
     {
         private readonly IMediator Mediator;

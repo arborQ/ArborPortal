@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Castle.Windsor;
 using Castle.Windsor.MsDependencyInjection;
@@ -20,6 +21,7 @@ using WebApi.Services;
 
 namespace CoreStart
 {
+    [ExcludeFromCodeCoverage]
     public class Startup
     {
         public Startup(IConfiguration configuration)
