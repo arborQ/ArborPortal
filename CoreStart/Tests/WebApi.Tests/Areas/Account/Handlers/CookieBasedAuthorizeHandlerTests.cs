@@ -24,10 +24,10 @@ namespace WebApi.Tests.Areas.Account.Handlers
         }
 
         [Theory]
-        [InlineData(2222, "longer_name")]
-        [InlineData(111, "name")]
-        [InlineData(1, "a")]
-        public async Task CookieBasedAuthorizeHandler_UseClaims_IfAuthorized(long userId, string name)
+        [InlineData("2222", "longer_name")]
+        [InlineData("111", "name")]
+        [InlineData("1", "a")]
+        public async Task CookieBasedAuthorizeHandler_UseClaims_IfAuthorized(string userId, string name)
         {
             var contextMock = new Mock<IContextAccessor>();
 

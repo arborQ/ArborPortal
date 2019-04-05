@@ -23,7 +23,7 @@ namespace WebApi.Areas.Account.Handlers
                 {
                     ExpireDate = jsonToken.ValidTo,
                     Source = jsonToken.Subject.Split("|")[0],
-                    UserId = long.Parse(jsonToken.Subject.Split("|")[1]),
+                    UserId = jsonToken.Subject,
                     UserName = userName.Value
                 });
             }

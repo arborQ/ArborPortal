@@ -5,9 +5,9 @@ namespace WebApi.Areas.Account.Responses
 {
     public class AuthorizeResponseModel: INotification
     {
-        public bool IsAuthorized => UserId.HasValue;
+        public bool IsAuthorized => !string.IsNullOrEmpty(UserId);
 
-        public long? UserId { get; set; }
+        public string UserId { get; set; }
 
         public string UserName { get; set; }
 
