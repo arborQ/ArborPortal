@@ -1,25 +1,30 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using CoreStart.CrossCutting.Structure.Security;
-using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace WebApi.Security
 {
-    public class PortalAuthorizeAttribute : IAuthorizationFilter
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true, Inherited = true)]
+    public class PortalAuthorizeAttribute : Attribute, IAuthorizationFilter
     {
         private UserClaims _userClaimFlag;
 
         public PortalAuthorizeAttribute(UserClaims userClaimFlag)
         {
-            _userClaimFlag = userClaimFlag;
+            _userClaimFlag = userClaimFlag & UserClaims.Authorized;
         }
 
         public void OnAuthorization(AuthorizationFilterContext context)
         {
-            throw new NotImplementedException();
+            var hasClaim = context.HttpContext.User.Claims
+                .Any(c => c.Type == "UserClaims" && Enum.Parse<UserClaims>(c.Value).HasFlag(_userClaimFlag));
+
+            if (!hasClaim)
+            {
+                context.Result = new ForbidResult();
+            }
         }
     }
 }

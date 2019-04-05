@@ -3,6 +3,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
+using CoreStart.CrossCutting.Structure.Security;
 using CoreStart.CrossCutting.Structure.Services;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -37,6 +38,7 @@ namespace WebApi.Areas.Account.Handlers
         {
             yield return new Claim(nameof(AuthorizeResponseModel.UserId), user.UserId.ToString());
             yield return new Claim(nameof(AuthorizeResponseModel.UserName), user.UserName);
+            yield return new Claim("UserClaims", (UserClaims.Authorized & UserClaims.UsersRead).ToString());
         }
     }
 }

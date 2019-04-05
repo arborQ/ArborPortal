@@ -4,17 +4,18 @@ using CoreStart.Business.Account.Requests;
 using CoreStart.CrossCutting.Structure.Business.Account.Models;
 using CoreStart.CrossCutting.Structure.Requests.Users;
 using CoreStart.CrossCutting.Structure.Responses;
+using CoreStart.CrossCutting.Structure.Security;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Areas.Account.Models;
+using WebApi.Security;
 
 namespace WebApi.Areas.Account.Controllers
 {
     /// <summary>
     /// User CRUD controller
     /// </summary>
-    [Authorize(Policy = "AuthorizedClaimAccess")]
+    [PortalAuthorize(UserClaims.UsersRead)]
     [Route("api/[area]/[controller]")]
     [Area("Account")]
     [ApiController]
@@ -59,6 +60,7 @@ namespace WebApi.Areas.Account.Controllers
         /// <param name="model">Model representing new user</param>
         /// <returns>Single edited user</returns>
         [HttpPut]
+        [PortalAuthorize(UserClaims.UserEdit)]
         public async Task<EditResponse<IUser>> EditUser([FromBody]EditUserViewModel model)
         {
             var user = await _mediator.Send(new EditRequestModel<IUser>
@@ -76,6 +78,7 @@ namespace WebApi.Areas.Account.Controllers
         /// <param name="model">Model representing new user</param>
         /// <returns>Single edited user</returns>
         [HttpPost]
+        [PortalAuthorize(UserClaims.UserCreate)]
         public async Task<CreateResponse<IUser>> CreateUser([FromBody]CreateUserViewModel model)
         {
             var user = await _mediator.Send(new CreateRequestModel<IUser> { NewItem = model });
@@ -89,6 +92,7 @@ namespace WebApi.Areas.Account.Controllers
         /// <param name="id">Id of user</param>
         /// <returns>None</returns>
         [HttpDelete]
+        [PortalAuthorize(UserClaims.UserDelete)]
         public async Task<DeleteResponse<IUser>> DeleteUser(long id)
         {
             var response = await _mediator.Send(new DeleteRequestModel<IUser> { Id = id });
