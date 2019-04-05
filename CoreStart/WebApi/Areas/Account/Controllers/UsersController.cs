@@ -14,7 +14,7 @@ namespace WebApi.Areas.Account.Controllers
     /// <summary>
     /// User CRUD controller
     /// </summary>
-    [Authorize]
+    [Authorize(Policy = "AuthorizedClaimAccess")]
     [Route("api/[area]/[controller]")]
     [Area("Account")]
     [ApiController]

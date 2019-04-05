@@ -16,6 +16,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Swashbuckle.AspNetCore.Swagger;
+using WebApi.Areas.Account.Responses;
 using WebApi.Models;
 using WebApi.Services;
 
@@ -35,34 +36,39 @@ namespace CoreStart
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             var castleContainer = new WindsorContainer();
-
             services.Configure<WebConfiguration>(Configuration);
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("AuthorizedClaimAccess", policy => policy.RequireClaim(nameof(AuthorizeResponseModel.UserId)));
+            });
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
 
-            var ValidIssuer = "dsadas";
-            var ValidAudience = "dsadsa";
-            var JwtKey = "cxzczczcx";
+            //services.AddAuthentication(options =>
+            //  {
 
-            services.AddAuthentication(options =>
-              {
-                  options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                  options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-                  options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            //      options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            //      options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            //      options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 
-              })
-                .AddJwtBearer(cfg =>
-                {
-                    cfg.RequireHttpsMetadata = false;
-                    cfg.SaveToken = true;
-                    cfg.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidIssuer = ValidIssuer,
-                        ValidAudience = ValidAudience,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtKey)),
-                        ClockSkew = TimeSpan.Zero // remove delay of token when expire
-                    };
-                });
+            //  })
+            //    .AddJwtBearer(cfg =>
+            //    {
+            //        var ValidIssuer = Configuration.GetValue<string>($"Jwt:Issuer");
+            //        var ValidAudience = Configuration.GetValue<string>($"Jwt:Audience");
+            //        var JwtKey = Configuration.GetValue<string>($"Jwt:Key");
+
+            //        cfg.RequireHttpsMetadata = false;
+            //        cfg.SaveToken = true;
+            //        cfg.TokenValidationParameters = new TokenValidationParameters
+            //        {
+            //            ValidIssuer = ValidIssuer,
+            //            ValidAudience = ValidAudience,
+            //            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtKey)),
+            //            ClockSkew = TimeSpan.Zero // remove delay of token when expire
+            //        };
+            //    });
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<IUserPrincipalService, CurrentUserPrincipalProvider>();
