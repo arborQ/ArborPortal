@@ -29,6 +29,11 @@ namespace CoreStart.CrossCutting.Structure.IoC
             return new ContainerRegister(typeof(TInstance), typeof(TDeclaration), componentName);
         }
 
+        public static ContainerRegister Service(Type instanceType, Type declarationType)
+        {
+            return new ContainerRegister(instanceType, declarationType);
+        }
+
         public static ContainerRegister Validator(Type instanceType, Type declarationType)
         {
             return new ContainerRegister(instanceType, declarationType);

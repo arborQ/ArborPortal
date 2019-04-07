@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using CoreStart.Business.Account.Requests;
 using CoreStart.CrossCutting.Structure.Business.Account.Models;
+using CoreStart.CrossCutting.Structure.Requests;
 using CoreStart.CrossCutting.Structure.Requests.Users;
 using CoreStart.CrossCutting.Structure.Responses;
 using CoreStart.CrossCutting.Structure.Security;

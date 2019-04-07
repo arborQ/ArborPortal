@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 using CoreStart.CrossCutting.Structure.Business.Account.Models;
 using CoreStart.CrossCutting.Structure.Models;
 using CoreStart.CrossCutting.Structure.Repository;
@@ -26,15 +27,11 @@ namespace CoreStart.Data.Entity.Models.Account
 
         public string FullName { get; set; }
 
-        [MaxLength(256), Required]
+        [MaxLength(256)]
         public string Email { get; set; }
 
-        public string[] Roles => new string[] { };
-
-        public string PasswordHash { get; set; }
-
-        public byte[] PasswordSalt { get; set; }
-
         public DateTime? DeletedAt { get; set; }
+
+        public virtual IQueryable<Membership> Membership { get; set; }
     }
 }

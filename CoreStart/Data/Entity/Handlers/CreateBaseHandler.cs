@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using CoreStart.CrossCutting.Structure.Repository;
-using CoreStart.CrossCutting.Structure.Requests.Users;
+using CoreStart.CrossCutting.Structure.Requests;
 using CoreStart.CrossCutting.Structure.Responses;
 using FluentValidation;
 

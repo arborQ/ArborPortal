@@ -1,7 +1,7 @@
 ﻿using CoreStart.CrossCutting.Structure.Responses;
 using MediatR;
 
-namespace CoreStart.CrossCutting.Structure.Requests.Users
+namespace CoreStart.CrossCutting.Structure.Requests
 {
     public class CreateRequestModel<T> : IRequest<CreateResponse<T>>, INotification where T : class
     {

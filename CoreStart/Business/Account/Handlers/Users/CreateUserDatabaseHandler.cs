@@ -1,19 +1,21 @@
 ﻿using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using CoreStart.Business.Account.Dtos;
 using CoreStart.Business.Account.Services;
 using CoreStart.CrossCutting.Structure.Business.Account.Models;
-using CoreStart.CrossCutting.Structure.Requests.Users;
+using CoreStart.CrossCutting.Structure.Requests;
 using CoreStart.CrossCutting.Structure.Responses;
 using CoreStart.Data.Entity.Handlers;
 using CoreStart.Data.Entity.Models.Account;
 using FluentValidation;
 using MediatR;
 
+[assembly: InternalsVisibleTo("Business.Account.Tests")]
 namespace CoreStart.Business.Account.Handlers.Users
 {
-    internal class CreateUserDatabaseHandler : CreateBaseHandler<User, IUser> ,
+    internal class CreateUserDatabaseHandler : CreateBaseHandler<User, IUser>,
         IRequestHandler<CreateRequestModel<IUser>, CreateResponse<IUser>>
     {
         private readonly IMediator _mediator;
