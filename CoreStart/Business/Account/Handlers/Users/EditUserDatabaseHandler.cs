@@ -43,7 +43,6 @@ namespace CoreStart.Business.Account.Handlers.Users
                 Id = item.Id,
                 FirstName = item.FirstName,
                 LastName = item.LastName,
-                FullName = item.FullName,
                 Email = item.Email,
                 IsActive = item.IsActive,
                 Login = item.Login

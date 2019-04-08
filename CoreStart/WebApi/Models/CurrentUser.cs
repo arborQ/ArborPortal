@@ -40,14 +40,14 @@ namespace WebApi.Models
         {
             if (long.TryParse(claims.Single(a => a.Type == nameof(ICurrentUser.Id)).Value, out long id))
             {
-                var fullName = claims.Single(a => a.Type == nameof(ICurrentUser.FullName)).Value;
+                //var fullName = claims.Single(a => a.Type == nameof(ICurrentUser.FullName)).Value;
                 var login = claims.Single(a => a.Type == nameof(ICurrentUser.Login)).Value;
                 var email = claims.Single(a => a.Type == nameof(ICurrentUser.Email)).Value;
 
                 return new CurrentUser(id)
                 {
                     Email = email,
-                    FullName = fullName,
+                    FullName = email,
                     Login = login
                 };
             }

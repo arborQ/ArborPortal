@@ -4,14 +4,16 @@ using CoreStart.Data.Entity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CoreStart.Data.Entity
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190408075632_change_schema")]
+    partial class change_schema
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -77,11 +79,17 @@ namespace CoreStart.Data.Entity
                         .HasMaxLength(256);
 
                     b.Property<string>("FirstName")
+                        .IsRequired()
                         .HasMaxLength(50);
+
+                    b.Property<string>("FullName")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasComputedColumnSql("[FirstName] + ' ' + [LastName]");
 
                     b.Property<bool>("IsActive");
 
                     b.Property<string>("LastName")
+                        .IsRequired()
                         .HasMaxLength(50);
 
                     b.Property<string>("Login")

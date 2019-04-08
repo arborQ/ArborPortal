@@ -9,8 +9,6 @@ namespace CoreStart.CrossCutting.Structure.Business.Account.Models
 
         string Login { get; }
 
-        string FullName { get; }
-
         string FirstName { get; }
 
         string LastName { get; }

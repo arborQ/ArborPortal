@@ -5,7 +5,7 @@ import { withRouter, RouteComponentProps } from "react-router";
 import "antd/dist/antd.css";
 import { RecipesRoutes } from "./recipes/recipes.index";
 import { AccountRoutes, ListUsersPath, CreateUserPath } from "./account/account.index";
-import { login as AuthorizeUser } from "bx-services/account";
+import { login as AuthorizeUser, isAuthorized } from "bx-services/account";
 
 class ReactApplication extends React.PureComponent<RouteComponentProps> {
   render(): JSX.Element {
@@ -53,6 +53,10 @@ class ReactApplication extends React.PureComponent<RouteComponentProps> {
         </Layout>
       </Layout>
     );
+  }
+
+  componentWillMount() : void {
+    // isAuthorized().then(result => alert(result))
   }
 }
 

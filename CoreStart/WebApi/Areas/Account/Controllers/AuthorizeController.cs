@@ -1,7 +1,9 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using CoreStart.CrossCutting.Structure.Business.Account.Models;
 using CoreStart.CrossCutting.Structure.Models;
+using CoreStart.CrossCutting.Structure.Requests;
 using CoreStart.CrossCutting.Structure.Services;
 using MediatR;
 using Microsoft.AspNetCore.Authentication;
@@ -21,20 +23,33 @@ namespace WebApi.Areas.Account
     [ExcludeFromCodeCoverage]
     public class AuthorizeController : ControllerBase
     {
-        private readonly IMediator Mediator;
-        private readonly IUserPrincipalService UserPrincipalService;
+        private readonly IMediator _mediator;
+        private readonly IUserPrincipalService _userPrincipalService;
 
         public AuthorizeController(IMediator mediator, IUserPrincipalService userPrincipalService, IOptions<WebConfiguration> configuration)
         {
-            Mediator = mediator;
-            UserPrincipalService = userPrincipalService;
+            _mediator = mediator;
+            _userPrincipalService = userPrincipalService;
         }
 
         [HttpPost]
         public async Task<AuthorizeResponseModel> SignIn([FromBody]JwtAuthorizeModel token)
         {
-            var response = await Mediator.Send(token);
-            await Mediator.Publish(response);
+            var response = await _mediator.Send(token);
+
+            await _mediator.Send(new CreateRequestModel<IUser>
+            {
+               NewItem = new CreateUserViewModel
+               {
+                   FirstName = response.FirstName,
+                   LastName = response.LastName,
+                   Email = response.Email,
+                   IsActive = true,
+                   Login = response.UserName
+               }
+            });
+
+            await _mediator.Publish(response);
 
             return response;
         }
@@ -47,9 +62,9 @@ namespace WebApi.Areas.Account
 
         [HttpGet]
         [Authorize]
-        public ICurrentUser IsAuthorized()
+        public void IsAuthorized()
         {
-            return UserPrincipalService.User;
+            //return _userPrincipalService.User;
         }
     }
 }

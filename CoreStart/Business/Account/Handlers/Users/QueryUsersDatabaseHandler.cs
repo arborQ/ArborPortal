@@ -34,7 +34,7 @@ namespace CoreStart.Business.Account.Handlers.Users
                 return base.DefaultItemFilter(request);
             }
 
-            return user => user.FullName.Contains(request.Search);
+            return user => user.Login.Contains(request.Search);
         }
 
         protected override Expression<Func<User, IUser>> ModelToDto(QueryUserRequestModel request)
@@ -44,7 +44,6 @@ namespace CoreStart.Business.Account.Handlers.Users
                 Id = model.Id,
                 FirstName = model.FirstName,
                 LastName = model.LastName,
-                FullName = model.FullName,
                 Email = model.Email,
                 IsActive = model.IsActive,
                 Login = model.Login

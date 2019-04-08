@@ -8,8 +8,6 @@ namespace CoreStart.CrossCutting.Structure.Models
 
         string Login { get; }
 
-        string FullName { get; }
-
         string Email { get; }
     }
 }

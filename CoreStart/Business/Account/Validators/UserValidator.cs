@@ -15,9 +15,7 @@ namespace CoreStart.Business.Account.Validators
         {
             _unitOfWork = unitOfWork;
 
-            RuleFor(u => u.FirstName).NotEmpty().Length(2, 40);
-            RuleFor(u => u.LastName).NotEmpty().Length(2, 40);
-            RuleFor(u => u.Email).NotEmpty().EmailAddress();
+            RuleFor(u => u.Email).EmailAddress();
             RuleFor(u => u.Login).NotEmpty().Length(2, 40);
             RuleFor(u => u.Login)
                 .MustAsync(ValidateUserLogin)
