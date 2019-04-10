@@ -59,6 +59,7 @@ export default class RecipesListComponent extends React.Component {
                             NEWITEM: {
                                 ...i.NEWITEM,
                                 LONGTEXT: this.noLongText(newItem, 'Produktet har ingen beskrivelse'),
+                                EXT_SCHEMA_TYPE : 'UNSPSC-TOOLS_NO'
                             }
                         };
                     })
@@ -150,7 +151,7 @@ export default class RecipesListComponent extends React.Component {
         return (
             <div>
                 <div>
-                    <a download="10003855-KEMIRA CHEMICALS.json" href={`data:text/plain;charset=utf-8, ${encodeURIComponent(JSON.stringify(this.state.data, undefined, 2))}`}>Download</a>
+                    <a download="10003855-KEMIRA CHEMICALS.json" href={`data:text/plain;charset=utf-8, ${encodeURIComponent(JSON.stringify({ ...data, Items: this.state.data.Items }, undefined, 2))}`}>Download</a>
                 </div>
             <div style={{display: "flex"}}>
                 <div>
@@ -168,8 +169,7 @@ export default class RecipesListComponent extends React.Component {
                
             </div>
             <div>
-                 <pre>var noDescriptions = {JSON.stringify(noDescriptionItems(this.state.data.Items).map(e => e.NEWITEM.EXT_PRODUCT_ID), undefined, 2)}</pre>
-                <pre>{JSON.stringify(this.state.data, undefined, 2)}</pre>
+                <pre>{JSON.stringify({ ...data, Items: this.state.data.Items }, undefined, 2)}</pre>
             </div>
             </div>
         );
