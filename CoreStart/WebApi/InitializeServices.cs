@@ -5,6 +5,7 @@ using System.Net;
 using Castle.Facilities.TypedFactory;
 using Castle.MicroKernel.Registration;
 using Castle.Windsor;
+using CoreStart.CrossCutting.Structure.Factories;
 using CoreStart.CrossCutting.Structure.Search;
 using CoreStart.CrossCutting.Structure.Services;
 using CoreStart.Data.Entity;
@@ -49,6 +50,8 @@ namespace CoreStart.WebApi
             }
 
             castle.Register(Component.For<ISearchIndexerFactory>().AsFactory());
+            castle.Register(Component.For<ICreateItemStrategyFactory>().AsFactory());
+            
             castle.Register(Component.For<IContextAccessor>().ImplementedBy<WebContextAccessor>().LifestyleSingleton());
 
             services.AddMediatR();

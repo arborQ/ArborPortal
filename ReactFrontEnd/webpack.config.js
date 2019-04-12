@@ -5,6 +5,7 @@ var webpack = require('webpack'); //to access built-in plugins
 var path = require('path');
 var outPath = path.join(__dirname, './public');
 var sourcePath = path.join(__dirname, './src');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 var config = {
   entry: {
@@ -27,7 +28,7 @@ var config = {
       "bx-services": path.resolve(__dirname, './src/services'),
     }
   },
-  mode: 'development',
+  mode: 'production',
   target: 'web',
   devtool: 'source-map',
   devServer: {
@@ -75,7 +76,8 @@ var config = {
     }
   },
   plugins: [
-    new webpack.optimize.AggressiveMergingPlugin(),
+    new CleanWebpackPlugin(),
+    // new webpack.optimize.AggressiveMergingPlugin(),
     new HtmlWebpackPlugin({
       template: './src/index.pug',
       filename: 'index.html',
