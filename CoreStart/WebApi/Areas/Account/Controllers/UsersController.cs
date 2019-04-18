@@ -6,6 +6,8 @@ using CoreStart.CrossCutting.Structure.Requests;
 using CoreStart.CrossCutting.Structure.Requests.Users;
 using CoreStart.CrossCutting.Structure.Responses;
 using CoreStart.CrossCutting.Structure.Security;
+using CoreStart.CrossCutting.Structure.Services;
+using CoreStart.Data.Entity.Models.Account;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Areas.Account.Models;
@@ -13,10 +15,23 @@ using WebApi.Security;
 
 namespace WebApi.Areas.Account.Controllers
 {
+    public class ddd
+    {
+
+    }
+
+    public class aaa : IMapperService<User, ddd>
+    {
+        public Task<ddd> Map(User model)
+        {
+            throw new System.NotImplementedException();
+        }
+    }
+
     /// <summary>
     /// User CRUD controller
     /// </summary>
-    [PortalAuthorize(UserClaims.UsersRead)]
+    //[PortalAuthorize(UserClaims.UsersRead)]
     [Route("api/[area]/[controller]")]
     [Area("Account")]
     [ApiController]
@@ -25,7 +40,7 @@ namespace WebApi.Areas.Account.Controllers
     {
         private readonly IMediator _mediator;
 
-        public UsersController(IMediator mediator)
+        public UsersController(IMediator mediator, IMapperService<User, ddd> dd)
         {
             _mediator = mediator;
         }

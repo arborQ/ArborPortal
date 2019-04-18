@@ -19,18 +19,18 @@ namespace CoreStart.Business.Account.Handlers.Users
         IRequestHandler<CreateRequestModel<IUser>, CreateResponse<IUser>>
     {
         private readonly IMediator _mediator;
-        private readonly ICreateItemStrategyFactory createItemStrategyFactory;
+        private readonly ICreateItemStrategy<User, IUser> _createItemStrategy;
 
         public CreateUserDatabaseHandler(AccountUnitOfWork unitOfWork, IMediator mediator, IReadOnlyCollection<IValidator<IUser>> validators, ICreateItemStrategyFactory createItemStrategyFactory)
             //: base(unitOfWork.Users, validators)
         {
             _mediator = mediator;
-            this.createItemStrategyFactory = createItemStrategyFactory;
+            _createItemStrategy = createItemStrategyFactory.CreateDatabaseItemStrategy<User, IUser>();
         }
 
         public async Task<CreateResponse<IUser>> Handle(CreateRequestModel<IUser> request, CancellationToken cancellationToken)
         {
-            var response = await createItemStrategyFactory.CreateDatabaseItemStrategy<User, IUser>().CreateItem(request.NewItem);
+            var response = await _createItemStrategy.CreateItem(request.NewItem);
 
             return new CreateResponse<IUser> { };
         }

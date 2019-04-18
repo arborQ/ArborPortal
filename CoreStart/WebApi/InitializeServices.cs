@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using Castle.Facilities.TypedFactory;
 using Castle.MicroKernel.Registration;
 using Castle.Windsor;
@@ -26,6 +27,7 @@ namespace CoreStart.WebApi
             var declarations = Business.Authorize.InitializeServices.Register()
                 .Concat(Business.Account.Account.InitializeServices.Register())
                 .Concat(Data.Search.RegisterSearch.ResolveIndexer())
+                .Concat(Data.Entity.InitializeServices.Register())
                 .ToList();
 
             var esNode = configuration.GetValue<string>("ElasticSearch:DefaultNode");
@@ -53,6 +55,8 @@ namespace CoreStart.WebApi
             castle.Register(Component.For<ICreateItemStrategyFactory>().AsFactory());
             
             castle.Register(Component.For<IContextAccessor>().ImplementedBy<WebContextAccessor>().LifestyleSingleton());
+
+            castle.Register(Classes.FromAssembly(Assembly.GetExecutingAssembly()).BasedOn(typeof(IMapperService<,>)).WithService.FromInterface(typeof(IMapperService<,>)));
 
             services.AddMediatR();
             services.AddHttpContextAccessor();
