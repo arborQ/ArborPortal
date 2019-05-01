@@ -28,10 +28,7 @@ var config = {
       "bx-services": path.resolve(__dirname, './src/services'),
     }
   },
-<<<<<<< HEAD
-=======
   mode: 'production',
->>>>>>> b7b933777e4f0f307e4a22121d78c36152507460
   target: 'web',
   devtool: 'source-map',
   devServer: {
