@@ -8,24 +8,22 @@ using CoreStart.CrossCutting.Structure.Repository;
 
 namespace CoreStart.Data.Entity.Models.Account
 {
-    [Table("User", Schema = "Account")]
+    [Table(nameof(User), Schema = "Account")]
     public class User : IEntity, ICurrentUser, IUser, ISoftDeletable
     {
         [Key]
         public long Id { get; set; }
 
-        [MaxLength(50), Required]
+        [MaxLength(50)]
         public string FirstName { get; set; }
 
-        [MaxLength(50), Required]
+        [MaxLength(50)]
         public string LastName { get; set; }
 
         public bool IsActive { get; set; }
 
         [MaxLength(50), Required]
         public string Login { get; set; }
-
-        public string FullName { get; set; }
 
         [MaxLength(256)]
         public string Email { get; set; }

@@ -4,6 +4,7 @@ using CoreStart.CrossCutting.Structure.Repository;
 
 namespace CoreStart.Data.Entity.Models.Account
 {
+    [Table(nameof(Membership), Schema = "Account")]
     public class Membership : IEntity
     {
         [Key]

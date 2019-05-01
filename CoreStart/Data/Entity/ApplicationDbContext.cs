@@ -43,10 +43,6 @@ namespace CoreStart.Data.Entity
                 DisplayName = "GitHub"
             });
 
-            modelBuilder.Entity<User>()
-                .Property(p => p.FullName)
-                .HasComputedColumnSql($"[{nameof(User.FirstName)}] + ' ' + [{nameof(User.LastName)}]");
-
             base.OnModelCreating(modelBuilder);
         }
     }

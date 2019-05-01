@@ -1,14 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
     <AssemblyName>CoreStart.Data.Search</AssemblyName>
     <RootNamespace>CoreStart.Data.Search</RootNamespace>
     <Configurations>Debug;Release;Docker</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="NEST" Version="6.4.2" />
+    <PackageReference Include="NEST" Version="6.6.0" />
   </ItemGroup>
 
   <ItemGroup>

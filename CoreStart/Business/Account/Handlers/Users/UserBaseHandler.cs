@@ -50,7 +50,6 @@ namespace CoreStart.Business.Account.Handlers.Users
             userDto.Id = user.Id;
             userDto.FirstName = user.FirstName;
             userDto.LastName = user.LastName;
-            userDto.FullName = user.FullName;
             userDto.Email = user.Email;
             userDto.IsActive = user.IsActive;
             userDto.Login = user.Login;

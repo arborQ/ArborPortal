@@ -11,6 +11,12 @@ namespace WebApi.Areas.Account.Responses
 
         public string UserName { get; set; }
 
+        public string Email { get; set; }
+
+        public string FirstName { get; set; }
+
+        public string LastName { get; set; }
+
         public string Source { get; set; }
 
         public DateTime? ExpireDate { get; set; }

@@ -27,7 +27,6 @@ namespace Account.Services
             {
                 Id = entity.Id,
                 Email = entity.Email,
-                FullName = entity.FullName,
                 Login = entity.Login,
                 FirstName = entity.FirstName,
                 LastName = entity.LastName,
