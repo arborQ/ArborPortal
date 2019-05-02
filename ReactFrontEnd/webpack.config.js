@@ -6,18 +6,23 @@ var path = require('path');
 var outPath = path.join(__dirname, './public');
 var sourcePath = path.join(__dirname, './src');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+var HtmlWebpackExcludeAssetsPlugin = require('html-webpack-exclude-assets-plugin');
 
 var config = {
   entry: {
     main: [
       './src/index.tsx'
     ],
+    vendors: [
+      'react', 'react-dom', 'react-router-dom'
+    ]
   },
   output: {
     path: outPath,
     publicPath: '/',
-    filename: '[name].bundle.[chunkhash].js',
-    chunkFilename: '[id].chunk.[chunkhash].js'
+    filename: '[name].bundle.[hash].js',
+    chunkFilename: '[name].chunk.[contenthash].js'
 
   },
   resolve: {
@@ -28,7 +33,6 @@ var config = {
       "bx-services": path.resolve(__dirname, './src/services'),
     }
   },
-  mode: 'production',
   target: 'web',
   devtool: 'source-map',
   devServer: {
@@ -51,39 +55,47 @@ var config = {
     }
   ]
   },
-  // optimization: {
-  //   runtimeChunk: 'single',
-  //   splitChunks: {
-  //     chunks: 'async',
-  //     minSize: 30000,
-  //     maxSize: 0,
-  //     minChunks: 1,
-  //     maxAsyncRequests: 5,
-  //     maxInitialRequests: 3,
-  //     automaticNameDelimiter: '~',
-  //     name: true,
-  //     cacheGroups: {
-  //       vendor: {
-  //         test: /[\\/]node_modules[\\/]/,
-  //         priority: -10,
-  //       },
-  //       default: {
-  //         minChunks: 2,
-  //         priority: -20,
-  //         reuseExistingChunk: true
-  //       } 
-  //     }
-  //   }
-  // },
+  optimization: {
+    minimizer: [
+      new UglifyJsPlugin({ })
+    ],
+    splitChunks: {
+      chunks: 'async',
+      name: true,
+      cacheGroups: {
+        commons: {
+          chunks: 'initial',
+          minChunks: 2
+        },
+        vendors: {
+          test: /[\\/]node_modules[\\/]/,
+          chunks: 'all',
+          filename: 'vendors.[hash].js',
+          priority: -10
+        }
+      }
+    }
+  },
   plugins: [
+    new webpack.HashedModuleIdsPlugin(),
     new CleanWebpackPlugin(),
+    new webpack.HotModuleReplacementPlugin(),
     // new webpack.optimize.AggressiveMergingPlugin(),
     new HtmlWebpackPlugin({
       template: './src/index.pug',
       filename: 'index.html',
       title: 'Webpack + Typescript',
       favicon: "content/icon.ico",
+      minify: {
+        minifyJS: true,
+        minifyCSS: true,
+        removeComments: true,
+        useShortDoctype: true,
+        collapseWhitespace: true,
+        collapseInlineTagWhitespace: true
+      },
     }),
+    new HtmlWebpackExcludeAssetsPlugin()
   ],
 
   node: {

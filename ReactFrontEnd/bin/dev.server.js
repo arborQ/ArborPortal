@@ -1,7 +1,10 @@
 var webpackDevServer = require("webpack-dev-server");
 var webpack = require("webpack");
 var config = require("../webpack.config.js");
-var compiler = webpack(config);
+var compiler = webpack({
+  config, 
+  mode: 'development'
+});
 
 var port = 8081;
 
@@ -21,6 +24,7 @@ var proxy = {
 };
 
 var server = new webpackDevServer(compiler, {
+  hot: true,
   historyApiFallback: true, 
   proxy: {
     "/api": proxy
