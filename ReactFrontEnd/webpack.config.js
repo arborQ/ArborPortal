@@ -72,6 +72,8 @@ var config = {
     new webpack.HotModuleReplacementPlugin(),
     new webpack.optimize.AggressiveMergingPlugin(),
     new HtmlWebpackPlugin({
+      prefetch: ['**/*.*'],
+      preload: ['**/*.*'],
       template: './src/index.pug',
       filename: 'index.html',
       title: 'Webpack + Typescript',
@@ -85,6 +87,7 @@ var config = {
         collapseInlineTagWhitespace: true
       },
     }),
+    new webpack.AutomaticPrefetchPlugin(),
     new ResourceHintWebpackPlugin(),
     new HtmlWebpackExcludeAssetsPlugin()
   ],
