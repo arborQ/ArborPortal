@@ -13,17 +13,14 @@ var config = {
   entry: {
     main: [
       './src/index.tsx'
-    ],
-    vendors: [
-      'react', 'react-dom', 'react-router-dom'
     ]
   },
   output: {
     path: outPath,
     publicPath: '/',
-    filename: '[name].bundle.[hash].js',
-    chunkFilename: '[name].chunk.[contenthash].js'
-
+    filename: '[name].[hash].js',
+    sourceMapFilename: '[name].[hash].map',
+    chunkFilename: '[id].[hash].js'
   },
   resolve: {
     extensions: ['.js', '.ts', '.tsx'],
@@ -56,31 +53,24 @@ var config = {
   ]
   },
   optimization: {
-    minimizer: [
-      new UglifyJsPlugin({ })
-    ],
+    runtimeChunk: 'single',
     splitChunks: {
-      chunks: 'async',
-      name: true,
+      chunks: 'all',
+      maxInitialRequests: Infinity,
+      minSize: 0,
       cacheGroups: {
-        commons: {
-          chunks: 'initial',
-          minChunks: 2
-        },
-        vendors: {
+        vendor: {
           test: /[\\/]node_modules[\\/]/,
-          chunks: 'all',
-          filename: 'vendors.[hash].js',
-          priority: -10
-        }
-      }
-    }
+          filename: 'vendors.[hash].js'
+        },
+      },
+    },
   },
   plugins: [
     new webpack.HashedModuleIdsPlugin(),
     new CleanWebpackPlugin(),
     new webpack.HotModuleReplacementPlugin(),
-    // new webpack.optimize.AggressiveMergingPlugin(),
+    new webpack.optimize.AggressiveMergingPlugin(),
     new HtmlWebpackPlugin({
       template: './src/index.pug',
       filename: 'index.html',

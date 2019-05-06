@@ -1,13 +1,12 @@
 {
   "plugins": [
     [
-      "transform-imports",
+      "import",
       {
-        "antd" : {
-            "transform": "antd/lib/${member}",
-            "preventFullImport": true
-        }
+        "libraryName": "antd",
+        "libraryDirectory": "es",
+        "style": "css"
       }
-    ]
+    ] // `style: true` for less
   ]
 }
