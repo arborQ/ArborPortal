@@ -3,10 +3,10 @@ import * as ReactDOM from "react-dom";
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 import Toolbar from '@material-ui/core/Toolbar';
-
+import { login } from "bx-services/account"
 
 function LoginAction() {
-
+    login();
 }
 
 function Render(props: { text: string }): JSX.Element {
@@ -17,7 +17,7 @@ function Render(props: { text: string }): JSX.Element {
         <div>
             <AppBar position="static">
                 <Toolbar>
-                    <Button color="inherit">Login</Button>
+                    <Button color="inherit" onClick={LoginAction}>Login</Button>
                 </Toolbar>
             </AppBar>
             <div>
