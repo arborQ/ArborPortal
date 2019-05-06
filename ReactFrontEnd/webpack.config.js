@@ -6,8 +6,8 @@ var path = require('path');
 var outPath = path.join(__dirname, './public');
 var sourcePath = path.join(__dirname, './src');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 var HtmlWebpackExcludeAssetsPlugin = require('html-webpack-exclude-assets-plugin');
+const ResourceHintWebpackPlugin = require('resource-hints-webpack-plugin');
 
 var config = {
   entry: {
@@ -85,6 +85,7 @@ var config = {
         collapseInlineTagWhitespace: true
       },
     }),
+    new ResourceHintWebpackPlugin(),
     new HtmlWebpackExcludeAssetsPlugin()
   ],
 
