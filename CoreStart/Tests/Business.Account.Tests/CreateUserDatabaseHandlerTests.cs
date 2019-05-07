@@ -14,34 +14,34 @@ namespace Business.Account.Tests
 {
     public class CreateUserDatabaseHandlerTests
     {
-        [Fact]
-        public async Task CreateUserDatabaseHandler_NoUser_ThrowsException()
-        {
-            // Assign
-            var unitOfWorkMock = new Mock<AccountUnitOfWork>();
-            var mediatorMock = new Mock<IMediator>();
-            var userValidator = new Mock<IValidator<IUser>>();
+        //[Fact]
+        //public async Task CreateUserDatabaseHandler_NoUser_ThrowsException()
+        //{
+        //    // Assign
+        //    var unitOfWorkMock = new Mock<AccountUnitOfWork>();
+        //    var mediatorMock = new Mock<IMediator>();
+        //    var userValidator = new Mock<IValidator<IUser>>();
 
-            userValidator.Setup(v => v.Validate(It.IsAny<IUser>()))
-                .Returns(
-                    new ValidationResult(new[] { new ValidationFailure("aa", "")
-                }));
+        //    userValidator.Setup(v => v.Validate(It.IsAny<IUser>()))
+        //        .Returns(
+        //            new ValidationResult(new[] { new ValidationFailure("aa", "")
+        //        }));
 
-            var handler = new CreateUserDatabaseHandler(
-                unitOfWorkMock.Object,
-                mediatorMock.Object,
-                new[] { userValidator.Object }
-                );
+        //    var handler = new CreateUserDatabaseHandler(
+        //        unitOfWorkMock.Object,
+        //        mediatorMock.Object,
+        //        new[] { userValidator.Object }
+        //        );
 
-            // Act
-            await handler.Handle(new CreateRequestModel<IUser>
-            {
+        //    // Act
+        //    await handler.Handle(new CreateRequestModel<IUser>
+        //    {
 
-            }, new CancellationToken());
+        //    }, new CancellationToken());
 
-            // Assert
+        //    // Assert
 
-            userValidator.Verify(v => v.Validate(It.IsAny<IUser>()), Times.Once);
-        }
+        //    userValidator.Verify(v => v.Validate(It.IsAny<IUser>()), Times.Once);
+        //}
     }
 }
