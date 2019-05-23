@@ -10,7 +10,12 @@ async function LoginAction() {
 function Render(props: { text: string }): JSX.Element {
     return (
         <div>
-
+            <div>
+                <div><Link to={'/'}>Home</Link></div>
+                <div><Link to={'/users/list'}>List</Link></div>
+                <div><Link to={'/users/edit'}>Edit</Link></div>
+                <div><Link to={'/404'}>Eror :)</Link></div>
+            </div>
             <React.Suspense fallback={<div>Loading ...</div>}>
                 <Switch>
                     <Route path="/" exact component={React.lazy(() => import("./lazy/home"))} />
