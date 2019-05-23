@@ -3,6 +3,7 @@
 var HtmlWebpackPlugin = require('html-webpack-plugin'); //installed via npm
 var webpack = require('webpack'); //to access built-in plugins
 var path = require('path');
+const fs = require('fs');
 var outPath = path.join(__dirname, './public');
 var sourcePath = path.join(__dirname, './src');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
@@ -11,16 +12,14 @@ const ResourceHintWebpackPlugin = require('resource-hints-webpack-plugin');
 
 var config = {
   entry: {
-    main: [
-      './src/index.tsx'
-    ]
+    main: './src/index.tsx'
   },
   output: {
     path: outPath,
     publicPath: '/',
-    filename: '[name].[hash].js',
-    sourceMapFilename: '[name].[hash].map',
-    chunkFilename: '[id].[hash].js'
+    filename: '[name].[hash:8].js',
+    sourceMapFilename: '[name].[hash:8].map',
+    chunkFilename: '[name].[hash:8].js'
   },
   resolve: {
     extensions: ['.js', '.ts', '.tsx'],
@@ -34,6 +33,7 @@ var config = {
   devtool: 'source-map',
   devServer: {
     historyApiFallback: true,
+    port: 8080,
     contentBase: sourcePath,
     stats: {
       warnings: false
@@ -42,29 +42,39 @@ var config = {
   module: {
     rules: [{
       test: /\.tsx?$/,
-      use: 'awesome-typescript-loader'
+      use: ['babel-loader', 'awesome-typescript-loader']
     },
     { test: /\.png$/, loader: 'file-loader' },
     { test: /\.pug$/, loader: 'pug-loader' },
     {
       test: /\.css$/,
-      use: [ 'style-loader', 'css-loader' ]
+      use: ['style-loader', 'css-loader']
     }
-  ]
+    ]
   },
   optimization: {
-    runtimeChunk: 'single',
     splitChunks: {
-      chunks: 'all',
-      maxInitialRequests: Infinity,
-      minSize: 0,
+      chunks: 'async',
+      minSize: 30000,
+      maxSize: 0,
+      minChunks: 1,
+      maxAsyncRequests: 5,
+      maxInitialRequests: 3,
+      automaticNameDelimiter: '~',
+      name: true,
       cacheGroups: {
         vendor: {
+          chunks: "initial",
           test: /[\\/]node_modules[\\/]/,
-          filename: 'vendors.[hash].js'
+          priority: -10
         },
-      },
-    },
+        default: {
+          minChunks: 2,
+          priority: -20,
+          reuseExistingChunk: true
+        }
+      }
+    }
   },
   plugins: [
     new webpack.HashedModuleIdsPlugin(),

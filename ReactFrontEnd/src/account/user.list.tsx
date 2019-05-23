@@ -1,30 +1,38 @@
 import * as React from "react";
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
 
-export default class UserListComponent extends React.Component {
-    public render() : JSX.Element {
+interface ILoadDataProps<T> {
+    data: T | null;
+}
+
+class EnsureDataComponentClass<T> extends React.PureComponent<{ Component: React.ComponentType<ILoadDataProps<T>>, loadData: () => Promise<T> }, { data: T | null }> {
+    componentWillMount() {
+        this.setState({ data: null });
+    }
+    public render(): JSX.Element {
+        const { data } = this.state;
+        const { Component } = this.props;
+
+        if (data === null) {
+            this.props.loadData().then(newData => {
+                console.log({newData});
+                this.setState({ data: newData });
+            });
+
+            return <div>Loading data...</div>
+        }
+
+        return <Component data={data} />;
+    }
+}
+
+class UserListComponent extends React.Component<ILoadDataProps<number>> {
+    public render(): JSX.Element {
         return (
             <div>
-               <Table>
-                   <TableHead>
-                    <TableRow>
-                    <TableCell>
-                            User name
-                        </TableCell>
-                        <TableCell>
-                            Email
-                        </TableCell>
-                    </TableRow>
-                   </TableHead>
-                   <TableBody>
-
-                   </TableBody>
-               </Table>
+                list
             </div>
         );
     }
 }
+
+export default () => <EnsureDataComponentClass Component={UserListComponent} loadData={() => Promise.resolve(1)} />;
