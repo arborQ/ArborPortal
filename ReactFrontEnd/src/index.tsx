@@ -2,17 +2,33 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-import { BrowserRouter as Router, Route, Link, Switch, withRouter } from "react-router-dom";
+import { BrowserRouter as Router, Route, Link, NavLink, Switch, withRouter } from "react-router-dom";
+import styled from 'styled-components'
+import { createMuiTheme } from '@material-ui/core/styles';
 
 async function LoginAction() {
     const { login } = await import('bx-services/account');
     login();
 }
 
-const linkStyle = { textDecoration: 'none' };
+const StyledNavLink = styled(NavLink)`
+    color: #FFF;
+    margin-right: 10px;
+    text-decoration: none;
+
+    &.selected {
+        text-decoration: underline;
+    }
+`;
+
+const links = [
+    { text: 'Home', path: '/' },
+    { text: 'List', path: '/users/list' },
+    { text: 'Edit', path: '/users/edit' },
+    { text: 'Error', path: '/error' },
+].map(l => <StyledNavLink exact={l.path === '/'} key={l.path} to={l.path} activeClassName="selected">{l.text}</StyledNavLink>);
 
 function Render(): JSX.Element {
     return (
@@ -20,10 +36,7 @@ function Render(): JSX.Element {
             <div>
                 <AppBar position="static">
                     <Toolbar>
-                        <Button color="default"><Link style={linkStyle} to={'/'}>Home</Link></Button>
-                        <Link to={'/users/list'}><Button color="default">List</Button></Link>
-                        <Link to={'/users/edit'}><Button color="default">Edit</Button></Link>
-                        <Link to={'/404'}><Button color="default">Some error...</Button></Link>
+                        {links}
                     </Toolbar>
                 </AppBar>
             </div>
