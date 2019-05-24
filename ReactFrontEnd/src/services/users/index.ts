@@ -1,4 +1,4 @@
-import { get, post, update, remove } from "bx-utils/ajax";
+import { get, post, update, remove } from "@bx-utils/ajax";
 
 interface IQueryResponse<T> {
   items: T[];

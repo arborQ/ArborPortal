@@ -6,46 +6,8 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
-
-interface ILoadDataProps<T> {
-    data: T | null;
-}
-
-function ensureIsAuthorized() {
-    return (Component: React.ComponentType<any>) => {
-        return class NewerClass extends React.Component<any, any> {
-            public render(): JSX.Element {
-                return (
-                    <div>
-                        <div>
-                            Not authorized :(
-                        </div>
-                        <Component />
-                    </div>
-                );
-            }
-        };
-    };
-}
-
-function ensureDecorator<K>(loadData: () => Promise<K>) {
-    return (Component: React.ComponentType<ILoadDataProps<K>>) => {
-        return class NewerClass extends React.Component<ILoadDataProps<K>, { loadedData?: K }> {
-
-            public async componentWillMount() {
-                this.setState({ loadedData: undefined });
-                const loadedData = await loadData();
-                this.setState({ loadedData });
-            }
-
-            public render(): JSX.Element {
-                return this.state.loadedData === undefined
-                    ? <div>Loading data...</div>
-                    : <Component data={this.state.loadedData} />;
-            }
-        };
-    };
-}
+import { ensureDataDecorator, ILoadDataProps } from '@bx-utils/decorators/ensureDataDecorator';
+import { ensureIsAuthorized } from '@bx-utils/decorators/ensureIsAuthorized';
 
 interface IUser {
     id: number;
@@ -64,7 +26,7 @@ function loadUsers(): Promise<IUser[]> {
 }
 
 @ensureIsAuthorized()
-@ensureDecorator(loadUsers)
+@ensureDataDecorator(loadUsers)
 export default class UserListComponent extends React.Component<ILoadDataProps<IUser[]>> {
     public render(): JSX.Element {
         return (

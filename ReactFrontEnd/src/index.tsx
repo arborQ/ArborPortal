@@ -9,7 +9,7 @@ import styled from 'styled-components'
 import { createMuiTheme } from '@material-ui/core/styles';
 
 async function LoginAction() {
-    const { login } = await import('bx-services/account');
+    const { login } = await import('@bx-services/account');
     login();
 }
 

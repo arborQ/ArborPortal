@@ -25,8 +25,8 @@ var config = {
     extensions: ['.js', '.ts', '.tsx'],
     mainFields: ['main'],
     alias: {
-      "bx-utils": path.resolve(__dirname, './src/utils'),
-      "bx-services": path.resolve(__dirname, './src/services'),
+      "@bx-utils": path.resolve(__dirname, './src/utils'),
+      "@bx-services": path.resolve(__dirname, './src/services'),
     }
   },
   target: 'web',

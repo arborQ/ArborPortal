@@ -15,8 +15,8 @@
       "outDir": "build",
       "baseUrl": "./",
       "paths": {
-        "bx-utils/*" : [ "./src/utils/*" ],
-        "bx-services/*" : [ "./src/services/*" ],
+        "@bx-utils/*" : [ "./src/utils/*" ],
+        "@bx-services/*" : [ "./src/services/*" ],
       },
       "lib": [
         "es6",

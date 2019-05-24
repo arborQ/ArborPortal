@@ -1,4 +1,4 @@
-import { get, post, remove } from "bx-utils/ajax";
+import { get, post, remove } from "@bx-utils/ajax";
 import Auth0Lock from "auth0-lock";
 
 const authorizeUrl = "/api/account/authorize";
