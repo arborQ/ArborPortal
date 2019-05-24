@@ -9,25 +9,15 @@ import TableSortLabel from '@material-ui/core/TableSortLabel';
 import { ensureDataDecorator, ILoadDataProps } from '@bx-utils/decorators/ensureDataDecorator';
 import { ensureIsAuthorized } from '@bx-utils/decorators/ensureIsAuthorized';
 
-interface IUser {
-    id: number;
-    userName: string;
-    email: string;
-    isActive: boolean;
-    lastLogin: Date | null;
-}
-
-function loadUsers(): Promise<IUser[]> {
+function loadUsers(): Promise<Areas.Account.IUser[]> {
     return Promise.resolve([
-        { id: 1, userName: 'arbor', email: 'arbor@o2.pl', isActive: true, lastLogin: null },
-        { id: 2, userName: 'destructor', email: 'arbor@o2.pl', isActive: false, lastLogin: null },
-        { id: 3, userName: 'mistrz', email: 'arbor@o2.pl', isActive: true, lastLogin: null },
+        { id: 1, login: 'arbor', email: 'arbor@o2.pl', firstName: 'dsa', lastName: 'das asdasda', isActive: true },
     ]);
 }
 
 @ensureIsAuthorized()
 @ensureDataDecorator(loadUsers)
-export default class UserListComponent extends React.Component<ILoadDataProps<IUser[]>> {
+export default class UserListComponent extends React.Component<ILoadDataProps<Areas.Account.IUser[]>> {
     public render(): JSX.Element {
         return (
             <Paper>
@@ -60,7 +50,7 @@ export default class UserListComponent extends React.Component<ILoadDataProps<IU
                         {this.props.data === null ? null : this.props.data.map(row => (
                             <TableRow key={row.id}>
                                 <TableCell component="th" scope="row">
-                                    {row.userName}
+                                    {row.login}
                                 </TableCell>
                                 <TableCell align="right">{row.email}</TableCell>
                                 <TableCell align="right">{row.isActive ? 'Active' : ''}</TableCell>

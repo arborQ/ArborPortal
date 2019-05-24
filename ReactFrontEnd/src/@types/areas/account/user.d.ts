@@ -1,6 +1,6 @@
 declare namespace Areas.Account {
   export interface IUser {
-    id?: number;
+    id: number;
     isActive: boolean;
     login: string;
     firstName: string;

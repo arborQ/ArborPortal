@@ -9,7 +9,7 @@ export function ensureIsAuthorized() {
                         <div>
                             Not authorized :(
                         </div>
-                        <Component />
+                        <Component {...this.props} />
                     </div>
                 );
             }

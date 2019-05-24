@@ -17,7 +17,7 @@ export function ensureDataDecorator<K>(loadData: () => Promise<K>) {
             public render(): JSX.Element {
                 return this.state.loadedData === undefined
                     ? <div>Loading data...</div>
-                    : <Component data={this.state.loadedData} />;
+                    : <Component {...this.props} data={this.state.loadedData} />;
             }
         };
     };

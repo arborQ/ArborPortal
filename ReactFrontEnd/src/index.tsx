@@ -2,11 +2,9 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import { BrowserRouter as Router, Route, Link, NavLink, Switch, withRouter } from "react-router-dom";
 import styled from 'styled-components'
-import { createMuiTheme } from '@material-ui/core/styles';
 
 async function LoginAction() {
     const { login } = await import('@bx-services/account');
@@ -42,16 +40,14 @@ function Render(): JSX.Element {
             </div>
             <div style={{ width: '90%', maxWidth: 1200, margin: '10px auto' }}>
                 <React.Suspense fallback={<div>Loading ...</div>}>
-                    <Card>
-                        <CardContent >
-                            <Switch>
-                                <Route path="/" exact component={React.lazy(() => import("./lazy/home"))} />
-                                <Route path="/users/list" exact component={React.lazy(async () => await import("./account/user.list"))} />
-                                <Route path="/users/edit" exact component={React.lazy(() => import("./account/user.edit"))} />
-                                <Route component={React.lazy(() => import("./lazy/404"))} />
-                            </Switch>
-                        </CardContent>
-                    </Card>
+                    <CardContent >
+                        <Switch>
+                            <Route path="/" exact component={React.lazy(() => import("./lazy/home"))} />
+                            <Route path="/users/list" exact component={React.lazy(async () => await import("./account/user.list"))} />
+                            <Route path="/users/edit" exact component={React.lazy(() => import("./account/user.edit"))} />
+                            <Route component={React.lazy(() => import("./lazy/404"))} />
+                        </Switch>
+                    </CardContent>
                 </React.Suspense>
             </div>
         </Router>
