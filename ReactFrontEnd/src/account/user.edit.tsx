@@ -3,17 +3,23 @@ import TextField from '@material-ui/core/TextField';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
-import FormGroup from '@material-ui/core/FormGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Button from '@material-ui/core/Button';
 import { ensureDataDecorator, ILoadDataProps } from '@bx-utils/decorators/ensureDataDecorator';
 import { ensureIsAuthorized } from '@bx-utils/decorators/ensureIsAuthorized';
 import { dialogDecorator, IDialogProps } from '@bx-utils/decorators/dialogDecorator';
 
+interface IEditUserProps extends ILoadDataProps<Areas.Account.IUser>, IDialogProps {
+
+}
+
+function loadEditDetails(): Promise<Areas.Account.IUser> {
+    return Promise.resolve({ id: 1, login: 'arbor', email: 'arbor@o2.pl', firstName: 'dsa', lastName: 'das asdasda', isActive: true });
+}
+
 @ensureIsAuthorized()
-@dialogDecorator('Edit user', () => { alert('ok') })
-@ensureDataDecorator(() => Promise.resolve({ id: 1, login: 'arbor', email: 'arbor@o2.pl', firstName: 'dsa', lastName: 'das asdasda', isActive: true }))
-export default class UserEditComponent extends React.Component<ILoadDataProps<Areas.Account.IUser> & IDialogProps> {
+@dialogDecorator<IEditUserProps>('Edit user', () => { alert('ok') })
+@ensureDataDecorator<Areas.Account.IUser, IEditUserProps>(loadEditDetails)
+export default class UserEditComponent extends React.Component<IEditUserProps> {
     public render(): JSX.Element {
         if (!this.props.data) {
             return <div>no data</div>;

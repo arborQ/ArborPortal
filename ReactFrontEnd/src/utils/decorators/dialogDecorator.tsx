@@ -6,17 +6,23 @@ export interface IDialogProps {
     close: () => void;
 }
 
-export function dialogDecorator(title: string, onClose: () => void) {
-    return (Component: React.ComponentType<IDialogProps>) => {
-        return () => {
-            const [isOpen, setOpen] = React.useState(true);
+export function dialogDecorator<T extends IDialogProps>(title: string, onClose: () => void) {
+    return (Component: React.ComponentType<T>) => {
+        return class NewClass extends React.Component<T, { isOpen: boolean }> {
+            public componentWillMount(): void {
+                this.setState({ isOpen: true });
+            }
 
-            return (
-                <Dialog open={isOpen} onClose={() => onClose()} aria-labelledby="simple-dialog-title">
-                    <DialogTitle id="simple-dialog-title">{title}</DialogTitle>
-                    {isOpen ? <Component {...this.props} close={() => { setOpen(false); }} /> : null}
-                </Dialog>
-            );
-        };
+            public render(): JSX.Element {
+                const { isOpen } = this.state;
+
+                return (
+                    <Dialog open={isOpen} onClose={() => onClose()} aria-labelledby="simple-dialog-title">
+                        <DialogTitle id="simple-dialog-title">{title}</DialogTitle>
+                        {isOpen ? <Component {...this.props} close={() => { this.setState({ isOpen: false }); }} /> : null}
+                    </Dialog>
+                );
+            }
+        }
     };
 }
