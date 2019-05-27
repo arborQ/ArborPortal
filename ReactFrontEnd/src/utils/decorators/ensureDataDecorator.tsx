@@ -7,7 +7,7 @@ export interface ILoadDataProps<T> {
 
 export function ensureDataDecorator<K, P extends ILoadDataProps<K>>(loadData: () => Promise<K>) {
     return (Component: React.ComponentType<ILoadDataProps<K>>) => {
-        return class NewerClass extends StateComponent<P, { loadedData?: K }> {
+        return class EnsureDataClass extends StateComponent<P, { loadedData?: K }> {
 
             public async componentWillMount() {
                 await this.UpdateState({ loadedData: undefined });

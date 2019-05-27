@@ -9,7 +9,7 @@ export interface IDialogProps {
 
 export function dialogDecorator<T extends IDialogProps>(title: string, onClose: () => void) {
     return (Component: React.ComponentType<T>) => {
-        return class NewClass extends StateComponent<T, { isOpen: boolean }> {
+        return class DialogClass extends StateComponent<T, { isOpen: boolean }> {
             public componentWillMount(): void {
                 this.UpdateState({ isOpen: true });
             }

@@ -7,8 +7,10 @@ import Button from '@material-ui/core/Button';
 import { ensureDataDecorator, ILoadDataProps } from '@bx-utils/decorators/ensureDataDecorator';
 import { ensureIsAuthorized } from '@bx-utils/decorators/ensureIsAuthorized';
 import { dialogDecorator, IDialogProps } from '@bx-utils/decorators/dialogDecorator';
+import { ensureTranslationsDecorator } from '@bx-utils/decorators/translateDecorator';
+import { WithTranslation } from 'react-i18next';
 
-interface IEditUserProps extends ILoadDataProps<Areas.Account.IUser>, IDialogProps {
+interface IEditUserProps extends ILoadDataProps<Areas.Account.IUser>, IDialogProps, WithTranslation {
 
 }
 
@@ -19,6 +21,7 @@ function loadEditDetails(): Promise<Areas.Account.IUser> {
 @ensureIsAuthorized()
 @dialogDecorator<IEditUserProps>('Edit user', () => { alert('ok') })
 @ensureDataDecorator<Areas.Account.IUser, IEditUserProps>(loadEditDetails)
+@ensureTranslationsDecorator<IEditUserProps>()
 export default class UserEditComponent extends React.Component<IEditUserProps> {
     public render(): JSX.Element {
         if (!this.props.data) {
