@@ -10,9 +10,16 @@ import { ensureDataDecorator, ILoadDataProps } from '@bx-utils/decorators/ensure
 import { ensureIsAuthorized } from '@bx-utils/decorators/ensureIsAuthorized';
 
 function loadUsers(): Promise<Areas.Account.IUser[]> {
-    return Promise.resolve([
-        { id: 1, login: 'arbor', email: 'arbor@o2.pl', firstName: 'dsa', lastName: 'das asdasda', isActive: true },
-    ]);
+    return new Promise<Areas.Account.IUser[]>(resolve => {
+        setTimeout(() => {
+            resolve([
+                { id: 1, login: 'arbor', email: 'arbor@o2.pl', firstName: 'dsa', lastName: 'das asdasda', isActive: true },
+            ]);
+        }, 5000);
+    });
+    // return Promise.resolve([
+    //     { id: 1, login: 'arbor', email: 'arbor@o2.pl', firstName: 'dsa', lastName: 'das asdasda', isActive: true },
+    // ]);
 }
 
 @ensureIsAuthorized()

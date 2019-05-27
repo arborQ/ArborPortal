@@ -1,4 +1,5 @@
 import * as React from 'react';
+import StateComponent from '../stateComponent';
 
 export interface ILoadDataProps<T> {
     data: T | null;
@@ -6,12 +7,12 @@ export interface ILoadDataProps<T> {
 
 export function ensureDataDecorator<K, P extends ILoadDataProps<K>>(loadData: () => Promise<K>) {
     return (Component: React.ComponentType<ILoadDataProps<K>>) => {
-        return class NewerClass extends React.Component<P, { loadedData?: K }> {
+        return class NewerClass extends StateComponent<P, { loadedData?: K }> {
 
             public async componentWillMount() {
-                this.setState({ loadedData: undefined });
+                await this.UpdateState({ loadedData: undefined });
                 const loadedData = await loadData();
-                this.setState({ loadedData });
+                await this.UpdateState({ loadedData });
             }
 
             public render(): JSX.Element {
