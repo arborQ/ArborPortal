@@ -14,13 +14,15 @@ export async function changeLanguage(language: Languages): Promise<void> {
 
 }
 
-export function ensureTranslationsDecorator<P extends WithTranslation>(namespace: string, loadTranslations: () => Promise<any>) {
+export function ensureTranslationsDecorator<P extends WithTranslation>(namespace: string, loadTranslations?: () => Promise<any>) {
     return (Component: React.ComponentType<P>) => {
-        return class TranslateDecoratorClass extends StateComponent<P, { }> {
+        return class TranslateDecoratorClass extends StateComponent<P, {}> {
             public async componentWillMount() {
-                await loadNamespace(namespace, loadTranslations).then(() => {
-                    console.log(`loaded namespaces ${namespace}`);
-                });
+                if (loadTranslations !== undefined) {
+                    await loadNamespace(namespace, loadTranslations).then(() => {
+                        console.log(`loaded namespaces ${namespace}`);
+                    });
+                }
             }
 
             public render(): JSX.Element {

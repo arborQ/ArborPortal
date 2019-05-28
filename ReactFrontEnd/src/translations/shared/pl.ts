@@ -1,7 +1,6 @@
 const translations =  {
-  "User Name": "Nazwa",
-  "Email": "Email",
-  "Is Active": "Aktywny?"
+  "Save": "Zapisz",
+  "Cancel": "Anuluj",
 };
 
 export default translations;

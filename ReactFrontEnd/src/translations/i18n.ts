@@ -2,27 +2,29 @@ import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import accountEn from '@bx-translations/account/pl'
 import accountPl from '@bx-translations/account/en'
+import sharedEn from '@bx-translations/shared/pl'
+import sharedPl from '@bx-translations/shared/en'
 
 // the translations
 // (tip move them in a JSON file and import them)
 const resources = {
   en: {
-    translation: accountEn
+    translation: {
+      ...sharedEn, ...accountEn
+    }
   },
   pl: {
-    translation: accountPl
+    translation: {
+      ...sharedPl, ...accountPl
+    }
   },
 };
-
-i18n.setDefaultNamespace('shared');
 
 i18n
   .use(initReactI18next) // passes i18n down to react-i18next
   .init({
     resources,
     lng: "pl",
-    partialBundledLanguages: true,
-    load: 'currentOnly',
     keySeparator: false, // we do not use keys in form messages.welcome
 
     interpolation: {
