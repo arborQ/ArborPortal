@@ -17,6 +17,7 @@
       "paths": {
         "@bx-utils/*" : [ "./src/utils/*" ],
         "@bx-services/*" : [ "./src/services/*" ],
+        "@bx-translations/*" : [ "./src/translations/*" ],
       },
       "lib": [
         "es6",

@@ -27,7 +27,7 @@ interface IUserListProps extends ILoadDataProps<Areas.Account.IUser[]>, WithTran
 
 @ensureIsAuthorized()
 @ensureDataDecorator<Areas.Account.IUser[], IUserListProps>(loadUsers)
-@ensureTranslationsDecorator<IUserListProps>()
+@ensureTranslationsDecorator<IUserListProps>('account', async () => await import('@bx-translations/account/en'))
 export default class UserListComponent extends React.Component<IUserListProps> {
     public render(): JSX.Element {
         console.log('props', this.props);
