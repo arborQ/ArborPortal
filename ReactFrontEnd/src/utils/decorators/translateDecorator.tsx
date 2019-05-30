@@ -1,8 +1,6 @@
 import i18next from 'i18next';
-import { withTranslation, WithTranslation } from 'react-i18next';
 import * as React from 'react';
-import StateComponent from '../stateComponent';
-import { loadNamespace } from '@bx-translations/i18n';
+import { useTranslation } from 'react-i18next';
 type Languages = 'en' | 'pl';
 type Namespaces = 'shared' | 'account' | 'users';
 
@@ -14,22 +12,18 @@ export async function changeLanguage(language: Languages): Promise<void> {
 
 }
 
-export function ensureTranslationsDecorator<P extends WithTranslation>(namespace: string, loadTranslations?: () => Promise<any>) {
-    return (Component: React.ComponentType<P>) => {
-        return class TranslateDecoratorClass extends StateComponent<P, {}> {
-            public async componentWillMount() {
-                if (loadTranslations !== undefined) {
-                    await loadNamespace(namespace, loadTranslations).then(() => {
-                        console.log(`loaded namespaces ${namespace}`);
-                    });
-                }
-            }
+export interface ITranslationsProps {
+    translate: (key: string) => string;
+    currentLanguage: string;
+    changeLanguage: (newLanguage: 'en' | 'pl') => void;
+}
 
-            public render(): JSX.Element {
-                const ComponentWithTranslations = withTranslation()(Component);
-
-                return <ComponentWithTranslations {...this.props} />;
-            }
-        };
+export function ensureTranslationsDecorator<P extends ITranslationsProps, S = any>(namespace: string, loadTranslations?: () => Promise<any>) {
+    return (Component: React.ComponentType<P>): Utils.Types.PassThruReactComponentType<P, ITranslationsProps> => {
+        return function (props: P): JSX.Element {
+            const { t, i18n } = useTranslation();
+            
+            return <Component {...props} translate={t} currentLanguage={i18n.language} changeLanguage={(ln: Languages) => i18next.changeLanguage(i18n.language === 'en' ? 'pl': 'en')}  />;
+        }
     };
 }

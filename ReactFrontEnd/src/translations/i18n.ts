@@ -1,9 +1,9 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
-import accountEn from '@bx-translations/account/pl'
-import accountPl from '@bx-translations/account/en'
-import sharedEn from '@bx-translations/shared/pl'
-import sharedPl from '@bx-translations/shared/en'
+import accountEn from '@bx-translations/account/en'
+import accountPl from '@bx-translations/account/pl'
+import sharedEn from '@bx-translations/shared/en'
+import sharedPl from '@bx-translations/shared/pl'
 
 // the translations
 // (tip move them in a JSON file and import them)

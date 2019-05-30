@@ -6,7 +6,7 @@ export interface ILoadDataProps<T> {
 }
 
 export function ensureDataDecorator<K, P extends ILoadDataProps<K>>(loadData: () => Promise<K>) {
-    return (Component: React.ComponentType<ILoadDataProps<K>>) => {
+    return (Component: React.ComponentType<ILoadDataProps<K>>): Utils.Types.PassThruReactComponentType<P, ILoadDataProps<K>> => {
         return class EnsureDataClass extends StateComponent<P, { loadedData?: K }> {
 
             public async componentWillMount() {
