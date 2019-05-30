@@ -5,17 +5,21 @@ import CardActions from '@material-ui/core/CardActions';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
-export default function(): JSX.Element {
-    return (
-        <Card>
-            <CardContent>
-                <Typography color="textSecondary" gutterBottom>
-                    Page does not exists.
-                </Typography>
-            </CardContent>
-            <CardActions>
-                <Button  variant="contained" color="primary" size="small">Learn More</Button>
-            </CardActions>
-        </Card>
-    );
-}
+import { ensureTranslationsDecorator, ITranslationsProps } from '@bx-utils/decorators/translateDecorator';
+
+export default ensureTranslationsDecorator('shared')(
+    function (props: ITranslationsProps): JSX.Element {
+        return (
+            <Card>
+                <CardContent>
+                    <Typography color="textSecondary" gutterBottom>
+                        {props.translate('Page does not exists')}
+                    </Typography>
+                </CardContent>
+                <CardActions>
+                    <Button variant="contained" color="primary" size="small">{props.translate('Learn More')}</Button>
+                </CardActions>
+            </Card>
+        );
+    }
+);

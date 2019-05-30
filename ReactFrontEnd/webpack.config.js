@@ -27,6 +27,7 @@ var config = {
     alias: {
       "@bx-utils": path.resolve(__dirname, './src/utils'),
       "@bx-services": path.resolve(__dirname, './src/services'),
+      "@bx-translations": path.resolve(__dirname, './src/translations'),
     }
   },
   target: 'web',

@@ -8,6 +8,7 @@ import Paper from '@material-ui/core/Paper';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import { ensureDataDecorator, ILoadDataProps } from '@bx-utils/decorators/ensureDataDecorator';
 import { ensureIsAuthorized } from '@bx-utils/decorators/ensureIsAuthorized';
+import { ensureTranslationsDecorator, changeLanguage, ITranslationsProps } from '@bx-utils/decorators/translateDecorator';
 
 function loadUsers(): Promise<Areas.Account.IUser[]> {
     return new Promise<Areas.Account.IUser[]>(resolve => {
@@ -15,42 +16,57 @@ function loadUsers(): Promise<Areas.Account.IUser[]> {
             resolve([
                 { id: 1, login: 'arbor', email: 'arbor@o2.pl', firstName: 'dsa', lastName: 'das asdasda', isActive: true },
             ]);
-        }, 5000);
+        }, 500);
     });
-    // return Promise.resolve([
-    //     { id: 1, login: 'arbor', email: 'arbor@o2.pl', firstName: 'dsa', lastName: 'das asdasda', isActive: true },
-    // ]);
 }
 
-@ensureIsAuthorized()
-@ensureDataDecorator(loadUsers)
-export default class UserListComponent extends React.Component<ILoadDataProps<Areas.Account.IUser[]>> {
+interface IUserListProps extends ILoadDataProps<Areas.Account.IUser[]>, ITranslationsProps {
+
+}
+
+// @ensureIsAuthorized()
+// @ensureDataDecorator<Areas.Account.IUser[], IUserListProps>(loadUsers)
+// @ensureTranslationsDecorator<IUserListProps>('account', async () => await import('@bx-translations/account/en'))
+class UserListComponent extends React.Component<IUserListProps, { sortOrder: 'asc' | 'desc', sortBy: keyof Areas.Account.IUser }> {
+    public componentWillMount(): void {
+        this.setState({
+            sortOrder: 'asc', sortBy: 'email'
+        });
+    }
+
     public render(): JSX.Element {
+        const userNameTranslation = this.props.translate('User Name');
+        const emailTranslation = this.props.translate('Email');
+        const isActiveTranslation = this.props.translate('Is Active');
+
         return (
             <Paper>
                 <Table>
                     <TableHead>
                         <TableRow>
                             <TableCell>
-                                User name
                                 <TableSortLabel
-                                    active={true}
-                                    direction={'desc'}
-                                    onClick={() => { }}></TableSortLabel>
-                                </TableCell>
-                            <TableCell align="right">
-                            <TableSortLabel
-                                    active={true}
-                                    direction={'desc'}
-                                    onClick={() => { }}></TableSortLabel>
-                                Email</TableCell>
+                                    active={this.state.sortBy === 'login'}
+                                    direction={this.state.sortOrder}
+                                    onClick={() => this.changeSort('login')}>
+                                    {userNameTranslation}
+                                </TableSortLabel>
+                            </TableCell>
                             <TableCell align="right">
                                 <TableSortLabel
-                                    active={true}
-                                    direction={'asc'}
-                                    onClick={() => { }}></TableSortLabel>
-                                                    Is active
-                                </TableCell>
+                                    active={this.state.sortBy === 'email'}
+                                    direction={this.state.sortOrder}
+                                    onClick={() => this.changeSort('email')}>{emailTranslation}</TableSortLabel>
+                            </TableCell>
+                            <TableCell align="right">
+                                <TableSortLabel
+                                    active={this.state.sortBy === 'isActive'}
+                                    direction={this.state.sortOrder}
+                                    onClick={() => this.changeSort('isActive')}>
+                                    {isActiveTranslation}
+                                </TableSortLabel>
+
+                            </TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -68,4 +84,19 @@ export default class UserListComponent extends React.Component<ILoadDataProps<Ar
             </Paper>
         );
     }
+
+    private changeSort(sortBy: keyof Areas.Account.IUser): void {
+        this.setState({
+            sortOrder: this.state.sortOrder === 'asc' ? 'desc' : 'asc',
+            sortBy
+        });
+    }
 }
+
+export default ensureIsAuthorized()(
+    ensureDataDecorator<Areas.Account.IUser[], IUserListProps>(loadUsers)(
+        ensureTranslationsDecorator<IUserListProps>('account', async () => await import('@bx-translations/account/en'))(
+            UserListComponent
+        )
+    )
+);

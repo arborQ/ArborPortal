@@ -5,6 +5,8 @@ import Toolbar from '@material-ui/core/Toolbar';
 import CardContent from '@material-ui/core/CardContent';
 import { BrowserRouter as Router, Route, Link, NavLink, Switch, withRouter } from "react-router-dom";
 import styled from 'styled-components'
+import ChangeLanguageButton from './components/change.language.button';
+import './translations/i18n';
 
 async function LoginAction() {
     const { login } = await import('@bx-services/account');
@@ -13,11 +15,9 @@ async function LoginAction() {
 
 const StyledNavLink = styled(NavLink)`
     color: #FFF;
-    margin-right: 10px;
-    text-decoration: none;
 
     &.selected {
-        text-decoration: underline;
+        color: #CCC;
     }
 `;
 
@@ -26,7 +26,7 @@ const links = [
     { text: 'List', path: '/users/list' },
     { text: 'Edit', path: '/users/edit' },
     { text: 'Error', path: '/error' },
-].map(l => <StyledNavLink exact={l.path === '/'} key={l.path} to={l.path} activeClassName="selected">{l.text}</StyledNavLink>);
+].map(l => <StyledNavLink className={'MuiButtonBase-root MuiButton-root MuiButton-text'} exact={l.path === '/'} key={l.path} to={l.path} activeClassName="selected">{l.text}</StyledNavLink>);
 
 function Render(): JSX.Element {
     return (
@@ -35,6 +35,7 @@ function Render(): JSX.Element {
                 <AppBar position="static">
                     <Toolbar>
                         {links}
+                        <ChangeLanguageButton name={'lol'} />
                     </Toolbar>
                 </AppBar>
             </div>
