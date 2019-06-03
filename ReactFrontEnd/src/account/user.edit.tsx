@@ -12,6 +12,8 @@ import { dialogDecorator, IDialogProps } from '@bx-utils/decorators/dialogDecora
 import { ensureTranslationsDecorator, ITranslationsProps } from '@bx-utils/decorators/translateDecorator';
 import { validate, stringRange, ValidationResult } from '@bx-utils/validator';
 import StateComponent from '@bx-utils/stateComponent';
+import {parse} from 'query-string';
+import data from './moc.data';
 
 interface IEditUserProps extends ILoadDataProps<Areas.Account.IUser>, IDialogProps, ITranslationsProps {
 
@@ -23,7 +25,10 @@ interface IEditUserState {
 }
 
 function loadEditDetails(): Promise<Areas.Account.IUser> {
-    return Promise.resolve({ id: 1, login: 'arbor', email: 'arbor@o2.pl', firstName: 'dsa', lastName: 'das asdasda', isActive: true });
+    const params = parse(location.search) as { id: string };
+    const [ item ] = data.filter(d => d.id == +params.id);
+    
+    return Promise.resolve(item);
 }
 
 // @ensureIsAuthorized()
@@ -66,6 +71,7 @@ class UserEditComponent extends StateComponent<IEditUserProps, IEditUserState> {
         if (!this.state || !this.state.userData) {
             return <div>no data</div>;
         }
+
         const userNameTranslation = this.props.translate('User Name');
         const emailTranslation = this.props.translate('Email');
         const isActiveTranslation = this.props.translate('Is Active');

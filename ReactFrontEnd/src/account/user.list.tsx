@@ -9,13 +9,12 @@ import TableSortLabel from '@material-ui/core/TableSortLabel';
 import { ensureDataDecorator, ILoadDataProps } from '@bx-utils/decorators/ensureDataDecorator';
 import { ensureIsAuthorized } from '@bx-utils/decorators/ensureIsAuthorized';
 import { ensureTranslationsDecorator, changeLanguage, ITranslationsProps } from '@bx-utils/decorators/translateDecorator';
+import data from './moc.data';
 
 function loadUsers(): Promise<Areas.Account.IUser[]> {
     return new Promise<Areas.Account.IUser[]>(resolve => {
-        setTimeout(() => {
-            resolve([
-                { id: 1, login: 'arbor', email: 'arbor@o2.pl', firstName: 'dsa', lastName: 'das asdasda', isActive: true },
-            ]);
+        setTimeout(async () => {
+            resolve(data);
         }, 500);
     });
 }

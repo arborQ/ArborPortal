@@ -24,7 +24,7 @@ const StyledNavLink = styled(NavLink)`
 const links = [
     { text: 'Home', path: '/' },
     { text: 'List', path: '/users/list' },
-    { text: 'Edit', path: '/users/edit' },
+    { text: 'Edit', path: '/users/edit?id=1' },
     { text: 'Error', path: '/error' },
 ].map(l => <StyledNavLink className={'MuiButtonBase-root MuiButton-root MuiButton-text'} exact={l.path === '/'} key={l.path} to={l.path} activeClassName="selected">{l.text}</StyledNavLink>);
 
@@ -45,7 +45,7 @@ function Render(): JSX.Element {
                         <Switch>
                             <Route path="/" exact component={React.lazy(() => import("./lazy/home"))} />
                             <Route path="/users/list" exact component={React.lazy(async () => await import("./account/user.list"))} />
-                            <Route path="/users/edit" exact component={React.lazy(() => import("./account/user.edit"))} />
+                            <Route path="/users/edit" component={React.lazy(() => import("./account/user.edit"))} />
                             <Route component={React.lazy(() => import("./lazy/404"))} />
                         </Switch>
                     </CardContent>
