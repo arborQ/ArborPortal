@@ -56,11 +56,11 @@ class UserEditComponent extends StateComponent<IEditUserProps, IEditUserState> {
         }
     }
 
-    public componentWillReceiveProps(nextProps: IEditUserProps) {
-        if (!!nextProps.data) {
-            this.updateUserData(nextProps.data);
-        }
-    }
+    // public componentWillReceiveProps(nextProps: IEditUserProps) {
+    //     if (!!nextProps.data) {
+    //         this.updateUserData(nextProps.data);
+    //     }
+    // }
 
     public render(): JSX.Element {
         if (!this.state || !this.state.userData) {
