@@ -78,10 +78,10 @@ var config = {
     }
   },
   plugins: [
-    new webpack.HashedModuleIdsPlugin(),
-    new CleanWebpackPlugin(),
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.optimize.AggressiveMergingPlugin(),
+    // new webpack.HashedModuleIdsPlugin(),
+    // new CleanWebpackPlugin(),
+    // new webpack.HotModuleReplacementPlugin(),
+    // new webpack.optimize.AggressiveMergingPlugin(),
     new HtmlWebpackPlugin({
       prefetch: ['**/*.*'],
       preload: ['**/*.*'],
@@ -98,9 +98,9 @@ var config = {
         collapseInlineTagWhitespace: true
       },
     }),
-    new webpack.AutomaticPrefetchPlugin(),
-    new ResourceHintWebpackPlugin(),
-    new HtmlWebpackExcludeAssetsPlugin()
+    // new webpack.AutomaticPrefetchPlugin(),
+    // new ResourceHintWebpackPlugin(),
+    // new HtmlWebpackExcludeAssetsPlugin()
   ],
 
   node: {

@@ -10,9 +10,16 @@ import { ensureDataDecorator, ILoadDataProps } from '@bx-utils/decorators/ensure
 import { ensureIsAuthorized } from '@bx-utils/decorators/ensureIsAuthorized';
 import { dialogDecorator, IDialogProps } from '@bx-utils/decorators/dialogDecorator';
 import { ensureTranslationsDecorator, ITranslationsProps } from '@bx-utils/decorators/translateDecorator';
+import { validate, stringRange, ValidationResult } from '@bx-utils/validator';
+import StateComponent from '@bx-utils/stateComponent';
 
 interface IEditUserProps extends ILoadDataProps<Areas.Account.IUser>, IDialogProps, ITranslationsProps {
 
+}
+
+interface IEditUserState {
+    userData: Areas.Account.IUser;
+    validation: ValidationResult<Areas.Account.IUser>;
 }
 
 function loadEditDetails(): Promise<Areas.Account.IUser> {
@@ -23,9 +30,40 @@ function loadEditDetails(): Promise<Areas.Account.IUser> {
 // @dialogDecorator<IEditUserProps>('Edit user', () => { alert('ok') })
 // @ensureDataDecorator<Areas.Account.IUser, IEditUserProps>(loadEditDetails)
 // @ensureTranslationsDecorator<IEditUserProps>('account')
-class UserEditComponent extends React.Component<IEditUserProps> {
+class UserEditComponent extends StateComponent<IEditUserProps, IEditUserState> {
+    private async updateUserData(nextProps: Partial<Areas.Account.IUser>) {
+        const userData = { ...this.state.userData, ...nextProps };
+
+        const validation = await validate<Areas.Account.IUser>({
+            login: stringRange(1, 20),
+            email: stringRange(5, 40)
+        }, userData);
+
+        console.log({ userData });
+
+        this.UpdateState(
+            {
+                ...this.state,
+                userData,
+                validation
+            }
+        )
+    }
+
+    public componentWillMount() {
+        if (!!this.props.data) {
+           const newState = this.UpdateState({ userData: this.props.data });
+        }
+    }
+
+    public componentWillReceiveProps(nextProps: IEditUserProps) {
+        if (!!nextProps.data) {
+            this.updateUserData(nextProps.data);
+        }
+    }
+
     public render(): JSX.Element {
-        if (!this.props.data) {
+        if (!this.state || !this.state.userData) {
             return <div>no data</div>;
         }
         const userNameTranslation = this.props.translate('User Name');
@@ -41,26 +79,28 @@ class UserEditComponent extends React.Component<IEditUserProps> {
                         <TextField
                             id="username"
                             label={userNameTranslation}
-                            value={this.props.data.login}
+                            value={this.state.userData.login}
                             fullWidth
+                            error={!!this.state.validation && !!this.state.validation.details && !!this.state.validation.details.login && !this.state.validation.details.login.isValid}
                             margin="normal"
                             helperText={userNameTranslation}
-                            onChange={() => { }}
+                            onChange={async (e) => { await this.updateUserData({ login: e.target.value }); }}
                         />
                         <TextField
                             id="email"
                             label={emailTranslation}
-                            value={this.props.data.email}
+                            value={this.state.userData.email}
+                            error={!!this.state.validation && !!this.state.validation.details && !!this.state.validation.details.email && !this.state.validation.details.email.isValid}
                             fullWidth
                             margin="normal"
                             helperText={emailTranslation}
-                            onChange={() => { }}
+                            onChange={async (e) => { await this.updateUserData({ email: e.target.value }); }}
                         />
                         <FormControlLabel
                             control={
                                 <Checkbox
-                                    checked={this.props.data.isActive}
-                                    onChange={() => { }}
+                                    checked={this.state.userData.isActive}
+                                    onChange={async (e) => { await this.updateUserData({ isActive: e.target.checked }); }}
                                     value="isActive"
                                     color="primary"
                                 />
