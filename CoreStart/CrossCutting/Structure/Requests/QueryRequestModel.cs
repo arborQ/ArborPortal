@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using CoreStart.CrossCutting.Structure.Business.Account.Models;
-using CoreStart.CrossCutting.Structure.Repository;
+﻿using CoreStart.CrossCutting.Structure.Repository;
 using CoreStart.CrossCutting.Structure.Responses;
 using MediatR;
 
@@ -10,23 +8,18 @@ namespace CoreStart.CrossCutting.Structure.Requests.Users
     {
         public QueryRequestModel()
         {
-            Page = 0;
+            Page = 1;
             PageSize = 10;
         }
+
+        public string Search { get; set; }
 
         public int Page { get; set; }
 
         public int PageSize { get; set; }
+
+        public string SortDirection { get; set; }
+
+        public string SortBy { get; set; }
     }
-
-    //public class QueryRequestModel<T> : QueryRequestModel<T> 
-    //    where T : class, IUser
-    //{
-    //    public QueryRequestModel()
-    //    {
-    //        Search = "";
-    //    }
-
-    //    public string Search { get; set; }
-    //}
 }

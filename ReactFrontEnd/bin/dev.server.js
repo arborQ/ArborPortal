@@ -1,12 +1,13 @@
 var webpackDevServer = require("webpack-dev-server");
+var ReactDOMServer = require('react-dom/server');
 var webpack = require("webpack");
 var config = require("../webpack.config.js");
+
 var compiler = webpack({
-  config, 
-  mode: 'development'
+  ...config, mode: 'development'
 });
 
-var port = 8081;
+var port = 8080;
 
 var proxy = {
   target: {

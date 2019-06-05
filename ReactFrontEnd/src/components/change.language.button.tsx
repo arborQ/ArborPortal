@@ -9,12 +9,20 @@ interface IChangeLanguageState {
     isOpen: boolean;
 }
 
-interface IChangeLanguageProps extends ITranslationsProps{
+interface IChangeLanguageProps extends ITranslationsProps {
     name: string;
 }
 
-// @ensureTranslationsDecorator<IChangeLanguageProps, IChangeLanguageState>('shared')
-class ChangeLanguageComponent extends React.Component<IChangeLanguageProps, IChangeLanguageState> {
+@ensureTranslationsDecorator<IChangeLanguageProps>('shared')
+export default class ChangeLanguageComponent extends React.Component<IChangeLanguageProps, IChangeLanguageState> {
+    private translate(key: string): string {
+        if (this.props.translate === undefined) {
+            return key;
+        }
+
+        return this.props.translate(key);
+    }
+
     public componentWillMount() {
         this.setState({
             isOpen: false
@@ -24,15 +32,15 @@ class ChangeLanguageComponent extends React.Component<IChangeLanguageProps, ICha
         return (
             <div>
                 <Button
-                    onClick={() => { this.props.changeLanguage('pl') }}
+                    onClick={() => {
+                        if (this.props.changeLanguage !== undefined) {
+                            this.props.changeLanguage('pl')
+                        }
+                    }}
                 >
-                    {this.props.translate("Change language")} {this.props.currentLanguage}
+                    {this.translate("Change language")} {this.props.currentLanguage}
                 </Button>
             </div>
         );
     }
 }
-
-
-export default ensureTranslationsDecorator<IChangeLanguageProps, IChangeLanguageState>('shared')(ChangeLanguageComponent);
-// export default ChangeLanguageComponent;

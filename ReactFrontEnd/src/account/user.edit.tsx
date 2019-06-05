@@ -6,16 +6,20 @@ import CardActions from '@material-ui/core/CardActions';
 import Button from '@material-ui/core/Button';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import { ensureDataDecorator, ILoadDataProps } from '@bx-utils/decorators/ensureDataDecorator';
+import { ensureDataDecorator } from '@bx-utils/decorators/ensureDataDecorator';
+import { ensureApiDataDecorator } from '@bx-utils/decorators/ensureApiDataDecorator';
+import { ensureNavigationDecorator, INavigationProps } from '@bx-utils/decorators/ensureNavigationDecorator';
 import { ensureIsAuthorized } from '@bx-utils/decorators/ensureIsAuthorized';
 import { dialogDecorator, IDialogProps } from '@bx-utils/decorators/dialogDecorator';
 import { ensureTranslationsDecorator, ITranslationsProps } from '@bx-utils/decorators/translateDecorator';
 import { validate, stringRange, ValidationResult } from '@bx-utils/validator';
 import StateComponent from '@bx-utils/stateComponent';
-import {parse} from 'query-string';
+import { parse } from 'query-string';
 import data from './moc.data';
 
-interface IEditUserProps extends ILoadDataProps<Areas.Account.IUser>, IDialogProps, ITranslationsProps {
+interface IEditUserProps extends Utils.Decorators.ILoadDataProps<Areas.Account.IUser>, IDialogProps, 
+ITranslationsProps,
+INavigationProps {
 
 }
 
@@ -26,16 +30,18 @@ interface IEditUserState {
 
 function loadEditDetails(): Promise<Areas.Account.IUser> {
     const params = parse(location.search) as { id: string };
-    const [ item ] = data.filter(d => d.id == +params.id);
-    
+    const [item] = data.filter(d => d.id == +params.id);
+
     return Promise.resolve(item);
 }
 
-// @ensureIsAuthorized()
-// @dialogDecorator<IEditUserProps>('Edit user', () => { alert('ok') })
-// @ensureDataDecorator<Areas.Account.IUser, IEditUserProps>(loadEditDetails)
-// @ensureTranslationsDecorator<IEditUserProps>('account')
-class UserEditComponent extends StateComponent<IEditUserProps, IEditUserState> {
+@ensureNavigationDecorator()
+@ensureIsAuthorized
+@dialogDecorator<IEditUserProps>('Edit user')
+// @ensureDataDecorator<Areas.Account.IUser>(loadEditDetails)
+@ensureApiDataDecorator<Areas.Account.IUser[]>({ url: '/account/users/edit/36' })
+@ensureTranslationsDecorator<IEditUserProps>('account')
+export default class UserEditComponent extends StateComponent<IEditUserProps, IEditUserState> {
     private async updateUserData(nextProps: Partial<Areas.Account.IUser>) {
         const userData = { ...this.state.userData, ...nextProps };
 
@@ -55,28 +61,30 @@ class UserEditComponent extends StateComponent<IEditUserProps, IEditUserState> {
         )
     }
 
-    public componentWillMount() {
-        if (!!this.props.data) {
-           const newState = this.UpdateState({ userData: this.props.data });
+    private translate(key: string) : string {
+        if (this.props.translate === undefined) {
+            return key;
         }
+
+        return this.props.translate(key);
     }
 
-    // public componentWillReceiveProps(nextProps: IEditUserProps) {
-    //     if (!!nextProps.data) {
-    //         this.updateUserData(nextProps.data);
-    //     }
-    // }
+    public componentWillMount() {
+        if (!!this.props.data) {
+            const newState = this.UpdateState({ userData: this.props.data });
+        }
+    }
 
     public render(): JSX.Element {
         if (!this.state || !this.state.userData) {
             return <div>no data</div>;
         }
 
-        const userNameTranslation = this.props.translate('User Name');
-        const emailTranslation = this.props.translate('Email');
-        const isActiveTranslation = this.props.translate('Is Active');
-        const saveTranslation = this.props.translate('Save');
-        const cancelTranslation = this.props.translate('Cancel');
+        const userNameTranslation = this.translate('User Name');
+        const emailTranslation = this.translate('Email');
+        const isActiveTranslation = this.translate('Is Active');
+        const saveTranslation = this.translate('Save');
+        const cancelTranslation = this.translate('Cancel');
 
         return (
             <form onSubmit={(e) => { e.preventDefault(); }}>
@@ -118,7 +126,7 @@ class UserEditComponent extends StateComponent<IEditUserProps, IEditUserState> {
                         <Button size="small" variant="contained" color="primary" type="submit">
                             {saveTranslation}
                         </Button>
-                        <Button size="small" variant="contained" onClick={() => this.props.close()}>
+                        <Button size="small" variant="contained" onClick={() => this.props.goBack()}>
                             {cancelTranslation}
                         </Button>
                     </CardActions>
@@ -127,15 +135,3 @@ class UserEditComponent extends StateComponent<IEditUserProps, IEditUserState> {
         );
     }
 }
-// @ensureIsAuthorized()
-// @dialogDecorator<IEditUserProps>('Edit user', () => { alert('ok') })
-// @ensureDataDecorator<Areas.Account.IUser, IEditUserProps>(loadEditDetails)
-// @ensureTranslationsDecorator<IEditUserProps>('account')
-
-export default ensureIsAuthorized()(
-    ensureDataDecorator<Areas.Account.IUser, IEditUserProps>(loadEditDetails)(
-        ensureTranslationsDecorator<IEditUserProps>('account')(
-            UserEditComponent
-        )
-    )
-)

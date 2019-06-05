@@ -13,13 +13,13 @@ export async function changeLanguage(language: Languages): Promise<void> {
 }
 
 export interface ITranslationsProps {
-    translate: (key: string) => string;
-    currentLanguage: string;
-    changeLanguage: (newLanguage: 'en' | 'pl') => void;
+    translate?: (key: string) => string;
+    currentLanguage?: string;
+    changeLanguage?: (newLanguage: 'en' | 'pl') => void;
 }
 
-export function ensureTranslationsDecorator<P extends ITranslationsProps, S = any>(namespace: string, loadTranslations?: () => Promise<any>) {
-    return (Component: React.ComponentType<P>): Utils.Types.PassThruReactComponentType<P, ITranslationsProps> => {
+export function ensureTranslationsDecorator<P extends ITranslationsProps>(namespace: string, loadTranslations?: () => Promise<any>): any {
+    return (Component: React.ComponentClass<P>): any => {
         return function (props: P): JSX.Element {
             const { t, i18n } = useTranslation();
             

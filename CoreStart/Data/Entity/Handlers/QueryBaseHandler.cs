@@ -28,7 +28,7 @@ namespace CoreStart.Data.Entity.Handlers
             return item => true;
         }
 
-        protected virtual Expression<Func<T, object>> DefaultOrderExpression(TRequest request)
+        protected virtual Expression<Func<T, object>> DefaultOrderExpression(string sortBy)
         {
             return item => item.Id;
         }
@@ -38,7 +38,6 @@ namespace CoreStart.Data.Entity.Handlers
         public async Task<TResponse> QuerySearch(TRequest request, CancellationToken cancellationToken)
         {
             var defaultFilter = DefaultItemFilter(request);
-            var defaultOrder = DefaultOrderExpression(request);
             var dtoMapping = ModelToDto(request);
 
             var dbItems = Repository.Query()
@@ -46,16 +45,28 @@ namespace CoreStart.Data.Entity.Handlers
 
             var count = await dbItems.CountAsync(cancellationToken);
 
-            var items = dbItems
+            var items = ApplySortOrder(request.SortBy, request.SortDirection, dbItems)
                 .Skip(request.PageSize * (request.Page - 1))
                 .Take(request.PageSize)
-                .OrderBy(defaultOrder)
                 .Select(dtoMapping.Compile())
                 .ToList();
 
             var response = new TResponse { TotalCount = count, Items = items };
 
             return await Task.FromResult(response);
+        }
+
+        private IOrderedQueryable<T> ApplySortOrder(string sortBy, string sortDirection, IQueryable<T> items)
+        {
+            var defaultOrder = DefaultOrderExpression(sortBy);
+
+            var sortedItems = (
+                    sortDirection == "asc"
+                    ? items.OrderBy(defaultOrder)
+                    : items.OrderByDescending(defaultOrder)
+                );
+
+            return sortedItems;
         }
     }
 

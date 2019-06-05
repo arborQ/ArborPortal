@@ -7,19 +7,27 @@ import Typography from '@material-ui/core/Typography';
 
 import { ensureTranslationsDecorator, ITranslationsProps } from '@bx-utils/decorators/translateDecorator';
 
-export default ensureTranslationsDecorator('shared')(
-    function (props: ITranslationsProps): JSX.Element {
-        return (
-            <Card>
-                <CardContent>
-                    <Typography color="textSecondary" gutterBottom>
-                        {props.translate('Page does not exists')}
-                    </Typography>
-                </CardContent>
-                <CardActions>
-                    <Button variant="contained" color="primary" size="small">{props.translate('Learn More')}</Button>
-                </CardActions>
-            </Card>
-        );
+function translate(props: ITranslationsProps, key: string): string {
+    if (props.translate === undefined) {
+        return key;
     }
-);
+
+    return props.translate(key);
+}
+
+ensureTranslationsDecorator('shared')
+export default function (props: ITranslationsProps): JSX.Element {
+    return (
+        <Card>
+            <CardContent>
+                <Typography color="textSecondary" gutterBottom>
+                    {translate(props, 'Page does not exists')}
+                </Typography>
+            </CardContent>
+            <CardActions>
+                <Button variant="contained" color="primary" size="small">{translate(props, 'Learn More')}</Button>
+            </CardActions>
+        </Card>
+    );
+}
+

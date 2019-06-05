@@ -9,9 +9,12 @@ import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
 import Paper from '@material-ui/core/Paper';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
-import { ensureDataDecorator, ILoadDataProps } from '@bx-utils/decorators/ensureDataDecorator';
+import { ensureApiDataDecorator } from '@bx-utils/decorators/ensureApiDataDecorator';
 import { ensureIsAuthorized } from '@bx-utils/decorators/ensureIsAuthorized';
-import { ensureTranslationsDecorator, changeLanguage, ITranslationsProps } from '@bx-utils/decorators/translateDecorator';
+import { ensureTranslationsDecorator, ITranslationsProps } from '@bx-utils/decorators/translateDecorator';
+import { ensureNavigationDecorator, INavigationProps } from '@bx-utils/decorators/ensureNavigationDecorator';
+import { parse } from 'query-string';
+
 import data from './moc.data';
 import StateComponent from "@bx-utils/stateComponent";
 
@@ -23,7 +26,10 @@ function loadUsers(): Promise<Areas.Account.IUser[]> {
     });
 }
 
-interface IUserListProps extends ILoadDataProps<Areas.Account.IUser[]>, ITranslationsProps {
+interface IUserListProps
+    extends Utils.Decorators.ILoadDataProps<Utils.Types.CollectionResponse<Areas.Account.IUser>>,
+    ITranslationsProps,
+    INavigationProps {
 
 }
 
@@ -34,37 +40,37 @@ interface IUserListState {
     selected: number[]
 }
 
-// @ensureIsAuthorized()
-// @ensureDataDecorator<Areas.Account.IUser[], IUserListProps>(loadUsers)
-// @ensureTranslationsDecorator<IUserListProps>('account', async () => await import('@bx-translations/account/en'))
-class UserListComponent extends StateComponent<IUserListProps, IUserListState> {
+@ensureNavigationDecorator()
+@ensureIsAuthorized
+@ensureApiDataDecorator<Areas.Account.IUser[]>({ url: '/account/users' })
+@ensureTranslationsDecorator<IUserListProps>('account')
+export default class UserListComponent extends StateComponent<IUserListProps, IUserListState> {
     public componentWillMount(): void {
-        this.UpdateState(this.sortData({
-            sortOrder: 'asc',
-            sortBy: 'email',
-            data: [...(this.props.data || [])],
+        this.componentWillReceiveProps(this.props);
+    }
+
+    public componentWillReceiveProps(nextProps: IUserListProps) {
+        const params = parse(location.search) as { sortBy: keyof Areas.Account.IUser | null, sortDirection: 'asc' | 'desc' | null };
+
+        this.UpdateState({
+            sortOrder: params.sortDirection || 'asc',
+            sortBy: params.sortBy || 'login',
+            data: [...(!!this.props.data ? this.props.data.items : [])],
             selected: []
-        }));
-    }
-
-    private sortData(data: IUserListState): IUserListState {
-        const items = [...data.data].sort((a, b) => {
-            const valueA = a[data.sortBy];
-            const valueB = b[data.sortBy];
-            const direction = data.sortOrder === 'asc' ? 1 : -1;
-
-            return valueA.toString().localeCompare(valueB.toString()) * direction;
         });
-        console.log({ items });
-        return {
-            ...data, data: items
-        }
     }
 
+    private translate(key: string): string {
+        if (this.props.translate === undefined) {
+            return key;
+        }
+
+        return this.props.translate(key);
+    }
     public render(): JSX.Element {
-        const userNameTranslation = this.props.translate('User Name');
-        const emailTranslation = this.props.translate('Email');
-        const isActiveTranslation = this.props.translate('Is Active');
+        const userNameTranslation = this.translate('User Name');
+        const emailTranslation = this.translate('Email');
+        const isActiveTranslation = this.translate('Is Active');
 
         return (
             <Paper>
@@ -81,8 +87,6 @@ class UserListComponent extends StateComponent<IUserListProps, IUserListState> {
                 <Table>
                     <TableHead>
                         <TableRow>
-                            <TableCell>
-                            </TableCell>
                             <TableCell>
                                 <TableSortLabel
                                     active={this.state.sortBy === 'login'}
@@ -110,16 +114,7 @@ class UserListComponent extends StateComponent<IUserListProps, IUserListState> {
                     </TableHead>
                     <TableBody>
                         {this.props.data === null ? null : this.state.data.map(row => (
-                            <TableRow key={row.id}>
-                                <TableCell>
-                                    <Checkbox value={!!this.state.selected.find(a => a === row.id)} onClick={() => {
-                                        this.UpdateState({
-                                            selected: this.state.selected.find(a => a === row.id)
-                                                ? [...this.state.selected.filter(a => a !== row.id)]
-                                                : [...this.state.selected, row.id]
-                                        })
-                                    }}></Checkbox>
-                                </TableCell>
+                            <TableRow key={row.id} onClick={() => this.props.navigate(`/account/users/edit/${row.id}`)}>
                                 <TableCell component="th" scope="row">
                                     {row.login}
                                 </TableCell>
@@ -134,18 +129,7 @@ class UserListComponent extends StateComponent<IUserListProps, IUserListState> {
     }
 
     private changeSort(sortBy: keyof Areas.Account.IUser): void {
-        this.UpdateState(this.sortData({
-            ...this.state,
-            sortOrder: this.state.sortOrder === 'asc' ? 'desc' : 'asc',
-            sortBy,
-        }));
+        this.props.navigate(`/account/users?sortBy=${sortBy}&sortDirection=${this.state.sortOrder === 'asc' ? 'desc' : 'asc'}`)
     }
 }
 
-export default ensureIsAuthorized()(
-    ensureDataDecorator<Areas.Account.IUser[], IUserListProps>(loadUsers)(
-        ensureTranslationsDecorator<IUserListProps>('account', async () => await import('@bx-translations/account/en'))(
-            UserListComponent
-        )
-    )
-);

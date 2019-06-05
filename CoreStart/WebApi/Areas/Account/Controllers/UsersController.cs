@@ -15,19 +15,6 @@ using WebApi.Security;
 
 namespace WebApi.Areas.Account.Controllers
 {
-    public class ddd
-    {
-
-    }
-
-    public class aaa : IMapperService<User, ddd>
-    {
-        public Task<ddd> Map(User model)
-        {
-            throw new System.NotImplementedException();
-        }
-    }
-
     /// <summary>
     /// User CRUD controller
     /// </summary>
@@ -40,7 +27,7 @@ namespace WebApi.Areas.Account.Controllers
     {
         private readonly IMediator _mediator;
 
-        public UsersController(IMediator mediator, IMapperService<User, ddd> dd)
+        public UsersController(IMediator mediator)
         {
             _mediator = mediator;
         }
@@ -62,7 +49,7 @@ namespace WebApi.Areas.Account.Controllers
         /// </summary>
         /// <param name="id">Id of user</param>
         /// <returns>Single user</returns>
-        [HttpGet("{Id}")]
+        [HttpGet("edit/{Id}")]
         public async Task<IUser> Value(long id)
         {
             var user = await _mediator.Send(new GetUserRequestModel<IUser> { Id = id });

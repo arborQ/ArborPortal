@@ -5,6 +5,5 @@ namespace CoreStart.Business.Account.Requests
 {
     public class QueryUserRequestModel : QueryRequestModel<IUser>
     {
-        public string Search { get; set; }
     }
 }

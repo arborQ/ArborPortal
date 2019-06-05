@@ -13,8 +13,8 @@ using MediatR;
 
 namespace CoreStart.Business.Account.Handlers.Users
 {
-    internal class QueryUsersDatabaseHandler : 
-        QueryBaseHandler<User, IUser, QueryUserRequestModel>, 
+    internal class QueryUsersDatabaseHandler :
+        QueryBaseHandler<User, IUser, QueryUserRequestModel>,
         IRequestHandler<QueryUserRequestModel, QueryResponse<IUser>>
     {
         public QueryUsersDatabaseHandler(AccountUnitOfWork unitOfWork)
@@ -35,6 +35,21 @@ namespace CoreStart.Business.Account.Handlers.Users
             }
 
             return user => user.Login.Contains(request.Search);
+        }
+
+        protected override Expression<Func<User, object>> DefaultOrderExpression(string request)
+        {
+            switch (request)
+            {
+                case "login":
+                    return item => item.Login;
+                case "email":
+                    return item => item.Email;
+                case "isActive":
+                    return item => item.IsActive;
+                default:
+                    return base.DefaultOrderExpression(request);
+            }
         }
 
         protected override Expression<Func<User, IUser>> ModelToDto(QueryUserRequestModel request)

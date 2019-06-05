@@ -1,14 +1,14 @@
 import * as React from 'react';
 import StateComponent from '../stateComponent';
 
-export function ensureIsAuthorized<P>() {
-    return (Component: React.ComponentType<P>): Utils.Types.PassThruReactComponentType<P, {}> => {
-        return class EnsureIsAuthorizedClass extends StateComponent<P, {}> {
-            public render(): JSX.Element {
-                return (
-                    <Component {...this.props} />
-                );
-            }
-        };
-    };
+interface IsAuthorizedProps {
+
+}
+
+export function ensureIsAuthorized<P extends IsAuthorizedProps = {}> (Component:  React.ComponentClass<P>): any {
+    return class EnsureIsAuthorizedClass extends React.Component<P> {
+        public render(): JSX.Element {
+            return <Component {...this.props} />;
+        }
+    }
 }
