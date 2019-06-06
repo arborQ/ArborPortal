@@ -14,12 +14,10 @@ import { dialogDecorator, IDialogProps } from '@bx-utils/decorators/dialogDecora
 import { ensureTranslationsDecorator, ITranslationsProps } from '@bx-utils/decorators/translateDecorator';
 import { validate, stringRange, ValidationResult } from '@bx-utils/validator';
 import StateComponent from '@bx-utils/stateComponent';
-import { parse } from 'query-string';
-import data from './moc.data';
-
-interface IEditUserProps extends Utils.Decorators.ILoadDataProps<Areas.Account.IUser>, IDialogProps, 
-ITranslationsProps,
-INavigationProps {
+import { editUser } from '@bx-services/users'
+interface IEditUserProps extends Utils.Decorators.ILoadDataProps<Areas.Account.IUser>, IDialogProps,
+    ITranslationsProps,
+    INavigationProps {
 
 }
 
@@ -28,17 +26,9 @@ interface IEditUserState {
     validation: ValidationResult<Areas.Account.IUser>;
 }
 
-function loadEditDetails(): Promise<Areas.Account.IUser> {
-    const params = parse(location.search) as { id: string };
-    const [item] = data.filter(d => d.id == +params.id);
-
-    return Promise.resolve(item);
-}
-
 @ensureNavigationDecorator()
 @ensureIsAuthorized
 @dialogDecorator<IEditUserProps>('Edit user')
-// @ensureDataDecorator<Areas.Account.IUser>(loadEditDetails)
 @ensureApiDataDecorator<Areas.Account.IUser[]>({ url: '/account/users/edit/36' })
 @ensureTranslationsDecorator<IEditUserProps>('account')
 export default class UserEditComponent extends StateComponent<IEditUserProps, IEditUserState> {
@@ -61,12 +51,19 @@ export default class UserEditComponent extends StateComponent<IEditUserProps, IE
         )
     }
 
-    private translate(key: string) : string {
+    private translate(key: string): string {
         if (this.props.translate === undefined) {
             return key;
         }
 
         return this.props.translate(key);
+    }
+
+    private async save(): Promise<void> {
+        if (this.props.data !== null) {
+            await editUser(this.props.data);
+            this.props.goBack();
+        }
     }
 
     public componentWillMount() {
@@ -87,7 +84,7 @@ export default class UserEditComponent extends StateComponent<IEditUserProps, IE
         const cancelTranslation = this.translate('Cancel');
 
         return (
-            <form onSubmit={(e) => { e.preventDefault(); }}>
+            <form onSubmit={(e) => { e.preventDefault(); this.save(); }}>
                 <Card>
                     <CardContent>
                         <TextField

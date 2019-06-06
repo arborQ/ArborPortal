@@ -4,7 +4,7 @@ var HtmlWebpackPlugin = require('html-webpack-plugin'); //installed via npm
 var webpack = require('webpack'); //to access built-in plugins
 var path = require('path');
 const fs = require('fs');
-var outPath = path.join(__dirname, './public');
+var outPath = path.join(__dirname, './bin/public');
 var sourcePath = path.join(__dirname, './src');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 var HtmlWebpackExcludeAssetsPlugin = require('html-webpack-exclude-assets-plugin');
@@ -17,9 +17,9 @@ var config = {
   output: {
     path: outPath,
     publicPath: '/',
-    filename: '[name].[hash:8].js',
-    sourceMapFilename: '[name].[hash:8].map',
-    chunkFilename: '[name].[hash:8].js'
+    filename: 'content/[name].[hash:8].js',
+    sourceMapFilename: 'content/[name].[hash:8].map',
+    chunkFilename: 'content/[name].[hash:8].js'
   },
   resolve: {
     extensions: ['.js', '.ts', '.tsx'],
@@ -79,7 +79,7 @@ var config = {
   },
   plugins: [
     // new webpack.HashedModuleIdsPlugin(),
-    // new CleanWebpackPlugin(),
+    new CleanWebpackPlugin(),
     // new webpack.HotModuleReplacementPlugin(),
     // new webpack.optimize.AggressiveMergingPlugin(),
     new HtmlWebpackPlugin({
