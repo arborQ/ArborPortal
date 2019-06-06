@@ -79,7 +79,7 @@ var config = {
   },
   plugins: [
     // new webpack.HashedModuleIdsPlugin(),
-    new CleanWebpackPlugin(),
+    // new CleanWebpackPlugin(),
     // new webpack.HotModuleReplacementPlugin(),
     // new webpack.optimize.AggressiveMergingPlugin(),
     new HtmlWebpackPlugin({
