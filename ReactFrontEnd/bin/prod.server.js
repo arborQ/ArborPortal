@@ -10,13 +10,17 @@ var serverProxy = 'http://localhost:5000';
 app.use('/content', express.static(__dirname + '/public/content'))
 
 app.get('/api/*', function (req, res) {
-  console.log('redirecting to ' + serverProxy);
-  apiProxy.web(req, res, { target: serverProxy });
+    console.log('Reverse proxy to ' + serverProxy);
+    apiProxy.web(req, res, { target: serverProxy }, function(e) { 
+      console.log(e);
+      res.setHeader('Content-Type', 'application/json');
+      res.end(JSON.stringify({ error: true, message: 'Reverse proxy error' }));
+    });
 });
 
 app.get('/*', (req, res) => {
   res.sendFile(__dirname + '/public/index.html');
-})
+});
 
 app.listen(port);
 
