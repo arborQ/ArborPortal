@@ -17,7 +17,6 @@ steps:
 
 - script: |
     cd ReactFrontEnd
-    npm install -g webpack webpack-cli --save-dev
     npm install
-    npx webpack --config webpack.config.js
+    npm run build:prod
   displayName: 'npm install, run webpack'

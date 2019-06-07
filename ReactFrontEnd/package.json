@@ -10,7 +10,7 @@
     "dev:start": "node ./bin/dev.server.js",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
-    "build:prod" : "npm run build && node ./bin/prod.server.js"
+    "build:prod": "npm run build && node ./bin/prod.server.js"
   },
   "repository": "git+https://github.com/arborQ/ReactFrontEnd.git",
   "author": "Lukasz Wojcik (PGS Software) <lwojcik@pgs-soft.com>",
@@ -20,6 +20,10 @@
   },
   "homepage": "https://github.com/arborQ/ReactFrontEnd#readme",
   "dependencies": {
+    "express": "4.17.1",
+    "http-proxy": "1.17.0"
+  },
+  "devDependencies": {
     "@loadable/component": "5.10.1",
     "@material-ui/core": "4.0.2",
     "@types/auth0-js": "9.10.2",
@@ -35,10 +39,8 @@
     "babel-plugin-import": "1.12.0",
     "clean-webpack-plugin": "3.0.0",
     "css-loader": "2.1.1",
-    "express": "4.17.1",
     "file-loader": "4.0.0",
     "html-webpack-plugin": "3.2.0",
-    "http-proxy": "1.17.0",
     "i18next": "17.0.2",
     "pug": "2.0.3",
     "pug-loader": "2.4.0",
@@ -55,9 +57,7 @@
     "v8n": "1.3.2",
     "webpack": "4.33.0",
     "webpack-cli": "3.3.2",
-    "webpack-dev-server": "3.6.0"
-  },
-  "devDependencies": {
+    "webpack-dev-server": "3.6.0",
     "@babel/core": "7.4.5",
     "@storybook/addon-actions": "5.1.1",
     "@storybook/addon-links": "5.1.1",
