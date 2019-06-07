@@ -2,7 +2,7 @@ import { ensureDataDecorator } from './ensureDataDecorator';
 import { get, post } from '@bx-utils/ajax';
 
 interface IApiDataDecoratorProps {
-    url: string;
+    url?: string;
     method?: 'POST' | 'GET' | 'DELETE' | 'UPDATE';
     postData?: any;
 }
@@ -12,11 +12,12 @@ export function ensureApiDataDecorator<P>(props: IApiDataDecoratorProps) {
         const { url } = props;
         const { search } = location;
         const method = props.method || 'GET';
-
+        const apiUrl = url || location.pathname;
+        console.log(location.pathname);
         if (method === 'GET') {
-            return await get<P>(`/api${url}${search}`);
+            return await get<P>(`/api${apiUrl}${search}`);
         } else {
-            return await post<P>(`/api${url}${search}`, props.postData);
+            return await post<P>(`/api${apiUrl}${search}`, props.postData);
         }
     });
 }

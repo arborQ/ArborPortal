@@ -23,8 +23,7 @@ const StyledNavLink = styled(NavLink)`
 
 const links = [
     { text: 'Home', path: '/' },
-    { text: 'List', path: '/account/users' },
-    { text: 'Edit', path: '/account/users/edit/36' },
+    { text: 'List', path: '/account/users?sortBy=login&sortDirection=asc' },
     { text: 'Error', path: '/error' },
 ].map(l => <StyledNavLink className={'MuiButtonBase-root MuiButton-root MuiButton-text'} exact={l.path === '/'} key={l.path} to={l.path} activeClassName="selected">{l.text}</StyledNavLink>);
 

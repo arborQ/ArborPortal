@@ -6,7 +6,6 @@ import CardActions from '@material-ui/core/CardActions';
 import Button from '@material-ui/core/Button';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import { ensureDataDecorator } from '@bx-utils/decorators/ensureDataDecorator';
 import { ensureApiDataDecorator } from '@bx-utils/decorators/ensureApiDataDecorator';
 import { ensureNavigationDecorator, INavigationProps } from '@bx-utils/decorators/ensureNavigationDecorator';
 import { ensureIsAuthorized } from '@bx-utils/decorators/ensureIsAuthorized';
@@ -28,9 +27,9 @@ interface IEditUserState {
 
 @ensureNavigationDecorator()
 @ensureIsAuthorized
-@dialogDecorator<IEditUserProps>('Edit user')
-@ensureApiDataDecorator<Areas.Account.IUser[]>({ url: '/account/users/edit/36' })
+@ensureApiDataDecorator<Areas.Account.IUser[]>({   })
 @ensureTranslationsDecorator<IEditUserProps>('account')
+@dialogDecorator<IEditUserProps>('Edit user')
 export default class UserEditComponent extends StateComponent<IEditUserProps, IEditUserState> {
     private async updateUserData(nextProps: Partial<Areas.Account.IUser>) {
         const userData = { ...this.state.userData, ...nextProps };
@@ -39,8 +38,6 @@ export default class UserEditComponent extends StateComponent<IEditUserProps, IE
             login: stringRange(1, 20),
             email: stringRange(5, 40)
         }, userData);
-
-        console.log({ userData });
 
         this.UpdateState(
             {
@@ -68,13 +65,13 @@ export default class UserEditComponent extends StateComponent<IEditUserProps, IE
 
     public componentWillMount() {
         if (!!this.props.data) {
-            const newState = this.UpdateState({ userData: this.props.data });
+            this.UpdateState({ userData: this.props.data });
         }
     }
 
     public render(): JSX.Element {
         if (!this.state || !this.state.userData) {
-            return <div>no data</div>;
+            return <div>{this.translate('No data')}</div>;
         }
 
         const userNameTranslation = this.translate('User Name');
@@ -90,7 +87,7 @@ export default class UserEditComponent extends StateComponent<IEditUserProps, IE
                         <TextField
                             id="username"
                             label={userNameTranslation}
-                            value={this.state.userData.login}
+                            value={this.state.userData.login || ''}
                             fullWidth
                             error={!!this.state.validation && !!this.state.validation.details && !!this.state.validation.details.login && !this.state.validation.details.login.isValid}
                             margin="normal"
@@ -100,7 +97,7 @@ export default class UserEditComponent extends StateComponent<IEditUserProps, IE
                         <TextField
                             id="email"
                             label={emailTranslation}
-                            value={this.state.userData.email}
+                            value={this.state.userData.email || ''}
                             error={!!this.state.validation && !!this.state.validation.details && !!this.state.validation.details.email && !this.state.validation.details.email.isValid}
                             fullWidth
                             margin="normal"

@@ -15,12 +15,12 @@ function navigate(h: History,  url: string): void {
 export function ensureNavigationDecorator<P extends INavigationProps>(): any {
     return (Component: React.ComponentClass<P>): any => {
         return withRouter((props: P & RouteComponentProps<any>) => {
-            console.log('navigation changed', props)
+
             return <Component 
-            {...props} 
-            search={props.location.search}
-            navigate={(u) => navigate(props.history, u)}
-            goBack={() => props.history.goBack()}
+                {...props} 
+                search={props.location.search}
+                navigate={(u) => navigate(props.history, u)}
+                goBack={() => props.history.goBack()}
             />;
         });
     };
