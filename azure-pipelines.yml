@@ -7,7 +7,7 @@ trigger:
 - master
 
 pool:
-  vmImage: 'Ubuntu-16.04'
+  vmImage: 'ubuntu-latest'
 
 steps:
 - task: NodeTool@0
@@ -16,8 +16,6 @@ steps:
   displayName: 'Install Node.js'
 
 - script: |
-    cd ReactFrontEnd
-    npm install -g webpack webpack-cli --save-dev
     npm install
-    npx webpack --config webpack.config.js
+    npm run build:prod
   displayName: 'npm install, run webpack'
