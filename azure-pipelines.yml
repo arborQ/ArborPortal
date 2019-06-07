@@ -16,6 +16,7 @@ steps:
   displayName: 'Install Node.js'
 
 - script: |
+    cd ReactFrontEnd
     npm install
     npm run build:prod
   displayName: 'npm install, run webpack'
