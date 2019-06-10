@@ -6,7 +6,10 @@ const translations =  {
   'Not authorized': 'Nie jesteś zalogowany lub nie masz odpowiednich uprawnień.',
   'Page does not exists': '404: strona nie istnieje',
   'Learn More': 'Dowiedz się więcej',
-  'No data': 'Brak danych'
+  'No data': 'Brak danych',
+  'Login': 'Zaloguj się',
+  'Logout' : 'Wyloguj się',
+  'Loading': 'Ładowanie...',
 };
 
 export default translations;

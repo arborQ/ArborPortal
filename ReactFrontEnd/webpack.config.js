@@ -29,6 +29,7 @@ var config = {
       "@bx-services": path.resolve(__dirname, './src/services'),
       "@bx-translations": path.resolve(__dirname, './src/translations'),
       "@bx-components" : path.resolve(__dirname, './src/components'),
+      "@bx-contexts" : path.resolve(__dirname, './src/contexts'),
     }
   },
   target: 'web',

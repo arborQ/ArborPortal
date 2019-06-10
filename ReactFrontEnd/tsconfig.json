@@ -18,7 +18,8 @@
         "@bx-utils/*" : [ "./src/utils/*" ],
         "@bx-services/*" : [ "./src/services/*" ],
         "@bx-translations/*" : [ "./src/translations/*" ],
-        "@bx-components/*" : [ "./src/components/*" ]
+        "@bx-components/*" : [ "./src/components/*" ],
+        "@bx-contexts/*" : [ "./src/contexts/*" ]
       },
       "lib": [
         "es6",
