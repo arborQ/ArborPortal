@@ -11,14 +11,13 @@ using FluentValidation;
 
 namespace CoreStart.Business.Account.Account
 {
-    public static class InitializeServices
+    public static class InitializeAccountServices
     {
         public static IEnumerable<ContainerRegister> Register()
         {
             yield return ContainerRegister.Service<UsersCoreService, IUsersCoreService>();
             yield return ContainerRegister.UnitOfWork<AccountUnitOfWork>();
             yield return ContainerRegister.Service<UserValidator, IValidator<IUser>>();
-            yield return ContainerRegister.Service(typeof(GenericCreateHandler<,>), typeof(ICreateItemHandler<,>));
         }
     }
 }

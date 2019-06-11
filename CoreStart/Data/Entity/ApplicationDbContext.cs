@@ -1,4 +1,6 @@
+using System;
 using CoreStart.Data.Entity.Models.Account;
+using CoreStart.Data.Entity.Models.Recipes;
 using Microsoft.EntityFrameworkCore;
 
 namespace CoreStart.Data.Entity
@@ -12,6 +14,8 @@ namespace CoreStart.Data.Entity
 
         public DbSet<User> Users { get; set; }
 
+        public DbSet<Recipe> Recipes { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
@@ -22,6 +26,11 @@ namespace CoreStart.Data.Entity
             modelBuilder.Entity<User>(e =>
             {
                 e.HasIndex(u => u.Login).IsUnique();
+                e.Property(b => b.CreatedAt).HasDefaultValue(DateTime.UtcNow);
+            });
+
+            modelBuilder.Entity<Recipe>(e => {
+                e.Property(b => b.CreatedAt).HasDefaultValue(DateTime.UtcNow);
             });
 
             modelBuilder.Entity<MembershipProvider>().HasData(new MembershipProvider

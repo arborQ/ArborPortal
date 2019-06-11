@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>CoreStart.Business.Recipes</AssemblyName>
+    <RootNamespace>CoreStart.Business.Recipes</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\CrossCutting\Structure\Structure.csproj" />
+    <ProjectReference Include="..\..\Data\Entity\Entity.csproj" />
+  </ItemGroup>
+
+</Project>

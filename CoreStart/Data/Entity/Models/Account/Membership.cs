@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using CoreStart.CrossCutting.Structure.Repository;
 
@@ -21,5 +22,7 @@ namespace CoreStart.Data.Entity.Models.Account
         public virtual User User { get; set; }
 
         public string MembershipIdentifier { get; set; }
+
+        public DateTime CreatedAt { get; set; }
     }
 }

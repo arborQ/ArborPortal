@@ -23,6 +23,7 @@ const StyledNavLink = styled(NavLink)`
 const links = [
     { text: 'Home', path: '/' },
     { text: 'List', path: '/account/users?sortBy=login&sortDirection=asc' },
+    { text: 'Recepies', path: '/recipes' },
     { text: 'Error', path: '/error' },
 ]
 
@@ -52,16 +53,16 @@ function Render(): JSX.Element | null {
                 <div>
                     <AppBar position="static">
                         <Toolbar>
-                            { (isAuthorized ? links : anonymousLinks)
-                            .map(l => (
-                                <StyledNavLink 
-                                    className={'MuiButtonBase-root MuiButton-root MuiButton-text'} 
-                                    exact={l.path === '/'} 
-                                    key={l.path} 
-                                    to={l.path} 
-                                    activeClassName="selected">
-                                    {l.text}
-                                </StyledNavLink>))}
+                            {(isAuthorized ? links : anonymousLinks)
+                                .map(l => (
+                                    <StyledNavLink
+                                        className={'MuiButtonBase-root MuiButton-root MuiButton-text'}
+                                        exact={l.path === '/'}
+                                        key={l.path}
+                                        to={l.path}
+                                        activeClassName="selected">
+                                        {l.text}
+                                    </StyledNavLink>))}
                             {!isAuthorized
                                 ? <LoginButton onAuthorized={() => changeAutorized(true)} />
                                 : <LogOutButton onUnauthorized={() => changeAutorized(false)} />
@@ -75,8 +76,9 @@ function Render(): JSX.Element | null {
                         <CardContent >
                             <Switch>
                                 <Route path="/" exact component={React.lazy(() => import("./lazy/home"))} />
-                                <Route path="/account/users" exact component={React.lazy(async () => await import("./account/user.list"))} />
-                                <Route path="/account/users/edit" component={React.lazy(() => import("./account/user.edit"))} />
+                                <Route path="/account/users" exact component={React.lazy(async () => await import("./areas/account/user.list"))} />
+                                <Route path="/account/users/edit" component={React.lazy(() => import("./areas/account/user.edit"))} />
+                                <Route path="/recipes"  component={React.lazy(() => import("./areas/recipes/recipe.list"))} />
                                 <Route component={React.lazy(() => import("./lazy/404"))} />
                             </Switch>
                         </CardContent>

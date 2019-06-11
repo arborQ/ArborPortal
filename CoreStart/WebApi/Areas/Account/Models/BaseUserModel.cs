@@ -20,5 +20,7 @@ namespace WebApi.Areas.Account.Models
 
         public DateTime? DeletedAt { get; set; }
 
+        public DateTime CreatedAt { get; set; }
+
     }
 }

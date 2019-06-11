@@ -30,6 +30,8 @@ namespace CoreStart.Data.Entity.Models.Account
 
         public DateTime? DeletedAt { get; set; }
 
+        public DateTime CreatedAt { get; set; }
+
         public virtual IQueryable<Membership> Membership { get; set; }
     }
 }

@@ -18,5 +18,7 @@ namespace CoreStart.Business.Account.Dtos
         public bool IsActive { get; set; }
 
         public DateTime? DeletedAt { get; set; }
+
+        public DateTime CreatedAt { get; set; }
     }
 }

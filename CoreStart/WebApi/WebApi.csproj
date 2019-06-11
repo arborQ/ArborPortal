@@ -32,6 +32,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Business\Account\Account.csproj" />
     <ProjectReference Include="..\Business\Authorize\Authorize.csproj" />
+    <ProjectReference Include="..\Business\Recipes\Recipes.csproj" />
     <ProjectReference Include="..\CrossCutting\Structure\Structure.csproj" />
     <ProjectReference Include="..\Search\Search.csproj" />
   </ItemGroup>

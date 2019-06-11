@@ -10,5 +10,9 @@ namespace CoreStart.CrossCutting.Structure.Security
         UserEdit = 1 << 1,
         UserCreate = 1 << 2,
         UserDelete = 1 << 3,
+        RecipeRead = 1 << 4,
+        RecipeEdit = 1 << 5,
+        RecipeCreate = 1 << 6,
+        RecipeDelete = 1 << 7,
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using CoreStart.CrossCutting.Structure.Repository;
 
@@ -17,5 +18,7 @@ namespace CoreStart.Data.Entity.Models.Account
         [Required]
         [MaxLength(200)]
         public string DisplayName { get; set; }
+
+        public DateTime CreatedAt { get; set; }
     }
 }

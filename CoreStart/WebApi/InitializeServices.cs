@@ -7,6 +7,8 @@ using Castle.Facilities.TypedFactory;
 using Castle.MicroKernel.Registration;
 using Castle.Windsor;
 using CoreStart.CrossCutting.Structure.Factories;
+using CoreStart.CrossCutting.Structure.Handlers;
+using CoreStart.CrossCutting.Structure.IoC;
 using CoreStart.CrossCutting.Structure.Search;
 using CoreStart.CrossCutting.Structure.Services;
 using CoreStart.Data.Entity;
@@ -25,7 +27,8 @@ namespace CoreStart.WebApi
         public static IServiceCollection RegisterServices(this IServiceCollection services, IConfiguration configuration, IWindsorContainer castle)
         {
             var declarations = Business.Authorize.InitializeServices.Register()
-                .Concat(Business.Account.Account.InitializeServices.Register())
+                .Concat(Business.Account.Account.InitializeAccountServices.Register())
+                .Concat(Business.Recipes.InitializeRecipesServices.Register())
                 .Concat(Data.Search.RegisterSearch.ResolveIndexer())
                 .Concat(Data.Entity.InitializeServices.Register())
                 .ToList();
