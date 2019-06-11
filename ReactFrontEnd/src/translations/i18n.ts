@@ -4,6 +4,9 @@ import accountEn from '@bx-translations/account/en'
 import accountPl from '@bx-translations/account/pl'
 import sharedEn from '@bx-translations/shared/en'
 import sharedPl from '@bx-translations/shared/pl'
+import { localeStore  } from '@bx-utils/storage'
+
+const locale = localeStore.get() || { language: 'pl' };
 
 // the translations
 // (tip move them in a JSON file and import them)
@@ -24,7 +27,7 @@ i18n
   .use(initReactI18next) // passes i18n down to react-i18next
   .init({
     resources,
-    lng: "pl",
+    lng: locale.language,
     keySeparator: false, // we do not use keys in form messages.welcome
 
     interpolation: {

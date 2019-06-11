@@ -24,7 +24,12 @@ const links = [
     { text: 'Home', path: '/' },
     { text: 'List', path: '/account/users?sortBy=login&sortDirection=asc' },
     { text: 'Error', path: '/error' },
-].map(l => <StyledNavLink className={'MuiButtonBase-root MuiButton-root MuiButton-text'} exact={l.path === '/'} key={l.path} to={l.path} activeClassName="selected">{l.text}</StyledNavLink>);
+]
+
+const anonymousLinks = [
+    { text: 'Home', path: '/' },
+    { text: 'Error', path: '/error' },
+];
 
 function Render(): JSX.Element | null {
     const [isAuthorized, changeAutorized] = React.useState(false)
@@ -47,10 +52,19 @@ function Render(): JSX.Element | null {
                 <div>
                     <AppBar position="static">
                         <Toolbar>
-                            {links}
+                            { (isAuthorized ? links : anonymousLinks)
+                            .map(l => (
+                                <StyledNavLink 
+                                    className={'MuiButtonBase-root MuiButton-root MuiButton-text'} 
+                                    exact={l.path === '/'} 
+                                    key={l.path} 
+                                    to={l.path} 
+                                    activeClassName="selected">
+                                    {l.text}
+                                </StyledNavLink>))}
                             {!isAuthorized
                                 ? <LoginButton onAuthorized={() => changeAutorized(true)} />
-                                : <LogOutButton onUnauthorized={() => changeAutorized(false) } />
+                                : <LogOutButton onUnauthorized={() => changeAutorized(false)} />
                             }
                             <ChangeLanguageButton name={''} />
                         </Toolbar>

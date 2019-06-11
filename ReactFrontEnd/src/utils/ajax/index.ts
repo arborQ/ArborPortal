@@ -1,5 +1,4 @@
 const headers = {
-    // "Accept": "application/json",
     "Content-Type": "application/json; charset=utf-8",
     "Data-Type" : "json"
 };
@@ -7,15 +6,17 @@ const headers = {
 function handleAjax<T>(ajax: Promise<Response>): Promise<T> {
   return ajax
     .then(response => {
-      if (!response.ok) {
-        throw new Error("Network response was not ok.");
-      }
+        if (!response.ok) {
+          throw new Error("Network response was not ok.");
+        }
 
-      return response;
+        return response;
     })
-    .then((r: any) => {
+    .then(async (r: any) => {
       try {
-        return r.json();
+        const json = await r.json();
+
+        return json;
       } catch (err) {
         return {};
       }
