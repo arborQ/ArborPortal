@@ -4,28 +4,41 @@ import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import { RouteComponentProps } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
 
-import { ensureTranslationsDecorator, ITranslationsProps } from '@bx-utils/decorators/translateDecorator';
-
-function translate(props: ITranslationsProps, key: string): string {
-    if (props.translate === undefined) {
-        return key;
-    }
-
-    return props.translate(key);
+interface I404Props extends Partial<RouteComponentProps> {
+    message?: string;
+    actionText?: string;
+    action?: () => Promise<void> | void;
 }
 
-ensureTranslationsDecorator('shared')
-export default function (props: ITranslationsProps): JSX.Element {
+export default function (props: I404Props): JSX.Element {
+    const { t } = useTranslation();
+
     return (
         <Card>
             <CardContent>
                 <Typography color="textSecondary" gutterBottom>
-                    {translate(props, 'Page does not exists')}
+                    {t(props.message || 'Page does not exists')}
                 </Typography>
             </CardContent>
             <CardActions>
-                <Button variant="contained" color="primary" size="small">{translate(props, 'Learn More')}</Button>
+                <Button
+                    onClick={() => {
+                        if (!!props.action) {
+                            props.action();
+                        } else if (!!props.history) {
+                            props.history.replace('/');
+                        }else {
+                            throw 'No 404 action defined';
+                        }
+                    }}
+                    variant="contained"
+                    color="primary"
+                    size="small">
+                    {t(props.actionText || 'Rerurn to homepage')}
+                </Button>
             </CardActions>
         </Card>
     );

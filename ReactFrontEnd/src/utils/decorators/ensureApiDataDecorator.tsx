@@ -13,7 +13,7 @@ export function ensureApiDataDecorator<P>(props: IApiDataDecoratorProps) {
         const { search } = location;
         const method = props.method || 'GET';
         const apiUrl = url || location.pathname;
-        console.log(location.pathname);
+        
         if (method === 'GET') {
             return await get<P>(`/api${apiUrl}${search}`);
         } else {

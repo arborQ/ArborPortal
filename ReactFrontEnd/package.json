@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/arborQ/ReactFrontEnd#readme",
   "dependencies": {
+    "@material-ui/icons": "^4.1.0",
     "express": "4.17.1",
     "http-proxy": "1.17.0"
   },

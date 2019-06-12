@@ -1,10 +1,5 @@
 import { get, post, update, remove } from "@bx-utils/ajax";
 
-interface IQueryResponse<T> {
-  items: T[];
-  totalCount: number;
-}
-
 interface IUserSearch {
   loginSearch?: string;
   emailSearch?: string;
@@ -12,7 +7,7 @@ interface IUserSearch {
 }
 
 export function loadUsers(search: IUserSearch): Promise<Areas.Account.IUser[]> {
-  return get<IQueryResponse<Areas.Account.IUser>>(`/api/account/users?search=${search.loginSearch || ""}&page=${search.page || "1"}&pageSize=10`).then(response => response.items);
+  return get<Utils.Api.IQueryResponse<Areas.Account.IUser>>(`/api/account/users?search=${search.loginSearch || ""}&page=${search.page || "1"}&pageSize=10`).then(response => response.items);
 }
 
 export function getUser(userId: number): Promise<Areas.Account.IUser> {
