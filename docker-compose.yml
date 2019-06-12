@@ -4,14 +4,14 @@ volumes:
   node_modules_vue:
   esdata1:
 services:
-  vue:
-    build: ./VueFrontEnd
-    container_name: vueweb
-    restart: always
-    volumes:
-      - ./VueFrontEnd:/usr/src/vue
-    ports:
-      - "8082:8082"
+  # vue:
+  #   build: ./VueFrontEnd
+  #   container_name: vueweb
+  #   restart: always
+  #   volumes:
+  #     - ./VueFrontEnd:/usr/src/vue
+  #   ports:
+  #     - "8082:8082"
   web:
     build: ./ReactFrontEnd
     container_name: web
@@ -67,7 +67,7 @@ services:
       - 9001
     links:
       - web
-      - vue
+      # - vue
       - api
       # - node
       # - python

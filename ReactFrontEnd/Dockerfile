@@ -1,4 +1,4 @@
-FROM node:8
+FROM node:latest
 WORKDIR /usr/src/app
 
 COPY package*.json ./
@@ -6,4 +6,4 @@ COPY package*.json ./
 RUN npm install -qy
 COPY . .
 
-CMD [ "npm", "run", "dev:start" ]
+CMD [ "npm", "run", "start" ]
