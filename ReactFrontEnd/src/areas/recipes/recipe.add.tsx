@@ -3,6 +3,7 @@ import { drawerDecorator } from '@bx-utils/decorators/drawerDecorator'
 import { RouteComponentProps } from "react-router-dom";
 import { useTranslation } from 'react-i18next';
 import RecipyForm from './components/recipy.form';
+import { post } from '@bx-utils/ajax';
 
 
 interface IRecipeDetailsProps extends RouteComponentProps, Utils.Decorators.ILoadDataProps<Areas.Recipes.IRecipe> {
@@ -26,7 +27,7 @@ function RecipeDetailsComponent({ history, location }: IRecipeDetailsProps) {
     };
 
     return (
-        <RecipyForm data={data} title={'recipy_add'} cancelAction={goBack} saveAction={data => { console.log(data); }} />
+        <RecipyForm data={data} title={'recipy_add'} cancelAction={goBack} saveAction={data => post('/api/recipes/recipe', data)} />
     );
 }
 
