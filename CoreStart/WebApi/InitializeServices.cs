@@ -6,6 +6,7 @@ using System.Reflection;
 using Castle.Facilities.TypedFactory;
 using Castle.MicroKernel.Registration;
 using Castle.Windsor;
+using CoreStart.CrossCutting.Structure;
 using CoreStart.CrossCutting.Structure.Factories;
 using CoreStart.CrossCutting.Structure.Handlers;
 using CoreStart.CrossCutting.Structure.IoC;

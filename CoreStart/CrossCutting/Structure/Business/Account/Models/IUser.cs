@@ -5,8 +5,6 @@ namespace CoreStart.CrossCutting.Structure.Business.Account.Models
 {
     public interface IUser : IEntity
     {
-        long Id { get; }
-
         string Login { get; }
 
         string FirstName { get; }

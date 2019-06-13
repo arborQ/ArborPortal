@@ -34,6 +34,7 @@
     <ProjectReference Include="..\Business\Authorize\Authorize.csproj" />
     <ProjectReference Include="..\Business\Recipes\Recipes.csproj" />
     <ProjectReference Include="..\CrossCutting\Structure\Structure.csproj" />
+    <ProjectReference Include="..\Data\BlobStorage\BlobStorage.csproj" />
     <ProjectReference Include="..\Search\Search.csproj" />
   </ItemGroup>
 

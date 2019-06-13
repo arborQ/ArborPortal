@@ -36,9 +36,12 @@ namespace WebApi.Areas.Account.Handlers
 
         private IEnumerable<Claim> GetClaims(AuthorizeResponseModel user)
         {
+            var allUserRoles = UserClaims.UsersRead & UserClaims.UserCreate & UserClaims.UserEdit & UserClaims.UserDelete;
+            var allRecipeRoles = UserClaims.RecipeRead & UserClaims.RecipeCreate & UserClaims.RecipeEdit & UserClaims.RecipeDelete;
+
             yield return new Claim(nameof(AuthorizeResponseModel.UserId), user.UserId.ToString());
             yield return new Claim(nameof(AuthorizeResponseModel.UserName), user.UserName);
-            yield return new Claim("UserClaims", (UserClaims.Authorized & UserClaims.UsersRead).ToString());
+            yield return new Claim("UserClaims", (UserClaims.Authorized & allUserRoles & allRecipeRoles).ToString());
         }
     }
 }

@@ -5,7 +5,6 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using CoreStart.CrossCutting.Structure.Repository;
 using CoreStart.CrossCutting.Structure.Requests;
-using CoreStart.CrossCutting.Structure.Requests.Users;
 using CoreStart.CrossCutting.Structure.Responses;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
@@ -45,50 +44,32 @@ namespace CoreStart.Data.Entity.Handlers
                 throw new Exception($"No item for given Id={request.Id}");
             }
 
-            var item = ModelToDto(item);
+            var dtoItem = ModelToDto(item);
 
             return new TResponse
             {
-                Item = item
+                Item = dtoItem
             };
         }
-
-        protected IDictionary<string, string[]> Validate(TModel user)
-        {
-            var validationResult = Validators
-                .Select(validator => validator.Validate(user))
-                .SelectMany(result => result.Errors)
-                .Where(f => f != null)
-                .ToList();
-
-            return validationResult
-                        .GroupBy(i => i.PropertyName)
-                        .ToDictionary(
-                            i => i.Key,
-                            i => i.Select(v => v.ErrorMessage).ToArray()
-                        );
-        }
-
-        protected abstract TModel DtoToModel(TModel item, TDto itemDto);
 
         protected abstract TDto ModelToDto(TModel item);
     }
 
-    public abstract class GetBaseHandler<TModel, TDto, TRequest> : EditBaseHandler<TModel, TDto, TRequest, EditResponse<TDto>>
+    public abstract class GetBaseHandler<TModel, TDto, TRequest> : GetBaseHandler<TModel, TDto, TRequest, SingleItemResponseModel<TDto>>
         where TModel : class, IEntity
         where TDto : class, IEntity
-        where TRequest : EditRequestModel<TDto>
+        where TRequest : SingleItemRequestModel<TDto>
     {
-        protected GetBaseHandler(IRepository<TModel> repository, IReadOnlyCollection<IValidator<TDto>> validators) : base(repository, validators)
+        protected GetBaseHandler(IRepository<TModel> repository) : base(repository)
         {
         }
     }
 
-    public abstract class GetBaseHandler<TModel, TDto> : EditBaseHandler<TModel, TDto, EditRequestModel<TDto>, EditResponse<TDto>>
+    public abstract class GetBaseHandler<TModel, TDto> : GetBaseHandler<TModel, TDto, SingleItemRequestModel<TDto>, SingleItemResponseModel<TDto>>
         where TModel : class, IEntity
         where TDto : class, IEntity
     {
-        protected GetBaseHandler(IRepository<TModel> repository, IReadOnlyCollection<IValidator<TDto>> validators) : base(repository, validators)
+        protected GetBaseHandler(IRepository<TModel> repository, IReadOnlyCollection<IValidator<TDto>> validators) : base(repository)
         {
         }
     }

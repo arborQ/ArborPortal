@@ -3,5 +3,7 @@
     public class WebConfiguration
     {
         public JwtConfiguration Jwt { get; set; }
+
+        public AzureConfiguration AzureConfiguration { get; set; }
     }
 }

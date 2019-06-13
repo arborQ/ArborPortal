@@ -7,16 +7,18 @@ import { ensureApiDataDecorator } from '@bx-utils/decorators/ensureApiDataDecora
 import RecipyForm from './components/recipy.form';
 import { update } from '@bx-utils/ajax';
 
-interface IRecipeDetailsProps extends RouteComponentProps, Utils.Decorators.ILoadDataProps<Areas.Recipes.IRecipe> {
-
+interface IRecipeDetailsProps extends RouteComponentProps {
+    data:{
+        item: Areas.Recipes.IRecipe;
+    }
 }
 const ensureApiData = ensureApiDataDecorator({ });
 
 function RecipeDetailsComponent({ history, location, match, data }: IRecipeDetailsProps) {
     const { t } = useTranslation();
-
+    console.log({data});
     const goBack = () => {
-        history.replace('/recipes/');
+        history.replace('/recipes/recipe');
     };
 
     React.useEffect(() => {
@@ -28,7 +30,7 @@ function RecipeDetailsComponent({ history, location, match, data }: IRecipeDetai
     }
 
     return (
-        <RecipyForm data={data} title={'recipy_details'} cancelAction={goBack} saveAction={data => update('/api/recipes/recipe', data)} />
+        <RecipyForm data={data.item} title={'recipy_details'} cancelAction={goBack} saveAction={data => update('/api/recipes/recipe', data)} />
     );
 }
 

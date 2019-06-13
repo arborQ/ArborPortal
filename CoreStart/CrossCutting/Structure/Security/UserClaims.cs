@@ -14,5 +14,6 @@ namespace CoreStart.CrossCutting.Structure.Security
         RecipeEdit = 1 << 5,
         RecipeCreate = 1 << 6,
         RecipeDelete = 1 << 7,
+        UploadFiles = 1 << 8,
     }
 }

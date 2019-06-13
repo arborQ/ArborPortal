@@ -31,7 +31,7 @@ function ActionMenu({ path }) {
     );
 }
 
-const ensureApiData = ensureApiDataDecorator({  });
+const ensureApiData = ensureApiDataDecorator({ url: '/recipes/recipe' });
 function RecipesComponent({ data, match, history }: IRecipeListProps) {
     return (
         <div>

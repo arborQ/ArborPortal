@@ -6,6 +6,7 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
 import Button from '@material-ui/core/Button';
+import UploadImage from '@bx-components/upload.files';
 import { useTranslation } from 'react-i18next';
 
 interface IRecipyFormProps {
@@ -41,6 +42,7 @@ export default function ({ data, title, saveAction, cancelAction }: IRecipyFormP
                             margin="normal"
                             onChange={async (e) => { changeRecipeName(e.target.value) }}
                         />
+                        <UploadImage />
                     </CardContent>
                     <CardActions>
                         <Button size="small" variant="contained" color="primary" type="submit" onClick={() => {

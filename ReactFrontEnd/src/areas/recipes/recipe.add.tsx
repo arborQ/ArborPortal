@@ -14,7 +14,7 @@ function RecipeDetailsComponent({ history, location }: IRecipeDetailsProps) {
     const { t } = useTranslation();
 
     const goBack = () => {
-        history.replace('/recipes/');
+        history.replace('/recipes/recipe');
     };
 
     React.useEffect(() => {
