@@ -2,10 +2,13 @@
 using System.Threading.Tasks;
 using CoreStart.Business.Recipes.Requests;
 using CoreStart.CrossCutting.Structure.Business.Recipes.Models;
+using CoreStart.CrossCutting.Structure.Requests;
+using CoreStart.CrossCutting.Structure.Requests.Users;
 using CoreStart.CrossCutting.Structure.Responses;
 using CoreStart.CrossCutting.Structure.Security;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.Areas.Recipes.Models;
 using WebApi.Security;
 
 namespace WebApi.Areas.Recipes.Controllers
@@ -30,6 +33,38 @@ namespace WebApi.Areas.Recipes.Controllers
             var users = await _mediator.Send(model);
 
             return users;
+        }
+
+        [HttpGet("details/{id}")]
+        public async Task<SingleItemResponseModel<IRecipe>> Value(long id)
+        {
+            var response = await _mediator.Send(new SingleItemRequestModel<IRecipe> { Id = id });
+
+            return response;
+        }
+
+        [HttpPost]
+        [PortalAuthorize(UserClaims.RecipeCreate)]
+        public async Task<CreateResponse<IRecipe>> CreateRecipe([FromBody]RecipeViewModel model)
+        {
+            var recipe = await _mediator.Send(new CreateRequestModel<IRecipe>
+            {
+                NewItem = model
+            });
+
+            return recipe;
+        }
+
+        [HttpPut]
+        [PortalAuthorize(UserClaims.RecipeEdit)]
+        public async Task<EditResponse<IRecipe>> EditRecipe([FromBody]RecipeViewModel model)
+        {
+            var recipe = await _mediator.Send(new EditRequestModel<IRecipe>
+            {
+                EditContract = model
+            });
+
+            return recipe;
         }
     }
 }

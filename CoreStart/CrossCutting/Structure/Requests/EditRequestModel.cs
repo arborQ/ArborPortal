@@ -5,8 +5,10 @@ using MediatR;
 
 namespace CoreStart.CrossCutting.Structure.Requests.Users
 {
-    public class EditRequestModel<T> : SingleItemRequestModel<long>, IRequest<EditResponse<T>>, INotification where T : class, IEntity
+    public class EditRequestModel<T> : IRequest<EditResponse<T>>, INotification where T : class, IEntity
     {
+        public long Id { get; set; }
+
         public T EditContract { get; set; }
     }
 }

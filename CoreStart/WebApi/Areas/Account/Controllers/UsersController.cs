@@ -50,9 +50,9 @@ namespace WebApi.Areas.Account.Controllers
         /// <param name="id">Id of user</param>
         /// <returns>Single user</returns>
         [HttpGet("edit/{Id}")]
-        public async Task<IUser> Value(long id)
+        public async Task<SingleItemResponseModel<IUser>> Value(long id)
         {
-            var user = await _mediator.Send(new GetUserRequestModel<IUser> { Id = id });
+            var user = await _mediator.Send(new SingleItemRequestModel<IUser> { Id = id });
 
             return user;
         }

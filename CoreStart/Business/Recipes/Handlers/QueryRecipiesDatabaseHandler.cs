@@ -11,7 +11,7 @@ using MediatR;
 using Recipes.Dtos;
 using Recipes.Services;
 
-namespace CoreStart.Business.Account.Handlers.Users
+namespace CoreStart.Business.Recipes.Handlers.Users
 {
     internal class QueryUsersDatabaseHandler :
         QueryBaseHandler<Recipe, IRecipe, QueryMyUserRequestModel>,

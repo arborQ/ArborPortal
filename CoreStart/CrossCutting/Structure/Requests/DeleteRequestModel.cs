@@ -4,7 +4,8 @@ using MediatR;
 
 namespace CoreStart.CrossCutting.Structure.Requests.Users
 {
-    public class DeleteRequestModel<T> : SingleItemRequestModel<long>, IRequest<DeleteResponse<T>>, INotification where T : class, IEntity
+    public class DeleteRequestModel<T> : IRequest<DeleteResponse<T>>, INotification where T : class, IEntity
     {
+        public long Id { get; set; }
     }
 }
