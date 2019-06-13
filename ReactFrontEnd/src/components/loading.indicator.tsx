@@ -5,7 +5,7 @@ export default function() {
     const [progress, setProgress] = React.useState(0);
 
     React.useEffect(() => {
-        const timer = setInterval(() =>{
+        const timer = setInterval(() => {
             setProgress((progress + 1) % 100);
         }, 20);
 
@@ -13,6 +13,6 @@ export default function() {
     });
 
     return (
-        <CircularProgress variant="determinate" value={progress} />
+        <CircularProgress variant='determinate' value={progress} />
     );
 }

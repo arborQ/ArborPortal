@@ -34,8 +34,8 @@ export default function(props: ILoginButtonProps): JSX.Element {
                     >
                         {
                             loading
-                                ? t("Loading")
-                                : t(props.text || "Login")
+                                ? t('Loading')
+                                : t(props.text || 'Login')
                         }
                     </Button>
                 )

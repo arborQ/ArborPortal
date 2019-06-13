@@ -2,6 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using Castle.Windsor;
 using Castle.Windsor.MsDependencyInjection;
+using CoreStart.CrossCutting.Structure;
 using CoreStart.CrossCutting.Structure.Services;
 using CoreStart.WebApi;
 using FluentValidation.AspNetCore;
@@ -34,6 +35,7 @@ namespace CoreStart
         {
             var castleContainer = new WindsorContainer();
             services.Configure<WebConfiguration>(Configuration);
+            services.Configure<AzureConfiguration>(Configuration.GetSection("AzureConfiguration"));
 
             services.AddAuthorization(options =>
             {

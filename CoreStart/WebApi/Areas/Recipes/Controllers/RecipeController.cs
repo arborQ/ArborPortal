@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using CoreStart.Business.Recipes.Requests;
+using CoreStart.CrossCutting.Structure;
 using CoreStart.CrossCutting.Structure.Business.Recipes.Models;
 using CoreStart.CrossCutting.Structure.Requests;
 using CoreStart.CrossCutting.Structure.Requests.Users;
@@ -8,6 +9,7 @@ using CoreStart.CrossCutting.Structure.Responses;
 using CoreStart.CrossCutting.Structure.Security;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using WebApi.Areas.Recipes.Models;
 using WebApi.Security;
 

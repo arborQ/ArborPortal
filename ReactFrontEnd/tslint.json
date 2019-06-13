@@ -9,6 +9,8 @@
 		"indent": [true, "spaces", 4],
 		"ordered-imports": false,
 		"object-literal-sort-keys": false,
+		"quotemark": [true, "single", "avoid-escape", "avoid-template"],
+		"newline-before-return": true
 	},
 	"rulesDirectory": []
 }

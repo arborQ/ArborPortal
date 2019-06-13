@@ -32,6 +32,7 @@ namespace CoreStart.WebApi
                 .Concat(Business.Recipes.InitializeRecipesServices.Register())
                 .Concat(Data.Search.RegisterSearch.ResolveIndexer())
                 .Concat(Data.Entity.InitializeServices.Register())
+                .Concat(Data.BlobStorage.InitializeServicesBlobs.Register())
                 .ToList();
 
             var esNode = configuration.GetValue<string>("ElasticSearch:DefaultNode");

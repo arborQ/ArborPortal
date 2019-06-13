@@ -1,4 +1,6 @@
-﻿namespace WebApi.Models
+﻿using CoreStart.CrossCutting.Structure;
+
+namespace WebApi.Models
 {
     public class WebConfiguration
     {

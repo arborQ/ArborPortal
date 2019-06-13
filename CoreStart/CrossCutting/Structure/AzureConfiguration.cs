@@ -1,8 +1,6 @@
-﻿using CoreStart.CrossCutting.Structure;
-
-namespace WebApi.Models
+﻿namespace CoreStart.CrossCutting.Structure
 {
-    public class AzureConfiguration : IAzureConfiguration
+    public class AzureConfiguration
     {
         public string AccountName { get; set; }
 
