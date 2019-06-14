@@ -32,6 +32,7 @@ namespace CoreStart.Business.Recipes.Handlers.Users
             {
                 Id = item.Id,
                 RecipeName = item.RecipeName,
+                MainFileName = item.MainFileName,
                 RowVersion = item.RowVersion
             };
         }

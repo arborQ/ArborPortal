@@ -21,13 +21,14 @@ export default function ({ data, title, saveAction, cancelAction }: IRecipyFormP
     const { t } = useTranslation();
 
     const [recipeName, changeRecipeName] = React.useState(data.recipeName || '');
+    const [mainFileName, addFileName] = React.useState<string>(data.mainFileName || '');
 
     const saveTranslation = t('Save');
     const cancelTranslation = t('Cancel');
 
     return (
         <div>
-            <Typography variant="h4" component="h2" style={{ padding: 10 }}>
+            <Typography variant='h4' component='h2' style={{ padding: 10 }}>
                 {t(title)}
             </Typography>
             <Divider />
@@ -35,24 +36,24 @@ export default function ({ data, title, saveAction, cancelAction }: IRecipyFormP
                 <Card>
                     <CardContent>
                         <TextField
-                            id="recipeName"
+                            id='recipeName'
                             label={t('recipeNameTranslation')}
                             value={recipeName}
                             fullWidth
-                            margin="normal"
-                            onChange={async (e) => { changeRecipeName(e.target.value) }}
+                            margin='normal'
+                            onChange={async (e) => { changeRecipeName(e.target.value); }}
                         />
-                        <UploadImage />
+                        <UploadImage maxFiles={1} onFileAdded={(fileName) => { addFileName(fileName); }} />
                     </CardContent>
                     <CardActions>
-                        <Button size="small" variant="contained" color="primary" type="submit" onClick={() => {
+                        <Button size='small' variant='contained' color='primary' type='submit' onClick={() => {
                             saveAction({
-                                id: data.id, recipeName
-                            })
+                                id: data.id, recipeName, mainFileName
+                            });
                         }}>
-                            {saveTranslation}
+                            {saveTranslation} {`File: ${mainFileName.length}`}
                         </Button>
-                        <Button size="small" variant="contained" onClick={cancelAction}>
+                        <Button size='small' variant='contained' onClick={cancelAction}>
                             {cancelTranslation}
                         </Button>
                     </CardActions>

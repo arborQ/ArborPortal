@@ -7,6 +7,8 @@ namespace WebApi.Areas.Recipes.Models
     {
         public string RecipeName { get; set; }
 
+        public string MainFileName { get; set; }
+
         public byte[] RowVersion { get; set; }
 
         public long Id { get; set; }

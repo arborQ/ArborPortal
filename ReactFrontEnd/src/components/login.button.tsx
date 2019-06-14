@@ -16,7 +16,7 @@ export default function(props: ILoginButtonProps): JSX.Element {
         <AuthorizeContext.Consumer>
             {
                 value => (
-                    value.isAuthorized 
+                    value.isAuthorized
                     ? null
                     : <Button
                         disabled={loading}
@@ -27,7 +27,7 @@ export default function(props: ILoginButtonProps): JSX.Element {
                                 await login();
                                 props.onAuthorized();
                                 loadingChanged(false);
-                            } catch{
+                            } catch {
                                 loadingChanged(false);
                             }
                         }}

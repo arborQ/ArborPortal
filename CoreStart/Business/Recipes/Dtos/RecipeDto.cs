@@ -9,6 +9,8 @@ namespace Recipes.Dtos
 
         public string RecipeName { get; set; }
 
+        public string MainFileName { get; set; }
+
         public DateTime CreatedAt { get; set; }
 
         public byte[] RowVersion { get; set; }

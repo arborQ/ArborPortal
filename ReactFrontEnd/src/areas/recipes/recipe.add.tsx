@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { drawerDecorator } from '@bx-utils/decorators/drawerDecorator'
-import { RouteComponentProps } from "react-router-dom";
+import { RouteComponentProps } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import RecipyForm from './components/recipy.form';
 import { post } from '@bx-utils/ajax';
@@ -23,11 +23,15 @@ function RecipeDetailsComponent({ history, location }: IRecipeDetailsProps) {
 
     const data: Areas.Recipes.IRecipe = {
         id: 0,
-        recipeName: ''
+        recipeName: '',
+        mainFileName: ''
     };
 
     return (
-        <RecipyForm data={data} title={'recipy_add'} cancelAction={goBack} saveAction={data => post('/api/recipes/recipe', data)} />
+        <RecipyForm
+            data={data}
+            title={'recipy_add'}
+            cancelAction={goBack} saveAction={returnData => post('/api/recipes/recipe', returnData)} />
     );
 }
 

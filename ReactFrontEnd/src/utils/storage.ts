@@ -1,18 +1,18 @@
 const storage = localStorage;
 
-class StorageHandler<T>{
+class StorageHandler<T> {
     constructor(private key: string) {
 
     }
 
-    update(model:T) : void {
+    update(model: T): void {
         storage.setItem(this.key, JSON.stringify(model));
     }
 
     get(): T | null {
         const storeItem = storage.getItem(this.key);
 
-        if (storeItem === null){
+        if (storeItem === null) {
             return null;
         }
 

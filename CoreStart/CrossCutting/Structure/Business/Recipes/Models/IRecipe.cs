@@ -6,6 +6,8 @@ namespace CoreStart.CrossCutting.Structure.Business.Recipes.Models
     {
         string RecipeName { get; }
 
+        string MainFileName { get; }
+
         byte[] RowVersion { get; }
     }
 }

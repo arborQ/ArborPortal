@@ -19,7 +19,12 @@ const DropText = styled.span`
     color: #ccc;
 `;
 
-export default function () {
+interface IUploadFileProps {
+    onFileAdded: (fileName: string) => void;
+    maxFiles?: number;
+}
+
+export default function(props: IUploadFileProps) {
     const { t } = useTranslation();
     const [registered, register] = React.useState(false);
 
@@ -28,8 +33,13 @@ export default function () {
             const dropzone = new Dropzone(element, {
                 url: '/api/files/upload',
                 dictDefaultMessage: t('uploadImages'),
-                init () {
-                    this.on('success', (e) => { console.log('success', e); });
+                maxFiles: props.maxFiles,
+                init() {
+                    this.on('success', (e, b: Utils.Api.ICreateResponse<string>) => {
+                        if (b.isSuccessful) {
+                            props.onFileAdded(b.createdItem);
+                        }
+                    });
                 }
             });
 

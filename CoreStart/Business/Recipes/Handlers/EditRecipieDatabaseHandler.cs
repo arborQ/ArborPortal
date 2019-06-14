@@ -31,6 +31,7 @@ namespace CoreStart.Business.Recipes.Handlers.Users
         {
             item.RecipeName = itemDto.RecipeName;
             item.ModifiedAt = DateTime.UtcNow;
+            item.MainFileName = itemDto.MainFileName;
 
             return item;
         }
@@ -41,6 +42,7 @@ namespace CoreStart.Business.Recipes.Handlers.Users
             {
                 Id = item.Id,
                 RecipeName = item.RecipeName,
+                MainFileName = item.MainFileName,
                 RowVersion = item.RowVersion
             };
         }

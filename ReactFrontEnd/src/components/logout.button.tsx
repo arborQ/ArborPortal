@@ -16,7 +16,7 @@ export default function(props: ILogoutButtonProps): JSX.Element {
         <AuthorizeContext.Consumer>
             {
                 value => (
-                    !value.isAuthorized 
+                    !value.isAuthorized
                     ? null
                     : <Button
                         disabled={loading}
@@ -28,7 +28,7 @@ export default function(props: ILogoutButtonProps): JSX.Element {
                                 props.onUnauthorized();
                                 loadingChanged(false);
                                 location.replace('/');
-                            } catch{
+                            } catch {
                                 loadingChanged(false);
                             }
                         }}

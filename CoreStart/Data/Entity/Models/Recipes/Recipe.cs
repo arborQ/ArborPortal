@@ -27,6 +27,9 @@ namespace CoreStart.Data.Entity.Models.Recipes
 
         public DateTime? ModifiedAt { get; set; }
 
+        [MaxLength(36)]
+        public string MainFileName { get; set; }
+
         [Timestamp]
         public byte[] RowVersion { get; set; }
     }

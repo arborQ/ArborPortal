@@ -54,6 +54,7 @@ namespace CoreStart.Business.Recipes.Handlers.Users
             {
                 Id = model.Id,
                 RecipeName = model.RecipeName,
+                MainFileName = model.MainFileName,
                 RowVersion = model.RowVersion
             };
         }
