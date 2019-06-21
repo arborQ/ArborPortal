@@ -27,7 +27,7 @@ export default function(props: ILogoutButtonProps): JSX.Element {
                                 await logout();
                                 props.onUnauthorized();
                                 loadingChanged(false);
-                                location.replace('/');
+                                // location.replace('/');
                             } catch {
                                 loadingChanged(false);
                             }

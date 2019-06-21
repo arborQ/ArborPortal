@@ -10,6 +10,8 @@ const translations =  {
   'Login': 'Zaloguj się',
   'Logout' : 'Wyloguj się',
   'Loading': 'Ładowanie...',
+  'NotAuthorizedForThisAction': 'Nie masz odpowiednich uprawnień...',
+  'Rerurn to homepage' : 'Idź do głównej strony'
 };
 
 export default translations;

@@ -1,5 +1,6 @@
 declare namespace Utils.Decorators {
     export interface ILoadDataProps<T> {
-        data: T | null;
+        data: T;
+        reloadDataCallback: () => void;
     }
 }

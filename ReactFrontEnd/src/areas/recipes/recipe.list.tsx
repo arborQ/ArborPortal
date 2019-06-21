@@ -13,33 +13,35 @@ import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import AddIcon from '@material-ui/icons/Add';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
 import CachedIcon from '@material-ui/icons/Cached';
+import { ensureIsAuthorized } from '@bx-utils/decorators/ensureIsAuthorized';
 
-import { Route, Link, RouteComponentProps } from "react-router-dom";
+import { Route, Link, RouteComponentProps } from 'react-router-dom';
 import { ensureApiDataDecorator } from '@bx-utils/decorators/ensureApiDataDecorator';
 
-interface IRecipeListProps extends RouteComponentProps {
-    data: Utils.Api.IQueryResponse<Areas.Recipes.IRecipe>;
+interface IRecipeListProps
+    extends RouteComponentProps, Utils.Decorators.ILoadDataProps<Utils.Api.IQueryResponse<Areas.Recipes.IRecipe>> {
 }
 
-function ActionMenu({ path }) {
+function ActionMenu({ path, refresh }) {
     return (
         <BottomNavigation showLabels={false} >
-            <BottomNavigationAction label="Create" icon={<Link to={`${path}/add`}><AddIcon /></Link>} />
-            <BottomNavigationAction label="Copy" icon={<FileCopyIcon />} />
-            <BottomNavigationAction label="Refresh" icon={<CachedIcon />} />
+            <BottomNavigationAction label='Create' icon={<Link to={`${path}/add`}><AddIcon /></Link>} />
+            <BottomNavigationAction label='Copy' icon={<FileCopyIcon />} />
+            <BottomNavigationAction label='Refresh' icon={<CachedIcon />} onClick={refresh} />
         </BottomNavigation>
     );
 }
 
 const ensureApiData = ensureApiDataDecorator({ url: '/recipes/recipe' });
-function RecipesComponent({ data, match, history }: IRecipeListProps) {
+function RecipesComponent({ data, reloadDataCallback, match, history }: IRecipeListProps) {
     return (
         <div>
             <Paper>
-                <ActionMenu path={match.path} />
+                <ActionMenu path={match.path} refresh={reloadDataCallback} />
                 <List>
                     {data.items.map(value => {
                         const labelId = `checkbox-list-secondary-label-${value.id}`;
+
                         return (
                             <ListItem key={value.id} button >
                                 <ListItemAvatar>
@@ -50,7 +52,7 @@ function RecipesComponent({ data, match, history }: IRecipeListProps) {
                                 <ListItemText id={labelId} primary={value.recipeName} />
                                 <ListItemSecondaryAction>
                                     <Checkbox
-                                        edge="end"
+                                        edge='end'
                                         onChange={() => history.push(`${match.path}/details/${value.id}`)}
                                         checked={false}
                                         inputProps={{ 'aria-labelledby': labelId }}
@@ -60,12 +62,12 @@ function RecipesComponent({ data, match, history }: IRecipeListProps) {
                         );
                     })}
                 </List>
-                <ActionMenu path={match.path} />
+                <ActionMenu path={match.path} refresh={reloadDataCallback} />
             </Paper>
-            <Route path={`${match.path}/details/:id`} exact component={React.lazy(() => import("./recipe.details"))} />
-            <Route path={`${match.path}/add`} exact component={React.lazy(() => import("./recipe.add"))} />
+            <Route path={`${match.path}/details/:id`} exact component={React.lazy(() => import('./recipe.details'))} />
+            <Route path={`${match.path}/add`} exact component={React.lazy(() => import('./recipe.add'))} />
         </div>
     );
-};
+}
 
-export default ensureApiData(RecipesComponent);
+export default ensureIsAuthorized(ensureApiData(RecipesComponent));

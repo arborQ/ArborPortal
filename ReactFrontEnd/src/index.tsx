@@ -1,15 +1,16 @@
-import * as React from "react";
-import * as ReactDOM from "react-dom";
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import CardContent from '@material-ui/core/CardContent';
-import { BrowserRouter as Router, Route, Link, NavLink, Switch, withRouter } from "react-router-dom";
-import styled from 'styled-components'
+import Container from '@material-ui/core/Container';
+import { BrowserRouter as Router, Route, Link, NavLink, Switch, withRouter } from 'react-router-dom';
+import styled from 'styled-components';
 import ChangeLanguageButton from './components/change.language.button';
 import LoginButton from './components/login.button';
 import LogOutButton from './components/logout.button';
 import './translations/i18n';
-import { isAuthorized as isAuthorizedAction } from '@bx-services/account'
+import { isAuthorized as isAuthorizedAction } from '@bx-services/account';
 import AuthorizeContext from '@bx-contexts/authorize.context';
 
 const StyledNavLink = styled(NavLink)`
@@ -25,7 +26,7 @@ const links = [
     { text: 'List', path: '/account/users?sortBy=login&sortDirection=asc' },
     { text: 'Recepies', path: '/recipes/recipe' },
     { text: 'Error', path: '/error' },
-]
+];
 
 const anonymousLinks = [
     { text: 'Home', path: '/' },
@@ -33,12 +34,12 @@ const anonymousLinks = [
 ];
 
 function Render(): JSX.Element | null {
-    const [isAuthorized, changeAutorized] = React.useState(false)
-    const [userStatusChecked, changeuserStatus] = React.useState(false)
+    const [isAuthorized, changeAuthorize] = React.useState(false);
+    const [userStatusChecked, changeuserStatus] = React.useState(false);
 
     React.useEffect(() => {
         isAuthorizedAction().then(result => {
-            changeAutorized(result);
+            changeAuthorize(result);
             changeuserStatus(true);
         });
     });
@@ -49,9 +50,9 @@ function Render(): JSX.Element | null {
 
     return (
         <Router>
-            <AuthorizeContext.Provider value={{ isAuthorized }}>
+            <AuthorizeContext.Provider value={{ isAuthorized, changeAuthorize }}>
                 <div>
-                    <AppBar position="static">
+                    <AppBar position='static'>
                         <Toolbar>
                             {(isAuthorized ? links : anonymousLinks)
                                 .map(l => (
@@ -60,33 +61,40 @@ function Render(): JSX.Element | null {
                                         exact={l.path === '/'}
                                         key={l.path}
                                         to={l.path}
-                                        activeClassName="selected">
+                                        activeClassName='selected'>
                                         {l.text}
                                     </StyledNavLink>))}
                             {!isAuthorized
-                                ? <LoginButton onAuthorized={() => changeAutorized(true)} />
-                                : <LogOutButton onUnauthorized={() => changeAutorized(false)} />
+                                ? <LoginButton onAuthorized={() => changeAuthorize(true)} />
+                                : <LogOutButton onUnauthorized={() => changeAuthorize(false)} />
                             }
                             <ChangeLanguageButton name={''} />
                         </Toolbar>
                     </AppBar>
                 </div>
-                <div style={{ width: '90%', maxWidth: 1200, margin: '10px auto' }}>
+                <Container maxWidth='md'>
                     <React.Suspense fallback={<div>Loading ...</div>}>
                         <CardContent >
                             <Switch>
-                                <Route path="/" exact component={React.lazy(() => import("./lazy/home"))} />
-                                <Route path="/account/users" exact component={React.lazy(async () => await import("./areas/account/user.list"))} />
-                                <Route path="/account/users/edit" component={React.lazy(() => import("./areas/account/user.edit"))} />
-                                <Route path="/recipes/recipe"  component={React.lazy(() => import("./areas/recipes/recipe.list"))} />
-                                <Route component={React.lazy(() => import("./lazy/404"))} />
+                                <Route path='/' exact component={React.lazy(() => import('./lazy/home'))} />
+                                <Route
+                                    path='/account/users'
+                                    exact
+                                    component={React.lazy(async () => await import('./areas/account/user.list'))} />
+                                <Route
+                                    path='/account/users/edit'
+                                    component={React.lazy(() => import('./areas/account/user.edit'))} />
+                                <Route
+                                    path='/recipes/recipe'
+                                    component={React.lazy(() => import('./areas/recipes/recipe.list'))} />
+                                <Route component={React.lazy(() => import('./lazy/404'))} />
                             </Switch>
                         </CardContent>
                     </React.Suspense>
-                </div>
+                </Container>
             </AuthorizeContext.Provider>
         </Router>
     );
 }
 
-ReactDOM.render(<Render />, document.getElementById("container"));
+ReactDOM.render(<Render />, document.getElementById('container'));
