@@ -22,7 +22,8 @@
     "dropzone": "^5.5.1",
     "express": "4.17.1",
     "http-proxy": "1.17.0",
-    "material-ui-dropzone": "^2.3.5"
+    "material-ui-dropzone": "^2.3.5",
+    "notistack": "^0.8.6"
   },
   "devDependencies": {
     "@loadable/component": "5.10.1",

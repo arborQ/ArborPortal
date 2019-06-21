@@ -10,7 +10,8 @@ const translations = {
   'Login': 'Log In',
   'Logout' : 'Log Out',
   'Loading': 'Loading...',
-  'NotAuthorizedForThisAction': 'Not authorized for this action...'
+  'NotAuthorizedForThisAction': 'Not authorized for this action...',
+  'Rerurn to homepage' : 'Rerurn to homepage'
 };
 
 export default translations;

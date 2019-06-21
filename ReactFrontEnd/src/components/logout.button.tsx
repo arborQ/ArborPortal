@@ -2,43 +2,45 @@ import * as React from 'react';
 import { useTranslation } from 'react-i18next';
 import Button from '@material-ui/core/Button';
 import AuthorizeContext from '@bx-contexts/authorize.context';
+import { useSnackbar } from 'notistack';
 
 interface ILogoutButtonProps {
     text?: string;
     onUnauthorized: () => void;
 }
 
-export default function(props: ILogoutButtonProps): JSX.Element {
-    const [ loading, loadingChanged ] = React.useState(false);
+export default function (props: ILogoutButtonProps): JSX.Element {
+    const [loading, loadingChanged] = React.useState(false);
     const { t } = useTranslation();
+    const { enqueueSnackbar } = useSnackbar();
 
     return (
         <AuthorizeContext.Consumer>
             {
                 value => (
                     !value.isAuthorized
-                    ? null
-                    : <Button
-                        disabled={loading}
-                        onClick={async () => {
-                            loadingChanged(true);
-                            try {
-                                const { logout } = await import('@bx-services/account');
-                                await logout();
-                                props.onUnauthorized();
-                                loadingChanged(false);
-                                // location.replace('/');
-                            } catch {
-                                loadingChanged(false);
+                        ? null
+                        : <Button
+                            disabled={loading}
+                            onClick={async () => {
+                                loadingChanged(true);
+                                try {
+                                    const { logout } = await import('@bx-services/account');
+                                    await logout();
+                                    props.onUnauthorized();
+                                    loadingChanged(false);
+                                    enqueueSnackbar(t('goodByeUser'));
+                                } catch {
+                                    loadingChanged(false);
+                                }
+                            }}
+                        >
+                            {
+                                loading
+                                    ? t('Loading')
+                                    : t(props.text || 'Logout')
                             }
-                        }}
-                    >
-                        {
-                            loading
-                                ? t('Loading')
-                                : t(props.text || 'Logout')
-                        }
-                    </Button>
+                        </Button>
                 )
             }
         </AuthorizeContext.Consumer>

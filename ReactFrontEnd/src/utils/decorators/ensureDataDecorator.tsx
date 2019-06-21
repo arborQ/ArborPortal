@@ -35,7 +35,7 @@ export function ensureDataDecorator<P>(loadData: () => Promise<P> | P): any {
 
             if (!isLoaded || !data) {
                 if (!!loadError) {
-                    return <DisplayAjaxError message={loadError} />
+                    return <DisplayAjaxError message={loadError} />;
                 }
 
                 return <Spinner />;
