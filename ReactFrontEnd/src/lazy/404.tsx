@@ -10,6 +10,7 @@ import Typography from '@material-ui/core/Typography';
 import { RouteComponentProps } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { makeStyles, createStyles } from '@material-ui/core/styles';
+import { red } from '@material-ui/core/colors';
 
 interface I404Props extends Partial<RouteComponentProps> {
     message?: string;
@@ -22,7 +23,7 @@ const useStyles = makeStyles(
         orangeAvatar: {
             margin: 10,
             color: '#fff',
-            backgroundColor: 'Red',
+            backgroundColor: red[700],
         },
     }),
 );

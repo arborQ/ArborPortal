@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { useTranslation } from 'react-i18next';
-import Button from '@material-ui/core/Button';
 import AuthorizeContext from '@bx-contexts/authorize.context';
 import { useSnackbar } from 'notistack';
+import AsyncButton from '@bx-components/async.button.component';
 
 interface ILogoutButtonProps {
     text?: string;
@@ -10,9 +10,9 @@ interface ILogoutButtonProps {
 }
 
 export default function (props: ILogoutButtonProps): JSX.Element {
-    const [loading, loadingChanged] = React.useState(false);
     const { t } = useTranslation();
     const { enqueueSnackbar } = useSnackbar();
+    const abortController = new AbortController();
 
     return (
         <AuthorizeContext.Consumer>
@@ -20,27 +20,15 @@ export default function (props: ILogoutButtonProps): JSX.Element {
                 value => (
                     !value.isAuthorized
                         ? null
-                        : <Button
-                            disabled={loading}
+                        : <AsyncButton
                             onClick={async () => {
-                                loadingChanged(true);
-                                try {
                                     const { logout } = await import('@bx-services/account');
-                                    await logout();
+                                    await logout(abortController.signal);
                                     props.onUnauthorized();
-                                    loadingChanged(false);
                                     enqueueSnackbar(t('goodByeUser'));
-                                } catch {
-                                    loadingChanged(false);
-                                }
                             }}
-                        >
-                            {
-                                loading
-                                    ? t('Loading')
-                                    : t(props.text || 'Logout')
-                            }
-                        </Button>
+                        > { t(props.text || 'Logout') }
+                        </AsyncButton>
                 )
             }
         </AuthorizeContext.Consumer>

@@ -1,7 +1,7 @@
 import * as React from 'react';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import CircularProgress, { CircularProgressProps } from '@material-ui/core/CircularProgress';
 
-export default function() {
+export default function (props: CircularProgressProps) {
     const [progress, setProgress] = React.useState(0);
 
     React.useEffect(() => {
@@ -13,6 +13,6 @@ export default function() {
     });
 
     return (
-        <CircularProgress variant='determinate' value={progress} />
+        <CircularProgress {...props} variant='determinate' value={progress} />
     );
 }

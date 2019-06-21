@@ -45,4 +45,4 @@ function RecipeDetailsComponent({ history, location, match, data }: IRecipeDetai
 
 const asDrawer = drawerDecorator('right');
 
-export default asDrawer(ensureApiData(RecipeDetailsComponent));
+export default ensureApiData(asDrawer(RecipeDetailsComponent));

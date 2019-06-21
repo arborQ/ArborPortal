@@ -23,36 +23,36 @@ function handleAjax<T>(ajax: Promise<Response>): Promise<T> {
     });
 }
 
-export function post<T>(url: string, data?: any): Promise<T> {
+export function post<T>(url: string, data?: any, abortSignal?: AbortSignal): Promise<T> {
   const request = new Request(url, {
     body: !!data ? JSON.stringify(data) : null,
     headers: new Headers(headers),
     method: "POST"
   });
 
-  return handleAjax(fetch(request));
+  return handleAjax(fetch(request, { signal: abortSignal }));
 }
 
-export function update<T>(url: string, data: any): Promise<T> {
+export function update<T>(url: string, data: any, abortSignal?: AbortSignal): Promise<T> {
   const request = new Request(url, {
     body: !!data ? JSON.stringify(data) : null,
     headers: new Headers(headers),
     method: "PUT"
   });
 
-  return handleAjax(fetch(request));
+  return handleAjax(fetch(request, { signal: abortSignal }));
 }
 
-export function remove(url: string, data?: any): Promise<void> {
+export function remove(url: string, data?: any, abortSignal?: AbortSignal): Promise<void> {
   const request = new Request(url, {
     body: !!data ? JSON.stringify(data) : null,
     headers: new Headers(headers),
     method: "DELETE"
   });
 
-  return handleAjax(fetch(request));
+  return handleAjax(fetch(request, { signal: abortSignal }));
 }
 
-export function get<T>(url: string): Promise<T> {
-  return handleAjax(fetch(url));
+export function get<T>(url: string, abortSignal?: AbortSignal): Promise<T> {
+  return handleAjax(fetch(url, { signal: abortSignal }));
 }

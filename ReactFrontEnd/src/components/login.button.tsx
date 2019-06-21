@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import Button from '@material-ui/core/Button';
 import AuthorizeContext from '@bx-contexts/authorize.context';
 import { useSnackbar } from 'notistack';
+import AsyncButton from '@bx-components/async.button.component';
 
 interface ILoginButtonProps {
     text?: string;
@@ -20,7 +21,7 @@ export default function (props: ILoginButtonProps): JSX.Element {
                 value => (
                     value.isAuthorized
                         ? null
-                        : <Button
+                        : <AsyncButton
                             disabled={loading}
                             onClick={async () => {
                                 loadingChanged(true);
@@ -40,7 +41,7 @@ export default function (props: ILoginButtonProps): JSX.Element {
                                     ? t('Loading')
                                     : t(props.text || 'Login')
                             }
-                        </Button>
+                        </AsyncButton>
                 )
             }
         </AuthorizeContext.Consumer>

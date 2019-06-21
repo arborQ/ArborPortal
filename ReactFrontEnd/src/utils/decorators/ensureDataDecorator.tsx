@@ -8,7 +8,7 @@ function DisplayAjaxError({ message }: { message: string }) {
     return <MissingPageComponent message={message} />;
 }
 
-export function ensureDataDecorator<P>(loadData: () => Promise<P> | P): any {
+export function ensureDataDecorator<P>(loadData: (abortSignal?: AbortSignal) => Promise<P> | P): any {
     return (Component: React.ComponentClass<Utils.Decorators.ILoadDataProps<P>>): any => {
 
         return (props: P | Partial<INavigationProps> | Partial<RouteComponentProps>): JSX.Element => {
@@ -19,16 +19,23 @@ export function ensureDataDecorator<P>(loadData: () => Promise<P> | P): any {
                 const controller = new AbortController();
                 changeLoadState(false);
                 changeError('');
-                Promise.resolve(loadData())
+                Promise.resolve(loadData(controller.signal))
                     .then(resultData => {
                         changeLoadState(true);
                         changeData(resultData);
                     })
                     .catch(error => {
+                        console.log('AJAX ERROR');
                         changeError('AJAX ERROR');
                     });
-
-                return () => controller.abort();
+                setTimeout(() => {
+                    if(!controller.signal.aborted && !isLoaded) {
+                        controller.abort();
+                    }
+                }, 2000);
+                return () => {
+                    controller.abort();
+                };
             }, []);
 
             React.useEffect(reloadDataCallback, []);

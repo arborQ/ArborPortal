@@ -25,7 +25,7 @@ const StyledNavLink = styled(NavLink)`
 const links = [
     { text: 'Home', path: '/' },
     { text: 'List', path: '/account/users?sortBy=login&sortDirection=asc' },
-    { text: 'Recepies', path: '/recipes/recipe' },
+    { text: 'Recepies', path: '/recipes/recipe/list' },
     { text: 'Error', path: '/error' },
 ];
 
@@ -88,7 +88,7 @@ function Render(): JSX.Element | null {
                                         component={React.lazy(() => import('./areas/account/user.edit'))} />
                                     <Route
                                         path='/recipes/recipe'
-                                        component={React.lazy(() => import('./areas/recipes/recipe.list'))} />
+                                        component={React.lazy(() => import('./areas/recipes/recipe.cardIndex'))} />
                                     <Route component={React.lazy(() => import('./lazy/404'))} />
                                 </Switch>
                             </CardContent>

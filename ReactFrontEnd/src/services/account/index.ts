@@ -59,8 +59,8 @@ export function login(): Promise<{}> {
   });
 }
 
-export async function logout(): Promise<void> {
-  await remove('/api/account/authorize', {});
+export async function logout(abortSignal?: AbortSignal): Promise<void> {
+  await remove('/api/account/authorize', {}, abortSignal);
   atuhorizeStore.clear();
 }
 

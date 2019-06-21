@@ -8,16 +8,16 @@ interface IApiDataDecoratorProps {
 }
 
 export function ensureApiDataDecorator<P>(props: IApiDataDecoratorProps) {
-    return ensureDataDecorator<P>(async () => {
+    return ensureDataDecorator<P>(async (abortSignal?: AbortSignal) => {
         const { url } = props;
         const { search } = location;
         const method = props.method || 'GET';
         const apiUrl = url || location.pathname;
         
         if (method === 'GET') {
-            return await get<P>(`/api${apiUrl}${search}`);
+            return await get<P>(`/api${apiUrl}${search}`, abortSignal);
         } else {
-            return await post<P>(`/api${apiUrl}${search}`, props.postData);
+            return await post<P>(`/api${apiUrl}${search}`, props.postData, abortSignal);
         }
     });
 }
