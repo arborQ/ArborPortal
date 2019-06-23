@@ -64,8 +64,6 @@ function RecipesComponent({ data, reloadDataCallback, match, history }: IRecipeL
                 </List>
                 <ActionMenu path={match.path} refresh={reloadDataCallback} />
             </Paper>
-            <Route path={`${match.path}/details/:id`} exact component={React.lazy(() => import('./recipe.details'))} />
-            <Route path={`${match.path}/add`} exact component={React.lazy(() => import('./recipe.add'))} />
         </div>
     );
 }
