@@ -2,6 +2,10 @@ import * as bodyParser from "body-parser";
 import * as express from "express";
 import * as http from "http";
 import * as socket from "socket.io";
+import * as jwt from 'jsonwebtoken';
+
+const publicKey = `MDswDQYJKoZIhvcNAQEBBQADKgAwJwIgbnDsnGjfY1gA/ZeFmzupo4e2ax9LN/XU3MZY0NJwnWECAwEAAQ==`;
+const privateKey = `MIGpAgEAAiBucOycaN9jWAD9l4WbO6mjh7ZrH0s39dTcxljQ0nCdYQIDAQABAiA1BGbByyJ6CVQoaOXNmH2diQ8MyYyJrI6aY5m12jW0cQIRANvjxxfe8rB2bQNoG23IQQ0CEQCAk+WqcCiFn/9OQQivTXClAhBVvSEaa7JRoDutgmB/k//ZAhAUmh4RqjkD+DgLTOZcWHc1AhEAiFfvkTSNOe/CSNeDqRkccg==`;
 
 const config = {
     serverPort: 8011,
@@ -28,8 +32,13 @@ io.on("connection", (soc) => {
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
-app.get("/api/users", (request, reply) => {
-    reply.send({ ok: true });
+app.post("/api/account/authorize", (request, reply) => {
+    const { token } = request.body;
+    reply.send({ 
+        token, 
+        payload: jwt.decode(token),
+        verify: jwt.verify(token, publicKey)
+    });
 });
 
 // app.get("/api/users", (request, reply) => {
@@ -51,5 +60,5 @@ app.get("/api/users", (request, reply) => {
 // }
 
 server.listen(config.serverPort, () => {
-    console.log(`Express: server running at: ${config.serverPort}`);
+    console.log(`Express: server running at: http://localhost:${config.serverPort}/api/account/authorize`);
 });
