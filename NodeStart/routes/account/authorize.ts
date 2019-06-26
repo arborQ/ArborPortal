@@ -1,22 +1,33 @@
 import { Router } from 'express';
 import { decode, verify } from 'jsonwebtoken';
 import  * as passport from 'passport';
-import { Strategy } from 'passport-local';
 import { jwt } from '../../config';
-
+import { Strategy } from 'passport-remember-me';
+console.log(Strategy);
 var router = Router();
 
-passport.use(new Strategy((username, password, done) => {
-    console.log({username, password, done});
+passport.use(new Strategy(function(token, done) {
+    console.log({token, done});
+    // Token.consume(token, function (err, user) {
+    //   if (err) { return done(err); }
+    //   if (!user) { return done(null, false); }
+    //   return done(null, user);
+    // });
+  },
+  function(user, done) {
+    console.log({user, done});
+    // var token = utils.generateToken(64);
+    // Token.save(token, { userId: user.id }, function(err) {
+    //   if (err) { return done(err); }
+    //   return done(null, token);
+    // });
+  }));
 
-    done(null, { user: 1});
-}));
-
-router.post("/account/authorize", (request, reply) => {
+router.post("/account/authorize", passport.authenticate('remember-me', { failureRedirect: '/login', failureFlash: true }), (request, reply) => {
     const { token } = request.body;
     try {
         const payload = verify(token, jwt.tokenKey);
-        passport.authenticate('local');
+        passport.authenticate('remember-me');
         request.session.save(() => {
             reply.send({
                 isSuccess: true,

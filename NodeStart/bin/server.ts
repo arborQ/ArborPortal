@@ -2,7 +2,7 @@ import * as bodyParser from "body-parser";
 import * as express from "express";
 import * as http from "http";
 import * as cookieParser from 'cookie-parser';
-import * as session  from 'express-session';
+import {initialize, session, authenticate} from 'passport';
 // import * as socket from "socket.io";
 import * as configSetting from '../config';
 import apiRouter from '../routes';
@@ -27,12 +27,9 @@ const server = (http as any).Server(app);
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 app.use(cookieParser());
-app.use(session({
-    secret: configSetting.app.cookieSecretKey,
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: true }
-  }));
+app.use(initialize());
+app.use(session());
+app.use(authenticate('remember-me'));
 
 app.use(configSetting.app.apiPath, apiRouter);
 
