@@ -1,64 +1,41 @@
 import * as bodyParser from "body-parser";
 import * as express from "express";
 import * as http from "http";
-import * as socket from "socket.io";
-import * as jwt from 'jsonwebtoken';
-
-const publicKey = `MDswDQYJKoZIhvcNAQEBBQADKgAwJwIgbnDsnGjfY1gA/ZeFmzupo4e2ax9LN/XU3MZY0NJwnWECAwEAAQ==`;
-const privateKey = `MIGpAgEAAiBucOycaN9jWAD9l4WbO6mjh7ZrH0s39dTcxljQ0nCdYQIDAQABAiA1BGbByyJ6CVQoaOXNmH2diQ8MyYyJrI6aY5m12jW0cQIRANvjxxfe8rB2bQNoG23IQQ0CEQCAk+WqcCiFn/9OQQivTXClAhBVvSEaa7JRoDutgmB/k//ZAhAUmh4RqjkD+DgLTOZcWHc1AhEAiFfvkTSNOe/CSNeDqRkccg==`;
-
-const config = {
-    serverPort: 8011,
-    serverHost: "localhost"
-}
+import * as cookieParser from 'cookie-parser';
+import * as session  from 'express-session';
+// import * as socket from "socket.io";
+import * as configSetting from '../config';
+import apiRouter from '../routes';
 
 const app = express();
 const server = (http as any).Server(app);
-const io = socket(server);
+// const io = socket(server);
 
-let users: number = 0;
+// let users: number = 0;
 
-io.on("connection", (soc) => {
-    console.log("user connected");
-    setTimeout(() => {
-        soc.emit("news", { m: `hi new user: ${++users}` });
-    }, 1000);
+// io.on("connection", (soc) => {
+//     console.log("user connected");
+//     setTimeout(() => {
+//         soc.emit("news", { m: `hi new user: ${++users}` });
+//     }, 1000);
 
-    soc.on("disconnect", () => {
-        console.log("user connected");
-    });
-});
-
-app.use(bodyParser.json()); // support json encoded bodies
-app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
-
-app.post("/api/account/authorize", (request, reply) => {
-    const { token } = request.body;
-    reply.send({ 
-        token, 
-        payload: jwt.decode(token),
-        verify: jwt.verify(token, publicKey)
-    });
-});
-
-// app.get("/api/users", (request, reply) => {
-//     controllers.GetAllUsers().then((data) => {
-//         reply.send({ users: data });
+//     soc.on("disconnect", () => {
+//         console.log("user connected");
 //     });
 // });
 
-// // tslint:disable-next-line:forin
-// for (const index in controllers) {
-//     const controller = new controllers[index]();
+app.use(bodyParser.json()); // support json encoded bodies
+app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
+app.use(cookieParser());
+app.use(session({
+    secret: configSetting.app.cookieSecretKey,
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: true }
+  }));
 
-//     app.get(`/api/${index}${controller.path}`, (request, reply) => {
-//         controller.handler(request).then((data) => {
-//             reply.send(data);
-//         });
-//     });
+app.use(configSetting.app.apiPath, apiRouter);
 
-// }
-
-server.listen(config.serverPort, () => {
-    console.log(`Express: server running at: http://localhost:${config.serverPort}/api/account/authorize`);
+server.listen(configSetting.app.port, () => {
+    console.log(`Express: server running at: http://localhost:${configSetting.app.port}${configSetting.app.apiPath}/account/authorize`);
 });
