@@ -88,3 +88,15 @@ services:
     environment:
       ACCEPT_EULA: "Y"
       SA_PASSWORD: "D.`(>q8'5d,ngL>H"
+  rabbitmq:
+    image: "rabbitmq:latest"
+    hostname: "rabbitmq"
+    environment:
+      RABBITMQ_ERLANG_COOKIE: "SWQOKODSQALRPCLNMEQG"
+      RABBITMQ_DEFAULT_USER: "rabbitmq"
+      RABBITMQ_DEFAULT_PASS: "rabbitmq"
+      RABBITMQ_DEFAULT_VHOST: "/"
+    ports:
+      - "15672:15672"
+    labels:
+      NAME: "rabbitmq"

@@ -63,7 +63,15 @@ namespace CoreStart.WebApi
 
             castle.Register(Classes.FromAssembly(Assembly.GetExecutingAssembly()).BasedOn(typeof(IMapperService<,>)).WithService.FromInterface(typeof(IMapperService<,>)));
 
-            services.AddMediatR();
+            services.AddMediatR(
+                typeof(CoreStart.WebApi.InitializeServices).GetTypeInfo().Assembly,
+                typeof(Business.Authorize.InitializeServices).GetTypeInfo().Assembly,
+                typeof(Business.Account.Account.InitializeAccountServices).GetTypeInfo().Assembly,
+                typeof(Business.Recipes.InitializeRecipesServices).GetTypeInfo().Assembly,
+                typeof(Data.Search.RegisterSearch).GetTypeInfo().Assembly,
+                typeof(Data.Entity.InitializeServices).GetTypeInfo().Assembly,
+                typeof(Data.BlobStorage.InitializeServicesBlobs).GetTypeInfo().Assembly
+                );
             services.AddHttpContextAccessor();
             services.AddDbContext<ApplicationDbContext>(options =>
             {
