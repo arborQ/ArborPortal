@@ -31,7 +31,7 @@ namespace QueueStorage.Handlers
                                 arguments: null);
 
                     string message = "Hello World!";
-                    var body = Encoding.UTF8.GetBytes(message);
+                    var body = Encoding.UTF8.GetBytes(
 
                     channel.BasicPublish(exchange: "",
                                          routingKey: "hello",
