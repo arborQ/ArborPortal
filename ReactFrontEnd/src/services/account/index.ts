@@ -26,7 +26,6 @@ const getAuth0 = new Auth0Lock(
 );
 
 getAuth0.on('authorization_error', result => {
-  console.log('cant authorize');
   if (!!promiseReject) {
     promiseReject();
     promiseReject = null;
@@ -36,8 +35,8 @@ getAuth0.on('authorization_error', result => {
 getAuth0.on('authenticated', async authResult => {
   atuhorizeStore.update({ jwtToken: authResult.idToken});
 
-  const result = await post(authorizeUrl, { jwtToken: authResult.idToken });
-
+  const result = await post(authorizeUrl, { token: authResult.idToken });
+  console.log({result});
   if (!!promiseResolve) {
     promiseResolve();
     promiseResolve = null;
@@ -60,7 +59,7 @@ export function login(): Promise<{}> {
 }
 
 export async function logout(abortSignal?: AbortSignal): Promise<void> {
-  await remove('/api/account/authorize', {}, abortSignal);
+  // await remove('/api/account/authorize', {}, abortSignal);
   atuhorizeStore.clear();
 }
 

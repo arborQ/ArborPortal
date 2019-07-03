@@ -8,26 +8,29 @@ var compiler = webpack({
 
 var port = 8080;
 
-var proxy = {
-  target: {
-    host: "localhost",
-    protocol: "http",
-    port: 5000
-  },
-  bypass: function(req) {
-    console.log({ url: req.url });
-  },
-  onError: function() {
-    console.log("error");
-  },
-  secure: false
-};
+function proxyEndpoint(port, host = 'localhost') {
+  var proxy = {
+    target: {
+      host: "localhost",
+      protocol: "http",
+      port
+    },
+    bypass: function(req) {
+      console.log({ url: req.url });
+    },
+    onError: function() {
+      console.log("error");
+    },
+    secure: false
+  };
+}
 
 var server = new webpackDevServer(compiler, {
   hot: true,
   historyApiFallback: true, 
   proxy: {
-    "/api": proxy
+    "/api/account/authorize": proxyEndpoint(8011),
+    // "/api": proxyEndpoint(5000),
   },
   watchOptions: {
     aggregateTimeout: 300,
