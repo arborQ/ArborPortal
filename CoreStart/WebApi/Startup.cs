@@ -38,39 +38,56 @@ namespace CoreStart
         {
             var castleContainer = new WindsorContainer();
             services.Configure<WebConfiguration>(Configuration);
+            services.Configure<JwtConfiguration>(Configuration.GetSection("Jwt"));
             services.Configure<AzureConfiguration>(Configuration.GetSection("AzureConfiguration"));
 
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy("AuthorizedClaimAccess", policy => policy.RequireClaim(nameof(AuthorizeResponseModel.UserId)));
-            });
+            //services.AddAuthorization(options =>
+            //{
+            //    options.AddPolicy("AuthorizedClaimAccess", policy => policy.RequireClaim(nameof(AuthorizeResponseModel.UserId)));
+            //});
 
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
+            //services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
 
-            services.AddAuthentication(options =>
-              {
+            //services.AddAuthentication(options =>
+            //  {
 
-                  options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                  options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-                  options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            //      options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            //      options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            //      options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 
-              })
-                .AddJwtBearer(cfg =>
+            //  })
+            //    .AddJwtBearer(cfg =>
+            //    {
+            //        var jwtSection = Configuration.GetSection("Jwt");
+
+            //        var ValidIssuer = Configuration.GetValue<string>($"Jwt:Issuer");
+            //        var ValidAudience = Configuration.GetValue<string>($"Jwt:Audience");
+            //        var JwtKey = Configuration.GetValue<string>($"Jwt:Key");
+
+            //        cfg.RequireHttpsMetadata = false;
+            //        cfg.SaveToken = true;
+            //        cfg.TokenValidationParameters = new TokenValidationParameters
+            //        {
+            //            ValidIssuer = ValidIssuer,
+            //            ValidAudience = ValidAudience,
+            //            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtKey)),
+            //            ClockSkew = TimeSpan.Zero // remove delay of token when expire
+            //        };
+            //    });
+
+            services
+                .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
                 {
-                    var jwtSection = Configuration.GetSection("Jwt");
-
-                    var ValidIssuer = Configuration.GetValue<string>($"Jwt:Issuer");
-                    var ValidAudience = Configuration.GetValue<string>($"Jwt:Audience");
                     var JwtKey = Configuration.GetValue<string>($"Jwt:Key");
+                    var signingKey = Convert.FromBase64String(JwtKey);
 
-                    cfg.RequireHttpsMetadata = false;
-                    cfg.SaveToken = true;
-                    cfg.TokenValidationParameters = new TokenValidationParameters
+                    options.TokenValidationParameters = new TokenValidationParameters
                     {
-                        ValidIssuer = ValidIssuer,
-                        ValidAudience = ValidAudience,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtKey)),
-                        ClockSkew = TimeSpan.Zero // remove delay of token when expire
+                        ValidateIssuer = false,
+                        ValidateAudience = false,
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(signingKey)
                     };
                 });
 

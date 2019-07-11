@@ -48,9 +48,7 @@ namespace WebApi.Areas.Account
                    Login = response.UserName
                }
             });
-
-            await _mediator.Publish(response);
-
+            
             return response;
         }
 

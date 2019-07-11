@@ -21,6 +21,8 @@ namespace WebApi.Areas.Account.Responses
 
         public DateTime? ExpireDate { get; set; }
 
+        public string Token { get; set; }
+
         public static AuthorizeResponseModel NotAuthorized
         {
             get
