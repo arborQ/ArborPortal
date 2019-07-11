@@ -4,7 +4,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import CardContent from '@material-ui/core/CardContent';
 import Container from '@material-ui/core/Container';
-import { BrowserRouter as Router, Route, Link, NavLink, Switch, withRouter } from 'react-router-dom';
+import { BrowserRouter as Router, Route, NavLink, Switch } from 'react-router-dom';
 import styled from 'styled-components';
 import ChangeLanguageButton from './components/change.language.button';
 import LoginButton from './components/login.button';
@@ -13,6 +13,7 @@ import './translations/i18n';
 import { isAuthorized as isAuthorizedAction } from '@bx-services/account';
 import AuthorizeContext from '@bx-contexts/authorize.context';
 import { SnackbarProvider } from 'notistack';
+import { hot } from 'react-hot-loader/root';
 
 const StyledNavLink = styled(NavLink)`
     color: #FFF;
@@ -100,4 +101,6 @@ function Render(): JSX.Element | null {
     );
 }
 
-ReactDOM.render(<Render />, document.getElementById('container'));
+const HotRender = hot(Render);
+
+ReactDOM.render(<HotRender />, document.getElementById('container'));

@@ -63,7 +63,7 @@ namespace WebApi.Areas.Recipes.Controllers
         {
             var recipe = await _mediator.Send(new EditRequestModel<IRecipe>
             {
-                Id= model.Id,
+                Id = model.Id,
                 EditContract = model
             });
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Text;
 using Castle.Windsor;
 using Castle.Windsor.MsDependencyInjection;
 using CoreStart.CrossCutting.Structure;
@@ -7,12 +8,14 @@ using CoreStart.CrossCutting.Structure.Services;
 using CoreStart.WebApi;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using Swashbuckle.AspNetCore.Swagger;
 using WebApi.Areas.Account.Responses;
 using WebApi.Models;
@@ -44,30 +47,32 @@ namespace CoreStart
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
 
-            //services.AddAuthentication(options =>
-            //  {
+            services.AddAuthentication(options =>
+              {
 
-            //      options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            //      options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-            //      options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                  options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                  options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                  options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 
-            //  })
-            //    .AddJwtBearer(cfg =>
-            //    {
-            //        var ValidIssuer = Configuration.GetValue<string>($"Jwt:Issuer");
-            //        var ValidAudience = Configuration.GetValue<string>($"Jwt:Audience");
-            //        var JwtKey = Configuration.GetValue<string>($"Jwt:Key");
+              })
+                .AddJwtBearer(cfg =>
+                {
+                    var jwtSection = Configuration.GetSection("Jwt");
 
-            //        cfg.RequireHttpsMetadata = false;
-            //        cfg.SaveToken = true;
-            //        cfg.TokenValidationParameters = new TokenValidationParameters
-            //        {
-            //            ValidIssuer = ValidIssuer,
-            //            ValidAudience = ValidAudience,
-            //            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtKey)),
-            //            ClockSkew = TimeSpan.Zero // remove delay of token when expire
-            //        };
-            //    });
+                    var ValidIssuer = Configuration.GetValue<string>($"Jwt:Issuer");
+                    var ValidAudience = Configuration.GetValue<string>($"Jwt:Audience");
+                    var JwtKey = Configuration.GetValue<string>($"Jwt:Key");
+
+                    cfg.RequireHttpsMetadata = false;
+                    cfg.SaveToken = true;
+                    cfg.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidIssuer = ValidIssuer,
+                        ValidAudience = ValidAudience,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtKey)),
+                        ClockSkew = TimeSpan.Zero // remove delay of token when expire
+                    };
+                });
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<IUserPrincipalService, CurrentUserPrincipalProvider>();
@@ -101,6 +106,8 @@ namespace CoreStart
             {
                 app.UseHsts();
             }
+
+            app.UseForwardedHeaders();
             app.UseSwagger();
 
             app.UseSwaggerUI(c =>

@@ -15,7 +15,7 @@ namespace WebApi.Areas.Account.Handlers
             try
             {
                 var handler = new JwtSecurityTokenHandler();
-                var jsonToken = handler.ReadJwtToken(request.JwtToken);
+                var jsonToken = handler.ReadJwtToken(request.Token);
 
                 var userName = jsonToken.Claims.FirstOrDefault(c => c.Type == "nickname");
 

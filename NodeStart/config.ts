@@ -28,6 +28,7 @@ const jwtAuth0TokenKey = formatKey(process.env.AUTH0_TOKEN_KEY);
 const cookieSecretKey = process.env.COOKIE_SECRET;
 const port = parseInt(process.env.DEV_APP_PORT) || 8011;
 const apiPath = process.env.DEV_APP_PATH || '/api';
+const authCookieName = process.env.AUTH_COOKIE_NAME;
 
 export const env = process.env.NODE_ENV;
 export const jwt = {
@@ -35,4 +36,4 @@ export const jwt = {
     privateTokenKey: jwtPrivateTokenKey,
     auth0TokenKey: jwtAuth0TokenKey
 };
-export const app = { port, apiPath, cookieSecretKey };
+export const app = { port, apiPath, cookieSecretKey, authCookieName };

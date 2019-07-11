@@ -15,6 +15,7 @@ using CoreStart.CrossCutting.Structure.Services;
 using CoreStart.Data.Entity;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -58,7 +59,7 @@ namespace CoreStart.WebApi
 
             castle.Register(Component.For<ISearchIndexerFactory>().AsFactory());
             castle.Register(Component.For<ICreateItemStrategyFactory>().AsFactory());
-            
+
             castle.Register(Component.For<IContextAccessor>().ImplementedBy<WebContextAccessor>().LifestyleSingleton());
 
             castle.Register(Classes.FromAssembly(Assembly.GetExecutingAssembly()).BasedOn(typeof(IMapperService<,>)).WithService.FromInterface(typeof(IMapperService<,>)));
@@ -88,9 +89,10 @@ namespace CoreStart.WebApi
             services.Configure<ForwardedHeadersOptions>(options =>
             {
                 var forwardedHeaders = ConfigurationExtensions
-                       .GetConnectionString(configuration, "ForwardedHeaders");
+                       .GetConnectionString(configuration, "ForwardedHeaders") ?? "127.0.0.1";
 
                 Console.WriteLine($"ForwardedHeaders: {forwardedHeaders}");
+                options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
 
                 if (!string.IsNullOrEmpty(forwardedHeaders))
                 {

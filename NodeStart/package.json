@@ -3,8 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "ts-node ./bin/server.ts",
-    "dev": "ts-node-dev --respawn --transpileOnly ./bin/server.ts DEV_APP_PORT=9001"
+    "start": "ts-node-dev --respawn --transpileOnly ./bin/server.ts DEV_APP_PORT=8011"
   },
   "dependencies": {
     "@types/cookie-parser": "^1.4.1",

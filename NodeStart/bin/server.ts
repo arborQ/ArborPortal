@@ -8,20 +8,6 @@ import apiRouter from '../routes';
 
 const app = express();
 const server = (http as any).Server(app);
-// const io = socket(server);
-
-// let users: number = 0;
-
-// io.on("connection", (soc) => {
-//     console.log("user connected");
-//     setTimeout(() => {
-//         soc.emit("news", { m: `hi new user: ${++users}` });
-//     }, 1000);
-
-//     soc.on("disconnect", () => {
-//         console.log("user connected");
-//     });
-// });
 
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies

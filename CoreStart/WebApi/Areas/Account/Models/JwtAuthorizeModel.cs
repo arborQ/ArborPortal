@@ -5,6 +5,6 @@ namespace WebApi.Areas.Account.Models
 {
     public class JwtAuthorizeModel : IRequest<AuthorizeResponseModel>
     {
-        public string JwtToken { get; set; }
+        public string Token { get; set; }
     }
 }

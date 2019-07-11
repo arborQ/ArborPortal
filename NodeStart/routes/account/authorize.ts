@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { verify, sign } from 'jsonwebtoken';
-import { jwt } from '../../config';
+import { jwt, app } from '../../config';
 var router = Router();
 const auth0Key = jwt.auth0TokenKey;
 
@@ -16,12 +16,13 @@ router.post("/account/authorize", (request, reply) => {
                 lastName: payload.family_name,
                 nickname: payload.nickname,
                 picture: payload.picture, 
-                email: '?????' 
+                email: '?????',
+                claims: [{ type: 'UserClaims', value: 1 }]
             }, jwt.tokenKey);
 
             reply
                 .status(200)
-                .cookie('JwtAuthToken', token, { maxAge: 86400 })
+                .cookie(app.authCookieName, token, { maxAge: 86400 })
                 .send({
                     isSuccess: true,
                     token,

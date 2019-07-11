@@ -33,9 +33,9 @@ namespace WebApi.Areas.Account
         }
 
         [HttpPost]
-        public async Task<AuthorizeResponseModel> SignIn([FromBody]JwtAuthorizeModel token)
+        public async Task<AuthorizeResponseModel> SignIn([FromBody]JwtAuthorizeModel model)
         {
-            var response = await _mediator.Send(token);
+            var response = await _mediator.Send(model);
 
             await _mediator.Send(new CreateRequestModel<IUser>
             {
