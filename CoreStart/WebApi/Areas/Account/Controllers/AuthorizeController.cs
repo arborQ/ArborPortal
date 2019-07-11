@@ -1,8 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using CoreStart.CrossCutting.Structure.Business.Account.Models;
-using CoreStart.CrossCutting.Structure.Models;
 using CoreStart.CrossCutting.Structure.Requests;
 using CoreStart.CrossCutting.Structure.Services;
 using MediatR;

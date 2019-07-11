@@ -24,5 +24,5 @@ class StorageHandler<T> {
     }
 }
 
-export const atuhorizeStore = new StorageHandler<{ jwtToken: string }>('bx-authorize-storage');
+export const atuhorizeStore = new StorageHandler<{ token: string }>('bx-authorize-storage');
 export const localeStore = new StorageHandler<{ language: 'en' | 'pl' }>('bx-locale-storage');

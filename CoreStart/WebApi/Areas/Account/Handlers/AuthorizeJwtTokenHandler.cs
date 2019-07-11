@@ -42,7 +42,7 @@ namespace WebApi.Areas.Account.Handlers
                     Token = CreateToken(jsonToken)
                 });
             }
-            catch (Exception e)
+            catch
             {
                 return AuthorizeResponseModel.NotAuthorized;
             }
@@ -50,30 +50,12 @@ namespace WebApi.Areas.Account.Handlers
 
         private string CreateToken(JwtSecurityToken securityToken)
         {
-            //var accessTokenExpiration = DateTime.UtcNow.AddSeconds(36000);
-            //var symanticKey = new SymmetricSecurityKey(Convert.FromBase64String(jwtConfiguration.Key));
-
-            //var securityToken = new JwtSecurityToken
-            //(
-            //    claims: GetClaims(),
-            //    expires: accessTokenExpiration,
-            //    notBefore: DateTime.UtcNow,
-            //    signingCredentials: new SigningCredentials(symanticKey, SecurityAlgorithms.RsaSha256Signature)
-            //);
-
-            //var handler = new JwtSecurityTokenHandler();
-            //var accessToken = handler.WriteToken(securityToken);
-
-            //return accessToken;
-
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(jwtConfiguration.Key);
+
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(new Claim[]
-                {
-                    new Claim(ClaimTypes.Name, securityToken.Subject)
-                }),
+                Subject = new ClaimsIdentity(GetClaims(securityToken)),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
@@ -82,13 +64,13 @@ namespace WebApi.Areas.Account.Handlers
             return tokenHandler.WriteToken(token);
         }
 
-        private IEnumerable<Claim> GetClaims()
+        private IEnumerable<Claim> GetClaims(JwtSecurityToken securityToken)
         {
             var claims = new List<Claim>
             {
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(JwtRegisteredClaimNames.Jti, securityToken.Subject),
                 new Claim(JwtRegisteredClaimNames.Sub, "arbor@o2.pl"),
-                new Claim(ClaimTypes.Role, "admin")
+                new Claim(ClaimTypes.Role, "recipes, users")
             };
 
             return claims;
