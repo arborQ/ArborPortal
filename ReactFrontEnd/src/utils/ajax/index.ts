@@ -61,5 +61,10 @@ export function remove(url: string, data?: any, abortSignal?: AbortSignal): Prom
 }
 
 export function get<T>(url: string, abortSignal?: AbortSignal): Promise<T> {
-  return handleAjax(fetch(url, { signal: abortSignal }));
+  const request = new Request(url, {
+    headers: headers(),
+    method: 'GET'
+  });
+
+  return handleAjax(fetch(request, { signal: abortSignal }));
 }

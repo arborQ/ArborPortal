@@ -76,18 +76,32 @@ namespace CoreStart
             //    });
 
             services
-                .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddAuthentication(x => {
+                    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
                 .AddJwtBearer(options =>
                 {
+                    var ValidIssuer = Configuration.GetValue<string>($"Jwt:Issuer");
+                    var ValidAudience = Configuration.GetValue<string>($"Jwt:Audience");
                     var JwtKey = Configuration.GetValue<string>($"Jwt:Key");
                     var signingKey = Convert.FromBase64String(JwtKey);
 
+                    options.RequireHttpsMetadata = false;
+                    options.SaveToken = true;
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
-                        ValidateIssuer = false,
-                        ValidateAudience = false,
+                        //ValidateAudience = true,
+                        //ValidateLifetime = true,
+                        //ValidateIssuerSigningKey = true,
+                        //ValidIssuer = ValidIssuer,
+                        //ValidAudience = ValidAudience,
+                        //IssuerSigningKey = new SymmetricSecurityKey(signingKey),
+                        //ClockSkew = TimeSpan.Zero
                         ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(signingKey)
+                        IssuerSigningKey = new SymmetricSecurityKey(signingKey),
+                        ValidateIssuer = false,
+                        ValidateAudience = false
                     };
                 });
 
@@ -115,6 +129,11 @@ namespace CoreStart
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            app.UseCors(x => x
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader());
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

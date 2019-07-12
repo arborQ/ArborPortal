@@ -8,6 +8,7 @@ using CoreStart.CrossCutting.Structure.Requests.Users;
 using CoreStart.CrossCutting.Structure.Responses;
 using CoreStart.CrossCutting.Structure.Security;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using WebApi.Areas.Recipes.Models;
@@ -16,6 +17,7 @@ using WebApi.Security;
 namespace WebApi.Areas.Recipes.Controllers
 {
     [PortalAuthorize(UserClaims.RecipeRead)]
+    [Authorize]
     [Route("api/[area]/[controller]")]
     [Area("Recipes")]
     [ApiController]
@@ -46,7 +48,7 @@ namespace WebApi.Areas.Recipes.Controllers
         }
 
         [HttpPost]
-        [PortalAuthorize(UserClaims.RecipeCreate)]
+        //[PortalAuthorize(UserClaims.RecipeCreate)]
         public async Task<CreateResponse<IRecipe>> CreateRecipe([FromBody]RecipeViewModel model)
         {
             var recipe = await _mediator.Send(new CreateRequestModel<IRecipe>
@@ -58,7 +60,7 @@ namespace WebApi.Areas.Recipes.Controllers
         }
 
         [HttpPut]
-        [PortalAuthorize(UserClaims.RecipeEdit)]
+        //[PortalAuthorize(UserClaims.RecipeEdit)]
         public async Task<EditResponse<IRecipe>> EditRecipe([FromBody]RecipeViewModel model)
         {
             var recipe = await _mediator.Send(new EditRequestModel<IRecipe>
