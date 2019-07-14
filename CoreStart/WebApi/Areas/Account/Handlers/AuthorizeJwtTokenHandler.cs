@@ -35,11 +35,7 @@ namespace WebApi.Areas.Account.Handlers
 
                 return await Task.FromResult(new AuthorizeResponseModel
                 {
-                    ExpireDate = jsonToken.ValidTo,
-                    Source = jsonToken.Subject.Split("|")[0],
-                    UserId = jsonToken.Subject,
-                    UserName = userName.Value,
-                    Token = CreateToken(jsonToken)
+                    Token = CreateToken(userName.Value, new [] { "admin", "reciper", "userlist" })
                 });
             }
             catch
@@ -48,43 +44,23 @@ namespace WebApi.Areas.Account.Handlers
             }
         }
 
-        private string CreateToken(JwtSecurityToken securityToken)
+        private string CreateToken(string name, string[] roles)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(jwtConfiguration.Key);
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Expires = DateTime.UtcNow.AddDays(7),
-                Audience = jwtConfiguration.Audience,
-                Claims = GetClaims(securityToken).ToDictionary(a => a.Type, a => (object)a.Value),
-                Issuer = jwtConfiguration.Issuer,
-                IssuedAt = DateTime.UtcNow,
-                NotBefore = DateTime.UtcNow,
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            };
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-
-            var tokenString = tokenHandler.WriteToken(token);
-
-            return tokenString;
-        }
-
-        private string CreateToken(string secret, string userId)
-        {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(secret);
-
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.Name, userId)
-                }),
-                Claims = GetClaims(),
+                    new Claim(ClaimTypes.NameIdentifier, "12345"),
+                    new Claim(ClaimTypes.Email, "arbor@o2.pl"),
+                    new Claim(ClaimTypes.Name, name)
+                }.Concat(roles.Select(r => new Claim(ClaimTypes.Role, r)))),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
+
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
             return tokenHandler.WriteToken(token);

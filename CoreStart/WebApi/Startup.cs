@@ -41,70 +41,25 @@ namespace CoreStart
             services.Configure<JwtConfiguration>(Configuration.GetSection("Jwt"));
             services.Configure<AzureConfiguration>(Configuration.GetSection("AzureConfiguration"));
 
-            //services.AddAuthorization(options =>
-            //{
-            //    options.AddPolicy("AuthorizedClaimAccess", policy => policy.RequireClaim(nameof(AuthorizeResponseModel.UserId)));
-            //});
-
-            //services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
-
-            //services.AddAuthentication(options =>
-            //  {
-
-            //      options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            //      options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-            //      options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-
-            //  })
-            //    .AddJwtBearer(cfg =>
-            //    {
-            //        var jwtSection = Configuration.GetSection("Jwt");
-
-            //        var ValidIssuer = Configuration.GetValue<string>($"Jwt:Issuer");
-            //        var ValidAudience = Configuration.GetValue<string>($"Jwt:Audience");
-            //        var JwtKey = Configuration.GetValue<string>($"Jwt:Key");
-
-            //        cfg.RequireHttpsMetadata = false;
-            //        cfg.SaveToken = true;
-            //        cfg.TokenValidationParameters = new TokenValidationParameters
-            //        {
-            //            ValidIssuer = ValidIssuer,
-            //            ValidAudience = ValidAudience,
-            //            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtKey)),
-            //            ClockSkew = TimeSpan.Zero // remove delay of token when expire
-            //        };
-            //    });
-
-            services
-                .AddAuthentication(x => {
-                    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                })
-                .AddJwtBearer(options =>
+            var jwtKey = Configuration.GetValue<string>($"Jwt:Key");
+            var key = Encoding.ASCII.GetBytes(jwtKey);
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(x =>
+            {
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
                 {
-                    var ValidIssuer = Configuration.GetValue<string>($"Jwt:Issuer");
-                    var ValidAudience = Configuration.GetValue<string>($"Jwt:Audience");
-                    var JwtKey = Configuration.GetValue<string>($"Jwt:Key");
-                    var signingKey = Convert.FromBase64String(JwtKey);
-
-                    options.RequireHttpsMetadata = false;
-                    options.SaveToken = true;
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        //ValidateAudience = true,
-                        //ValidateLifetime = true,
-                        //ValidateIssuerSigningKey = true,
-                        //ValidIssuer = ValidIssuer,
-                        //ValidAudience = ValidAudience,
-                        //IssuerSigningKey = new SymmetricSecurityKey(signingKey),
-                        //ClockSkew = TimeSpan.Zero
-                        ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(signingKey),
-                        ValidateIssuer = false,
-                        ValidateAudience = false
-                    };
-                });
-
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<IUserPrincipalService, CurrentUserPrincipalProvider>();
 
