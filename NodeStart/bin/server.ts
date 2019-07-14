@@ -1,7 +1,7 @@
-import * as bodyParser from "body-parser";
-import * as express from "express";
-import * as http from "http";
-import * as cookieParser from 'cookie-parser';
+import bodyParser from "body-parser";
+import express from "express";
+import http from "http";
+import cookieParser from 'cookie-parser';
 // import * as socket from "socket.io";
 import * as configSetting from '../config';
 import apiRouter from '../routes';

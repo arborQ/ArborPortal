@@ -43,6 +43,8 @@ namespace CoreStart
 
             var jwtKey = Configuration.GetValue<string>($"Jwt:Key");
             var key = Encoding.ASCII.GetBytes(jwtKey);
+
+            Console.WriteLine($"JWT KEY: {jwtKey}");
             services.AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

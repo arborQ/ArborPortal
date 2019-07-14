@@ -19,6 +19,7 @@
   "homepage": "https://github.com/arborQ/ReactFrontEnd#readme",
   "dependencies": {
     "@material-ui/icons": "^4.1.0",
+    "connect-history-api-fallback": "^1.6.0",
     "dropzone": "^5.5.1",
     "http-proxy": "1.17.0",
     "http-proxy-middleware": "^0.19.1",

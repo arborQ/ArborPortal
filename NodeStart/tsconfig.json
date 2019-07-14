@@ -3,6 +3,7 @@
       "sourceMap": true,
       "target": "es5",
       "jsx": "react",
+      "esModuleInterop": true,
       "module": "commonjs",
       "moduleResolution": "node",
       "emitDecoratorMetadata": true,

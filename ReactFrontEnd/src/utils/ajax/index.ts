@@ -6,7 +6,7 @@ function headers() {
   return {
     'Content-Type': 'application/json; charset=utf-8',
     'Data-Type': 'json',
-    'Authentication': !store ? '' : `Bearer ${store.token}`
+    'Authorization': !store ? '' : `Bearer ${store.token}`
   };
 }
 

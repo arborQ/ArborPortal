@@ -13,7 +13,7 @@ import { ensureIsAuthorized } from '@bx-utils/decorators/ensureIsAuthorized';
 import { ensureTranslationsDecorator, ITranslationsProps } from '@bx-utils/decorators/translateDecorator';
 import { ensureNavigationDecorator, INavigationProps } from '@bx-utils/decorators/ensureNavigationDecorator';
 import { parse } from 'query-string';
-
+import SupervisedUserCircle from '@material-ui/icons/SupervisedUserCircle';
 import data from './moc.data';
 import StateComponent from "@bx-utils/stateComponent";
 
@@ -107,7 +107,8 @@ export default class UserListComponent extends StateComponent<IUserListProps, IU
                                     onClick={() => this.changeSort('isActive')}>
                                     {isActiveTranslation}
                                 </TableSortLabel>
-
+                            </TableCell>
+                            <TableCell>
                             </TableCell>
                         </TableRow>
                     </TableHead>
@@ -119,6 +120,7 @@ export default class UserListComponent extends StateComponent<IUserListProps, IU
                                 </TableCell>
                                 <TableCell align="right">{row.email}</TableCell>
                                 <TableCell align="right">{row.isActive ? 'Active' : ''}</TableCell>
+                                <TableCell align="right"><SupervisedUserCircle /></TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
