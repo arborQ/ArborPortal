@@ -37,3 +37,6 @@ export const jwt = {
     auth0TokenKey: jwtAuth0TokenKey
 };
 export const app = { port, apiPath, cookieSecretKey, authCookieName };
+export const database = {
+    mongoConnectionString: process.env.MONGO_CONNECTION_STRING
+}

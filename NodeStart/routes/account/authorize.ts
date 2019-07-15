@@ -1,17 +1,24 @@
 import { Router } from 'express';
 import { verify, sign } from 'jsonwebtoken';
 import { jwt, app } from '../../config';
+import { userRepository } from '../../repository';
 
 var router = Router();
 const auth0Key = jwt.auth0TokenKey;
 
-router.post("/account/authorize", (request, reply) => {
+router.post("/account/authorize", async (request, reply) => {
     const { token } = request.body;
 
     try {
         const payload: any = verify(token, auth0Key, { algorithms: ['RS256'] });
 
         if (!!payload) {
+            console.log('try add');
+            await userRepository.create({
+                login: 'arbor', email: 'arbor@o2.pl', isActive: true
+            })
+            console.log('added');
+
             const newPayload = {
                 nameid: "12345",
                 email: "arbor@o2.pl",
