@@ -1,31 +1,31 @@
-import { model, Schema, SchemaTypeOpts, Document } from 'mongoose';
-import { identifier } from 'babel-types';
+import BaseRepository, { RepositorySchema } from './baseRepository';
 
 export interface IUserModel {
+    externalId: string;
     login: string;
-    email: string | null;
+    firstName?: string;
+    lastName?: string;
+    email?: string;
     isActive: boolean;
+    pictureUrl: string;
+    roles?: string[];
 }
 
-const userSchema: { [P in keyof IUserModel]: SchemaTypeOpts<any> } = {
+const userSchema: RepositorySchema<IUserModel> = {
+    externalId: { type: String, required: true, index: true, unique: true },
     login: { type: String, required: true },
-    email: { type: String, required: false },
-    isActive: { type: String, required: true },
+    email: { type: String, required: false, default: null },
+    firstName: { type: String, required: false, default: null },
+    lastName: { type: String, required: false, default: null },
+    pictureUrl: { type: String, required: false, default: null },
+    isActive: { type: Boolean, default: true },
+    roles: { type: [String], default: ['regular', 'new'] }
 };
 
-const userModel = model<IUserModel & Document>('User', new Schema(userSchema));
-
-export const userRepository = {
-    create: async (user: IUserModel): Promise<IUserModel | null> => {
-        try {
-            const newModel = new userModel(user);
-            const dbModel = await newModel.save();
-            dbModel.populate("user").execPopulate();
-            
-            return dbModel;
-        } catch(error) {
-            console.log(error);
-            return null;
-        }
+class UserRepository extends BaseRepository<IUserModel> {
+    constructor() {
+        super('user', userSchema);
     }
 }
+
+export const userRepository = new UserRepository();
