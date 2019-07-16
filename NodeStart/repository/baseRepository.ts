@@ -2,7 +2,6 @@ import { model, Schema, SchemaTypeOpts, Document, Model } from 'mongoose';
 
 export type RepositorySchema<T> = { [P in keyof T]: SchemaTypeOpts<any> };
 export type DatabaseCondition<T> = { [P in keyof T & Document]: DatabaseCondition<T[P]> };
-
 export default abstract class MongoRepository<T> {
     private dataModel: Model<T & Document>;
     public constructor(protected entityName: string, schema: RepositorySchema<T>) {
