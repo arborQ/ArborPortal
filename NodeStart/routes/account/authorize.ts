@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { verify, sign } from 'jsonwebtoken';
 import { jwt, app } from '../../config';
-import { userRepository, IUserModel } from '../../repository';
+import { userRepository, IUserModel } from '@bx-database';
 
 interface IGitHubPayload { nickname: string, email: string, picture: string, sub: string }
 interface IFacebookPayload { nickname: string, given_name: string, family_name: string, picture: string, sub: string }

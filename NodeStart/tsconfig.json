@@ -16,7 +16,7 @@
       "outDir": "build",
       "baseUrl": "./",
       "paths": {
-        // "bx-database" : [ "./database/index.ts" ],
+        "@bx-database" : [ "./repository/index.ts" ],
         // "bx-entities" : [ "./database/entities.ts" ],
         // "bx-utils" : [ "./utils/index.ts" ]
       },
