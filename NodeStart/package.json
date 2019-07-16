@@ -6,7 +6,7 @@
     "start": "ts-node-dev --respawn --transpileOnly ./bin/server.ts DEV_APP_PORT=8011"
   },
   "_moduleAliases": {
-    "@bx-database" : "./repository/index.ts"
+    "@bx-database": "./repository/index.ts"
   },
   "dependencies": {
     "@types/cookie-parser": "^1.4.1",
