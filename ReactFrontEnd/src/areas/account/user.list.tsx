@@ -114,7 +114,7 @@ export default class UserListComponent extends StateComponent<IUserListProps, IU
                     </TableHead>
                     <TableBody>
                         {this.props.data === null ? null : this.state.data.map(row => (
-                            <TableRow key={row.id} onClick={() => this.props.navigate(`/account/users/edit/${row.id}`)}>
+                            <TableRow key={row._id} onClick={() => this.props.navigate(`/account/users/edit/${row._id}`)}>
                                 <TableCell component="th" scope="row">
                                     {row.login}
                                 </TableCell>

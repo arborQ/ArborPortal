@@ -32,7 +32,7 @@ function convertFacebookPayloadToUser(payload: IFacebookPayload): IUserModel {
         firstName: payload.family_name,
         lastName: payload.given_name,
         login: payload.nickname,
-        isActive: true, 
+        isActive: true,
         pictureUrl: payload.picture
     };
 }
@@ -42,8 +42,8 @@ function convertGmailPayloadToUser(payload: IGmailPayload): IUserModel {
         externalId: payload.sub,
         firstName: payload.family_name,
         lastName: payload.given_name,
-        login: payload.nickname, 
-        email: payload.email, 
+        login: payload.nickname,
+        email: payload.email,
         isActive: true,
         pictureUrl: payload.picture
     };
@@ -52,8 +52,8 @@ function convertGmailPayloadToUser(payload: IGmailPayload): IUserModel {
 function convertGithubPayloadToUser(payload: IGitHubPayload): IUserModel {
     return {
         externalId: payload.sub,
-        login: payload.nickname, 
-        email: payload.email, 
+        login: payload.nickname,
+        email: payload.email,
         isActive: true,
         pictureUrl: payload.picture
     };
@@ -67,17 +67,17 @@ router.post("/account/authorize", async (request, reply, next) => {
 
         if (!!payload) {
             const userData = convertPayloadToUser(payload);
-            await userRepository.create(userData);
+            const [databaseUser] = await userRepository.find({ externalId: userData.externalId });
+
+            const dbUserData =  !databaseUser 
+            ? await userRepository.create(userData)
+            : await userRepository.update(databaseUser._id, userData);
 
             const newPayload = {
-                nameid: "12345",
-                email: "arbor@o2.pl",
-                unique_name: "Łukasz Wójcik",
-                role: [
-                    "admin",
-                    "reciper",
-                    "userlist"
-                ],
+                nameid: dbUserData._id,
+                email: dbUserData.email,
+                unique_name: dbUserData.login,
+                role: dbUserData.roles || ['regular'],
                 exp: payload.exp,
                 iat: payload.iat
             };
@@ -85,7 +85,6 @@ router.post("/account/authorize", async (request, reply, next) => {
 
             reply
                 .status(200)
-                .cookie(app.authCookieName, token, { maxAge: 86400 })
                 .send({
                     token,
                 });

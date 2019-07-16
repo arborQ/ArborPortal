@@ -13,7 +13,7 @@ using WebApi.Areas.Recipes.Models;
 namespace WebApi.Areas.Recipes.Controllers
 {
     // [PortalAuthorize(UserClaims.RecipeRead)]
-    [Authorize(Roles = "reciper")]
+    [Authorize(Roles = "regular")]
     [Route("api/[area]/[controller]")]
     [Area("Recipes")]
     [ApiController]
