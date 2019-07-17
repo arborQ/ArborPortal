@@ -50,6 +50,16 @@ export function update<T>(url: string, data: any, abortSignal?: AbortSignal): Pr
   return handleAjax(fetch(request, { signal: abortSignal }));
 }
 
+export function patch<T>(url: string, data: any, abortSignal?: AbortSignal): Promise<T> {
+  const request = new Request(url, {
+    body: !!data ? JSON.stringify(data) : null,
+    headers: new Headers(headers()),
+    method: 'PATCH'
+  });
+
+  return handleAjax(fetch(request, { signal: abortSignal }));
+}
+
 export function remove(url: string, data?: any, abortSignal?: AbortSignal): Promise<void> {
   const request = new Request(url, {
     body: !!data ? JSON.stringify(data) : null,

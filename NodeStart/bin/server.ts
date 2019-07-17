@@ -6,7 +6,8 @@ import cookieParser from 'cookie-parser';
 // import * as socket from "socket.io";
 import connectToDatabase from '../repository';
 import * as configSetting from '../config';
-import apiRouter from '../routes';
+import apiRouter from '../areas';
+import jwtPayloadMiddleware from '@bx-middlewares/jwtPayload';
 
 connectToDatabase().then((connection) => {
     if (!connection) {
@@ -18,6 +19,7 @@ connectToDatabase().then((connection) => {
     app.use(bodyParser.json()); // support json encoded bodies
     app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
     app.use(cookieParser());
+    app.use(jwtPayloadMiddleware);
 
     app.use(configSetting.app.apiPath, apiRouter);
 

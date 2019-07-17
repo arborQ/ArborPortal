@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from 'react';
 import TextField from '@material-ui/core/TextField';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -27,49 +27,17 @@ interface IEditUserState {
 
 @ensureNavigationDecorator()
 @ensureIsAuthorized
-@ensureApiDataDecorator<Areas.Account.IUser[]>({   })
+@ensureApiDataDecorator<Areas.Account.IUser[]>({})
 @ensureTranslationsDecorator<IEditUserProps>('account')
 @dialogDecorator<IEditUserProps>('Edit user')
 export default class UserEditComponent extends StateComponent<IEditUserProps, IEditUserState> {
-    private async updateUserData(nextProps: Partial<Areas.Account.IUser>) {
-        const userData = { ...this.state.userData, ...nextProps };
-
-        const validation = await validate<Areas.Account.IUser>({
-            login: stringRange(1, 20),
-            email: stringRange(5, 40)
-        }, userData);
-
-        this.UpdateState(
-            {
-                ...this.state,
-                userData,
-                validation
-            }
-        )
-    }
-
-    private translate(key: string): string {
-        if (this.props.translate === undefined) {
-            return key;
-        }
-
-        return this.props.translate(key);
-    }
-
-    private async save(): Promise<void> {
-        if (this.props.data !== null) {
-            await editUser(this.props.data);
-            this.props.goBack();
-        }
-    }
-
-    public componentWillMount() {
+    componentWillMount() {
         if (!!this.props.data) {
             this.UpdateState({ userData: this.props.data });
         }
     }
 
-    public render(): JSX.Element {
+    render(): JSX.Element {
         if (!this.state || !this.state.userData) {
             return <div>{this.translate('No data')}</div>;
         }
@@ -85,22 +53,34 @@ export default class UserEditComponent extends StateComponent<IEditUserProps, IE
                 <Card>
                     <CardContent>
                         <TextField
-                            id="username"
+                            id='username'
+                            disabled={true}
                             label={userNameTranslation}
                             value={this.state.userData.login || ''}
                             fullWidth
-                            error={!!this.state.validation && !!this.state.validation.details && !!this.state.validation.details.login && !this.state.validation.details.login.isValid}
-                            margin="normal"
+                            error={
+                                !!this.state.validation
+                                && !!this.state.validation.details
+                                && !!this.state.validation.details.login
+                                && !this.state.validation.details.login.isValid
+                            }
+                            margin='normal'
                             helperText={userNameTranslation}
                             onChange={async (e) => { await this.updateUserData({ login: e.target.value }); }}
                         />
                         <TextField
-                            id="email"
+                            id='email'
+                            disabled
                             label={emailTranslation}
                             value={this.state.userData.email || ''}
-                            error={!!this.state.validation && !!this.state.validation.details && !!this.state.validation.details.email && !this.state.validation.details.email.isValid}
+                            error={
+                                !!this.state.validation
+                                && !!this.state.validation.details
+                                && !!this.state.validation.details.email
+                                && !this.state.validation.details.email.isValid
+                            }
                             fullWidth
-                            margin="normal"
+                            margin='normal'
                             helperText={emailTranslation}
                             onChange={async (e) => { await this.updateUserData({ email: e.target.value }); }}
                         />
@@ -108,24 +88,58 @@ export default class UserEditComponent extends StateComponent<IEditUserProps, IE
                             control={
                                 <Checkbox
                                     checked={this.state.userData.isActive}
-                                    onChange={async (e) => { await this.updateUserData({ isActive: e.target.checked }); }}
-                                    value="isActive"
-                                    color="primary"
+                                    onChange={async (e) => {
+                                        await this.updateUserData({ isActive: e.target.checked });
+                                    }}
+                                    value='isActive'
+                                    color='primary'
                                 />
                             }
                             label={isActiveTranslation}
                         />
                     </CardContent>
                     <CardActions>
-                        <Button size="small" variant="contained" color="primary" type="submit">
+                        <Button size='small' variant='contained' color='primary' type='submit'>
                             {saveTranslation}
                         </Button>
-                        <Button size="small" variant="contained" onClick={() => this.props.goBack()}>
+                        <Button size='small' variant='contained' onClick={() => this.props.goBack()}>
                             {cancelTranslation}
                         </Button>
                     </CardActions>
                 </Card>
             </form>
         );
+    }
+
+    private async updateUserData(nextProps: Partial<Areas.Account.IUser>) {
+        const userData = { ...this.state.userData, ...nextProps };
+
+        const validation = await validate<Areas.Account.IUser>({
+            login: stringRange(1, 20),
+            email: stringRange(5, 40)
+        }, userData);
+
+        this.UpdateState(
+            {
+                ...this.state,
+                userData,
+                validation
+            }
+        );
+    }
+
+    private translate(key: string): string {
+        if (this.props.translate === undefined) {
+            return key;
+        }
+
+        return this.props.translate(key);
+    }
+
+    private async save(): Promise<void> {
+        if (this.props.data !== null) {
+            await editUser(this.props.data);
+            this.props.goBack();
+        }
     }
 }
