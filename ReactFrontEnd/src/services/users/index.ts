@@ -1,4 +1,4 @@
-import { get, post, update, remove } from "@bx-utils/ajax";
+import { get, post, update, remove, patch } from "@bx-utils/ajax";
 
 interface IUserSearch {
   loginSearch?: string;
@@ -17,7 +17,7 @@ export function getUser(userId: number): Promise<Areas.Account.IUser> {
 export function editUser(
   user: Areas.Account.IUser
 ): Promise<Areas.Account.IUser> {
-  return update("/api/account/users", user);
+  return patch(`/api/account/users/edit/${user._id}`, user);
 }
 
 export function createUser(

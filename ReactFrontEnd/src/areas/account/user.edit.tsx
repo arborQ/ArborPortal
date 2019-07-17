@@ -11,7 +11,6 @@ import { ensureNavigationDecorator, INavigationProps } from '@bx-utils/decorator
 import { ensureIsAuthorized } from '@bx-utils/decorators/ensureIsAuthorized';
 import { dialogDecorator, IDialogProps } from '@bx-utils/decorators/dialogDecorator';
 import { ensureTranslationsDecorator, ITranslationsProps } from '@bx-utils/decorators/translateDecorator';
-import { validate, stringRange, ValidationResult } from '@bx-utils/validator';
 import StateComponent from '@bx-utils/stateComponent';
 import { editUser } from '@bx-services/users'
 interface IEditUserProps extends Utils.Decorators.ILoadDataProps<Areas.Account.IUser>, IDialogProps,
@@ -22,7 +21,6 @@ interface IEditUserProps extends Utils.Decorators.ILoadDataProps<Areas.Account.I
 
 interface IEditUserState {
     userData: Areas.Account.IUser;
-    validation: ValidationResult<Areas.Account.IUser>;
 }
 
 @ensureNavigationDecorator()
@@ -58,12 +56,6 @@ export default class UserEditComponent extends StateComponent<IEditUserProps, IE
                             label={userNameTranslation}
                             value={this.state.userData.login || ''}
                             fullWidth
-                            error={
-                                !!this.state.validation
-                                && !!this.state.validation.details
-                                && !!this.state.validation.details.login
-                                && !this.state.validation.details.login.isValid
-                            }
                             margin='normal'
                             helperText={userNameTranslation}
                             onChange={async (e) => { await this.updateUserData({ login: e.target.value }); }}
@@ -73,12 +65,6 @@ export default class UserEditComponent extends StateComponent<IEditUserProps, IE
                             disabled
                             label={emailTranslation}
                             value={this.state.userData.email || ''}
-                            error={
-                                !!this.state.validation
-                                && !!this.state.validation.details
-                                && !!this.state.validation.details.email
-                                && !this.state.validation.details.email.isValid
-                            }
                             fullWidth
                             margin='normal'
                             helperText={emailTranslation}
@@ -114,16 +100,10 @@ export default class UserEditComponent extends StateComponent<IEditUserProps, IE
     private async updateUserData(nextProps: Partial<Areas.Account.IUser>) {
         const userData = { ...this.state.userData, ...nextProps };
 
-        const validation = await validate<Areas.Account.IUser>({
-            login: stringRange(1, 20),
-            email: stringRange(5, 40)
-        }, userData);
-
         this.UpdateState(
             {
                 ...this.state,
-                userData,
-                validation
+                userData
             }
         );
     }
@@ -138,7 +118,7 @@ export default class UserEditComponent extends StateComponent<IEditUserProps, IE
 
     private async save(): Promise<void> {
         if (this.props.data !== null) {
-            await editUser(this.props.data);
+            await editUser(this.state.userData);
             this.props.goBack();
         }
     }

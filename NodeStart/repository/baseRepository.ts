@@ -7,11 +7,11 @@ export type Entity<T> = T & { _id: string };
 export default abstract class MongoRepository<T> {
     private dataModel: Model<T & Document>;
     public constructor(protected entityName: string, schema: RepositorySchema<T>) {
-       this.dataModel = model<T & Document>(entityName, new Schema(schema));
+        this.dataModel = model<T & Document>(entityName, new Schema(schema));
     }
 
     public async update(id: string, model: Partial<T>): Promise<Entity<T>> {
-        return await this.dataModel.findOneAndUpdate({ _id: id }, model);
+        return await this.dataModel.findByIdAndUpdate(id, model, { new: true });
     }
 
     public async findById(id: string): Promise<Entity<T>> {
@@ -22,13 +22,13 @@ export default abstract class MongoRepository<T> {
         return await this.dataModel.find(condition);
     }
 
-    public async create(model: T) : Promise<Entity<T> | null> {
+    public async create(model: T): Promise<Entity<T> | null> {
         try {
             const newModel = new this.dataModel(model);
             const dbModel = await newModel.save();
-            
+
             return dbModel;
-        } catch(error) {
+        } catch (error) {
             console.log(error);
             return null;
         }
