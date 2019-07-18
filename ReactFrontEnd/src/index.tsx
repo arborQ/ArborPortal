@@ -15,6 +15,10 @@ import AuthorizeContext from '@bx-contexts/authorize.context';
 import { SnackbarProvider } from 'notistack';
 import { hot } from 'react-hot-loader/root';
 
+const socket = io();
+socket.on('new_user', (msg) => {
+    console.log(msg);
+});
 const StyledNavLink = styled(NavLink)`
     color: #FFF;
 

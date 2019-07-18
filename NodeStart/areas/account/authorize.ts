@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { verify, sign } from 'jsonwebtoken';
-import { jwt, app } from '../../config';
+import { jwt } from '../../config';
 import { userRepository, IUserModel } from '@bx-database';
 
 interface IGitHubPayload { nickname: string, email: string, picture: string, sub: string }
@@ -59,7 +59,7 @@ function convertGithubPayloadToUser(payload: IGitHubPayload): IUserModel {
     };
 }
 
-router.post("/account/authorize", async (request, reply, next) => {
+router.post("/", async (request, reply, next) => {
     const { token } = request.body;
 
     try {

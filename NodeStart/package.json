@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "ts-node-dev --respawn --transpileOnly ./bin/server.ts DEV_APP_PORT=8011"
+    "start": "ts-node-dev --respawn --transpileOnly ./bin/server.ts"
   },
   "_moduleAliases": {
     "@bx-database": "./repository/index.ts",

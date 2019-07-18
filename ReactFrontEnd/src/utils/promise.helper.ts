@@ -9,7 +9,7 @@ class CancalablePromise<T> implements ICancelablePromise<T> {
 
     }
 
-    public get promise(): Promise<T> {
+    get promise(): Promise<T> {
         return new Promise<T>((resolve, reject) => {
             this.originalPromise
                 .then(val => this.isCancelled ? reject({ isCancelled: this.isCancelled }) : resolve(val))
@@ -17,7 +17,7 @@ class CancalablePromise<T> implements ICancelablePromise<T> {
         });
     }
 
-    public cancel(): void {
+    cancel(): void {
         this.isCancelled = true;
     }
 }

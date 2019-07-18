@@ -6,7 +6,7 @@ var router = Router();
 
 router.use(isAuthorizedMiddleware([ 'users' ]));
 
-router.get("/account/users", 
+router.get("/", 
 async (request, reply) => {
     const items = await userRepository.find();
     reply
@@ -14,14 +14,14 @@ async (request, reply) => {
         .send({ items, totalCount: items.length });
 });
 
-router.get('/account/users/edit/:id', async (request, reply) => {
+router.get('/edit/:id', async (request, reply) => {
     const { id } = request.params;
     const userDb = await userRepository.findById(id);
 
     reply.send(userDb);
 });
 
-router.patch('/account/users/edit/:id', isAuthorizedMiddleware([ 'updateUser' ]), async (request, reply) => {
+router.patch('/edit/:id', isAuthorizedMiddleware([ 'updateUser' ]), async (request, reply) => {
     const { id } = request.params;
     const { roles, isActive } = request.body;
     const userDb = await userRepository.update(id, { roles, isActive: !!isActive })

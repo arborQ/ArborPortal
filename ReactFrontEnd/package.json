@@ -19,7 +19,9 @@
   "homepage": "https://github.com/arborQ/ReactFrontEnd#readme",
   "dependencies": {
     "@material-ui/icons": "^4.1.0",
+    "@types/socket.io": "^2.1.2",
     "@types/socket.io-client": "^1.4.32",
+    "@types/sockjs-client": "^1.1.1",
     "connect-history-api-fallback": "^1.6.0",
     "dropzone": "^5.5.1",
     "http-proxy": "1.17.0",
@@ -27,6 +29,7 @@
     "material-ui-dropzone": "^2.3.5",
     "notistack": "^0.8.6",
     "react-hot-loader": "^4.12.3",
+    "socket.io": "^2.2.0",
     "socket.io-client": "^2.2.0"
   },
   "devDependencies": {
