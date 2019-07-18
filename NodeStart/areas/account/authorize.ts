@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { verify, sign } from 'jsonwebtoken';
 import { jwt } from '../../config';
 import { userRepository, IUserModel } from '@bx-database';
-
+import notifyNewUser from '../../queues/userQueue';
 interface IGitHubPayload { nickname: string, email: string, picture: string, sub: string }
 interface IFacebookPayload { nickname: string, given_name: string, family_name: string, picture: string, sub: string }
 interface IGmailPayload { nickname: string, given_name: string, family_name: string, picture: string, sub: string, email: string }
@@ -69,9 +69,11 @@ router.post("/", async (request, reply, next) => {
             const userData = convertPayloadToUser(payload);
             const [databaseUser] = await userRepository.find({ externalId: userData.externalId });
 
-            const dbUserData =  !databaseUser 
-            ? await userRepository.create(userData)
-            : await userRepository.update(databaseUser._id, userData);
+            const dbUserData = !databaseUser
+                ? await userRepository.create(userData)
+                : await userRepository.update(databaseUser._id, userData);
+
+            await notifyNewUser(userData);
 
             const newPayload = {
                 nameid: dbUserData._id,

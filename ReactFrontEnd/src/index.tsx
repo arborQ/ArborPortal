@@ -16,8 +16,8 @@ import { SnackbarProvider } from 'notistack';
 import { hot } from 'react-hot-loader/root';
 
 const socket = io();
-socket.on('new_user', (msg) => {
-    console.log(msg);
+socket.on('core_user_channel', (msg) => {
+    console.log({msg});
 });
 const StyledNavLink = styled(NavLink)`
     color: #FFF;

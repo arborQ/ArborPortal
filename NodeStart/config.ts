@@ -1,6 +1,16 @@
 
 import * as dotenv from 'dotenv';
+import { cleanEnv, str, port as isPort , url } from 'envalid';
 dotenv.config();
+
+cleanEnv(process.env, {
+    PRIVATE_TOKEN_KEY: str(),
+    AUTH0_TOKEN_KEY: str(),
+    DEV_APP_PORT: isPort(),
+    DEV_APP_PATH: str(),
+    MONGO_CONNECTION_STRING: url()
+});
+
 
 function formatKey(key: string): string {
     const beginKey = "-----BEGIN CERTIFICATE-----";
@@ -25,10 +35,8 @@ function formatKey(key: string): string {
 const jwtPublicTokenKey = process.env.PUBLIC_TOKEN_KEY;
 const jwtPrivateTokenKey = process.env.PRIVATE_TOKEN_KEY;
 const jwtAuth0TokenKey = formatKey(process.env.AUTH0_TOKEN_KEY);
-const cookieSecretKey = process.env.COOKIE_SECRET;
 const port = parseInt(process.env.DEV_APP_PORT) || 8011;
 const apiPath = process.env.DEV_APP_PATH || '/api';
-const authCookieName = process.env.AUTH_COOKIE_NAME;
 
 export const env = process.env.NODE_ENV;
 export const jwt = {
@@ -36,7 +44,8 @@ export const jwt = {
     privateTokenKey: jwtPrivateTokenKey,
     auth0TokenKey: jwtAuth0TokenKey
 };
-export const app = { port, apiPath, cookieSecretKey, authCookieName };
+export const app = { port, apiPath };
 export const database = {
     mongoConnectionString: process.env.MONGO_CONNECTION_STRING
 }
+export const queue_url = process.env.QUEUE_URL;
