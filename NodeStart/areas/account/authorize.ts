@@ -3,6 +3,10 @@ import { verify, sign } from 'jsonwebtoken';
 import { jwt } from '../../config';
 import { userRepository, IUserModel } from '@bx-database';
 import notifyNewUser from '../../queues/userQueue';
+import { ILoginInfoModel } from '../../repository/user';
+import express from 'express';
+import newGuid from 'uuid/v4';
+
 interface IGitHubPayload { nickname: string, email: string, picture: string, sub: string }
 interface IFacebookPayload { nickname: string, given_name: string, family_name: string, picture: string, sub: string }
 interface IGmailPayload { nickname: string, given_name: string, family_name: string, picture: string, sub: string, email: string }
@@ -59,7 +63,16 @@ function convertGithubPayloadToUser(payload: IGitHubPayload): IUserModel {
     };
 }
 
-router.post("/", async (request, reply, next) => {
+function getLoginInfo(req: express.Request): ILoginInfoModel {
+    return {
+        sessionKey: newGuid(),
+        clientUrl: req.connection.remoteAddress,
+        createdAt: new Date(),
+        expiredAt: new Date()
+    };
+}
+
+router.post("/", async (request: express.Request, reply, next) => {
     const { token } = request.body;
 
     try {
@@ -67,19 +80,19 @@ router.post("/", async (request, reply, next) => {
 
         if (!!payload) {
             const userData = convertPayloadToUser(payload);
-            const [databaseUser] = await userRepository.find({ externalId: userData.externalId });
-
-            const dbUserData = !databaseUser
-                ? await userRepository.create(userData)
-                : await userRepository.update(databaseUser._id, userData);
-
+            const info = getLoginInfo(request);
+            const dbUserData = await userRepository.storeNewExternalLogin({
+                ...userData,
+                roles: ['regular']
+            }, info);
             await notifyNewUser(userData);
 
             const newPayload = {
                 nameid: dbUserData._id,
                 email: dbUserData.email,
                 unique_name: dbUserData.login,
-                role: dbUserData.roles || ['regular'],
+                sessionKey: info.sessionKey,
+                role: dbUserData.roles,
                 exp: payload.exp,
                 iat: payload.iat
             };

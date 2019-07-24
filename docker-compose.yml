@@ -21,8 +21,11 @@ services:
   #   ports:
   #     - "8080:8080"
   redis:
-    image: bitnami/redis
+    image: redis:4-alpine
     container_name: redis
+    command: redis-server --requirepass yourpassword
+    ports:
+      - '6379:6379'
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:6.5.4
     container_name: elasticsearch
@@ -77,20 +80,20 @@ services:
   #   volumes:
   #     - ./nginx/nginx.conf:/etc/nginx/nginx.conf
   #     - ./nginx/logs:/var/log/nginx/
-  db:
-    container_name: db
-    image: "microsoft/mssql-server-linux"
-    restart: always
-    ports:
-      - "1433:1433"
-    expose: 
-      - 1433
-    volumes:
-      - ./db/data/mssql:/var/opt/mssql/data
-      - ./db/logs/mssql:/var/opt/mssql/log
-    environment:
-      ACCEPT_EULA: "Y"
-      SA_PASSWORD: "D.`(>q8'5d,ngL>H"
+  # db:
+  #   container_name: db
+  #   image: "microsoft/mssql-server-linux"
+  #   restart: always
+  #   ports:
+  #     - "1433:1433"
+  #   expose: 
+  #     - 1433
+  #   volumes:
+  #     - ./db/data/mssql:/var/opt/mssql/data
+  #     - ./db/logs/mssql:/var/opt/mssql/log
+  #   environment:
+  #     ACCEPT_EULA: "Y"
+  #     SA_PASSWORD: "D.`(>q8'5d,ngL>H"
   rabbitmq:
     image: "rabbitmq:latest"
     hostname: "rabbitmq"

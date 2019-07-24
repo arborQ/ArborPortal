@@ -11,7 +11,7 @@ export default abstract class MongoRepository<T> {
     }
 
     public async update(id: string, model: Partial<T>): Promise<Entity<T>> {
-        return await this.dataModel.findByIdAndUpdate(id, model, { new: true });
+        return await this.dataModel.updateOne({ _id: id }, model, { new: true });
     }
 
     public async findById(id: string): Promise<Entity<T>> {
