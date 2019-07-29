@@ -68,7 +68,7 @@ function getLoginInfo(req: express.Request): ILoginInfoModel {
         sessionKey: newGuid(),
         clientUrl: req.connection.remoteAddress,
         createdAt: new Date(),
-        expiredAt: new Date()
+        expiredAt: new Date() // TODO: add real expire date
     };
 }
 
@@ -108,5 +108,7 @@ router.post("/", async (request: express.Request, reply, next) => {
         next(error);
     }
 });
+
+router.delete("/", ((req, res) => { res.sendStatus(500).send({ error: "Not yet implemented" }) }));
 
 export default router;

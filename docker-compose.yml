@@ -2,8 +2,49 @@ version: '3'
 volumes:
   node_modules_react:
   node_modules_vue:
-  esdata1:
+  esdata01:
+    driver: local
 services:
+  redis:
+    image: redis:4-alpine
+    container_name: redis
+    command: redis-server --requirepass yourpassword
+    ports:
+      - '6379:6379'
+    expose:
+      - 6379
+  es01:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.2.0
+    container_name: es01
+    environment:
+      - node.name=es01
+      - discovery.seed_hosts=es02
+      - cluster.initial_master_nodes=es01,es02
+      - cluster.name=docker-cluster
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - esdata01:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+  rabbitmq:
+    image: "rabbitmq:latest"
+    hostname: "rabbitmq"
+    environment:
+      RABBITMQ_ERLANG_COOKIE: "SWQOKODSQALRPCLNMEQG"
+      RABBITMQ_DEFAULT_USER: "rabbitmq"
+      RABBITMQ_DEFAULT_PASS: "rabbitmq"
+      RABBITMQ_DEFAULT_VHOST: "/"
+    ports:
+      - "15672:15672"
+    expose:
+      - 15672
+    labels:
+      NAME: "rabbitmq"
   # vue:
   #   build: ./VueFrontEnd
   #   container_name: vueweb
@@ -20,34 +61,6 @@ services:
   #     - ./ReactFrontEnd:/usr/src/app
   #   ports:
   #     - "8080:8080"
-  redis:
-    image: redis:4-alpine
-    container_name: redis
-    command: redis-server --requirepass yourpassword
-    ports:
-      - '6379:6379'
-  elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:6.5.4
-    container_name: elasticsearch
-    environment:
-      - cluster.name=docker-cluster
-      - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-    ulimits:
-      nofile:
-        soft: 65536
-        hard: 65536
-      memlock:
-        soft: -1
-        hard: -1
-    volumes:
-      - esdata1:/usr/share/elasticsearch/data
-    ports:
-      - "9299:9200"
-      - "9399:9300"
-    expose:
-      - 9299
-      - 9399
   # api:
   #   build: ./CoreStart
   #   container_name: api_core
@@ -94,15 +107,3 @@ services:
   #   environment:
   #     ACCEPT_EULA: "Y"
   #     SA_PASSWORD: "D.`(>q8'5d,ngL>H"
-  rabbitmq:
-    image: "rabbitmq:latest"
-    hostname: "rabbitmq"
-    environment:
-      RABBITMQ_ERLANG_COOKIE: "SWQOKODSQALRPCLNMEQG"
-      RABBITMQ_DEFAULT_USER: "rabbitmq"
-      RABBITMQ_DEFAULT_PASS: "rabbitmq"
-      RABBITMQ_DEFAULT_VHOST: "/"
-    ports:
-      - "15672:15672"
-    labels:
-      NAME: "rabbitmq"
