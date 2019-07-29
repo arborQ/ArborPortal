@@ -1,6 +1,6 @@
 import { RedisClient } from 'redis';
 
-export default abstract class RedisCache<T> {
+export default class RedisCache<T> {
     constructor(private name: string, private client: RedisClient) { }
 
     set<T>(item: T): Promise<void> {
