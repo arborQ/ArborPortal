@@ -3,13 +3,12 @@ import { useTranslation } from 'react-i18next';
 import AuthorizeContext from '@bx-contexts/authorize.context';
 import { useSnackbar } from 'notistack';
 import AsyncButton from '@bx-components/async.button.component';
+import { ButtonProps } from '@material-ui/core/Button';
 
-interface ILoginButtonProps {
-    text?: string;
-    onAuthorized: () => void;
+interface ILoginButtonProps extends ButtonProps {
 }
 
-export default function (props: ILoginButtonProps): JSX.Element {
+export default function ExternalProviderLogin(props: ILoginButtonProps): JSX.Element {
     const { t } = useTranslation();
     const { enqueueSnackbar } = useSnackbar();
 
@@ -20,17 +19,18 @@ export default function (props: ILoginButtonProps): JSX.Element {
                     value.isAuthorized
                         ? null
                         : <AsyncButton
+                            {...props}
                             onClick={async () => {
-                                const { login } = await import('@bx-services/account');
-                                await login();
-                                props.onAuthorized();
-                                enqueueSnackbar(t('hiUser'));
+                                try {
+                                    const { login } = await import('@bx-services/account');
+                                    await login();
+                                    value.changeAuthorize(true);
+                                    enqueueSnackbar(t('User logged in message'));
+                                } catch {
+                                    return Promise.resolve(false);
+                                }
                             }}
-                        >
-                            {
-                                t(props.text || 'Login')
-                            }
-                        </AsyncButton>
+                        />
                 )
             }
         </AuthorizeContext.Consumer>

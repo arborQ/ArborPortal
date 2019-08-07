@@ -13,7 +13,7 @@ const useStyles = makeStyles(theme => ({
         position: 'relative',
     },
     buttonProgress: {
-        color: '#FFF',
+        // color: '#FFF',
         position: 'absolute',
         top: '50%',
         left: '50%',
@@ -22,8 +22,8 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export default function (props: ButtonProps): JSX.Element {
-    const [isLoading, loadingChange] = React.useState(false);
+export default function AsyncButton({ loading, ...props }: ButtonProps & { loading?: boolean }): JSX.Element {
+    const [isLoading, loadingChange] = React.useState(!!loading);
     const buttonProps = {
         ...props,
         disabled: props.disabled === undefined ? isLoading : (props.disabled || isLoading),
@@ -40,6 +40,7 @@ export default function (props: ButtonProps): JSX.Element {
         }
     };
     const classes = useStyles();
+
     return (
         <div className={`${classes.root} ${classes.wrapper}`}>
             <Button {...buttonProps}></Button>

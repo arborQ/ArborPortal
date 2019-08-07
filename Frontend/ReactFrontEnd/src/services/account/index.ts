@@ -35,7 +35,6 @@ getAuth0.on('authorization_error', result => {
 getAuth0.on('authenticated', async authResult => {
   const result = await post<{ token: string }>(authorizeUrl, { token: authResult.idToken });
 
-  console.log(result);
   atuhorizeStore.update({ token: result.token });
   if (!!promiseResolve) {
     promiseResolve();

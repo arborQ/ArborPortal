@@ -42,7 +42,7 @@ interface IUserListState {
 @ensureNavigationDecorator()
 @ensureIsAuthorized
 @ensureApiDataDecorator<Areas.Account.IUser[]>({ url: '/account/users' })
-@ensureTranslationsDecorator<IUserListProps>('account')
+@ensureTranslationsDecorator<IUserListProps>({ namespace: 'account' })
 export default class UserListComponent extends StateComponent<IUserListProps, IUserListState> {
     public componentWillMount(): void {
         this.componentWillReceiveProps(this.props);

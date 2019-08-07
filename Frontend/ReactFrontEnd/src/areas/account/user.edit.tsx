@@ -26,7 +26,7 @@ interface IEditUserState {
 @ensureNavigationDecorator()
 @ensureIsAuthorized
 @ensureApiDataDecorator<Areas.Account.IUser[]>({})
-@ensureTranslationsDecorator<IEditUserProps>('account')
+@ensureTranslationsDecorator<IEditUserProps>({ namespace: 'account' })
 @dialogDecorator<IEditUserProps>('Edit user')
 export default class UserEditComponent extends StateComponent<IEditUserProps, IEditUserState> {
     componentWillMount() {

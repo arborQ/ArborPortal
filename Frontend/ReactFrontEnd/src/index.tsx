@@ -7,7 +7,6 @@ import Container from '@material-ui/core/Container';
 import { BrowserRouter as Router, Route, NavLink, Switch } from 'react-router-dom';
 import styled from 'styled-components';
 import ChangeLanguageButton from './components/change.language.button';
-import LoginButton from './components/login.button';
 import LogOutButton from './components/logout.button';
 import './translations/i18n';
 import { isAuthorized as isAuthorizedAction } from '@bx-services/account';
@@ -17,7 +16,7 @@ import { hot } from 'react-hot-loader/root';
 
 const socket = io();
 socket.on('core_user_channel', (msg) => {
-    console.log({msg});
+    console.log({ msg });
 });
 const StyledNavLink = styled(NavLink)`
     color: #FFF;
@@ -36,6 +35,7 @@ const links = [
 
 const anonymousLinks = [
     { text: 'Home', path: '/' },
+    { text: 'Login', path: '/authorize/login' },
     { text: 'Error', path: '/error' },
 ];
 
@@ -48,7 +48,7 @@ function Render(): JSX.Element | null {
             changeAuthorize(result);
             changeuserStatus(true);
         });
-    });
+    }, [isAuthorized]);
 
     if (!userStatusChecked) {
         return null;
@@ -72,7 +72,7 @@ function Render(): JSX.Element | null {
                                             {l.text}
                                         </StyledNavLink>))}
                                 {!isAuthorized
-                                    ? <LoginButton onAuthorized={() => changeAuthorize(true)} />
+                                    ? null
                                     : <LogOutButton onUnauthorized={() => changeAuthorize(false)} />
                                 }
                                 <ChangeLanguageButton name={''} />
@@ -94,6 +94,9 @@ function Render(): JSX.Element | null {
                                     <Route
                                         path='/recipes/recipe'
                                         component={React.lazy(() => import('./areas/recipes/recipe.cardIndex'))} />
+                                    <Route
+                                        path='/authorize/login'
+                                        component={React.lazy(() => import('./areas/authorize/login'))} />
                                     <Route component={React.lazy(() => import('./lazy/404'))} />
                                 </Switch>
                             </CardContent>
