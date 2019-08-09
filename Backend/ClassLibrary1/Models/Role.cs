@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace AuthorizeLogin.Models
+namespace AuthorizeLogin.Persistance.Database.Models
 {
     [Table(nameof(Role), Schema = "Authorize")]
     public class Role
@@ -15,15 +15,5 @@ namespace AuthorizeLogin.Models
         public DateTime CreatedAt { get; set; }
 
         public DateTime? DeletedAt { get; set; }
-
-        [ForeignKey(nameof(RoleUser))]
-        public virtual long? RoleUserId { get; set; }
-
-        public virtual User RoleUser { get; set; }
-
-        [ForeignKey(nameof(RoleProfile))]
-        public virtual long? RoleProfileId { get; set; }
-
-        public virtual Profile RoleProfile { get; set; }
     }
 }

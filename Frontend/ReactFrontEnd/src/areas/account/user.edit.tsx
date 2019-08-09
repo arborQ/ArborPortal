@@ -13,8 +13,9 @@ import { dialogDecorator, IDialogProps } from '@bx-utils/decorators/dialogDecora
 import { ensureTranslationsDecorator, ITranslationsProps } from '@bx-utils/decorators/translateDecorator';
 import StateComponent from '@bx-utils/stateComponent';
 import { editUser } from '@bx-services/users'
-interface IEditUserProps extends Utils.Decorators.ILoadDataProps<Areas.Account.IUser>, IDialogProps,
-    ITranslationsProps,
+interface IEditUserProps extends
+    Utils.Decorators.ILoadDataProps<Areas.Account.IUser>,
+    IDialogProps,
     INavigationProps {
 
 }

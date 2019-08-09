@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace AuthorizeLogin.Models
+namespace AuthorizeLogin.Persistance.Database.Models
 {
     [Table(nameof(User), Schema = "Authorize")]
     public class User
@@ -29,11 +29,6 @@ namespace AuthorizeLogin.Models
 
         public virtual ICollection<Role> Roles { get; set; }
 
-        public virtual ICollection<Profile> Profiles { get; set; }
-
-        [ForeignKey(nameof(LoginData))]
-        public virtual long? LoginDataId { get; set; }
-
-        public virtual LoginData LoginData { get; set; }
+        public virtual LoginData UserLoginData { get; set; }
     }
 }

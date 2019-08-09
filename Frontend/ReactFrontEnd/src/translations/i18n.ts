@@ -1,10 +1,10 @@
-import i18n from "i18next";
-import { initReactI18next } from "react-i18next";
-import accountEn from '@bx-translations/account/en'
-import accountPl from '@bx-translations/account/pl'
-import sharedEn from '@bx-translations/shared/en'
-import sharedPl from '@bx-translations/shared/pl'
-import { localeStore  } from '@bx-utils/storage'
+import * as i18n from 'i18next';
+import { initReactI18next } from 'react-i18next';
+import accountEn from '@bx-translations/account/en';
+import accountPl from '@bx-translations/account/pl';
+import sharedEn from '@bx-translations/shared/en';
+import sharedPl from '@bx-translations/shared/pl';
+import { localeStore } from '@bx-utils/storage';
 
 const locale = localeStore.get() || { language: 'pl' };
 
@@ -35,10 +35,10 @@ i18n
     }
   });
 
-  export default i18n;
+export default i18n;
 
-  export async function loadNamespace(namespace: string, loadTranslations: () => Promise<any>) : Promise<void> {
-    const loadedTranslation = await loadTranslations();
+export async function loadNamespace(namespace: string, loadTranslations: () => Promise<any>): Promise<void> {
+  const loadedTranslation = await loadTranslations();
 
-    i18n.addResourceBundle(i18n.language, namespace, loadedTranslation);
-  }
+  i18n.addResourceBundle(i18n.language, namespace, loadedTranslation);
+}

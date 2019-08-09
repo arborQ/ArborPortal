@@ -41,7 +41,7 @@ export function ensureIsAuthorized<P>(Component: React.ComponentClass<P>): any {
                                         <Typography>{notAuthorizedText}</Typography>
                                     </CardContent>
                                     <CardActions>
-                                        <LoginButton onAuthorized={() => { changeAuthorize(true); }} />
+                                        <LoginButton />
                                     </CardActions>
                                 </Card>
                             </Container>

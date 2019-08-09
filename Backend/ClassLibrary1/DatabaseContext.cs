@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AuthorizeLogin.Models;
+using AuthorizeLogin.Persistance.Database.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace AuthorizeLogin
+namespace AuthorizeLogin.Persistance.Database
 {
     public class DatabaseContext : DbContext
     {
@@ -18,8 +18,6 @@ namespace AuthorizeLogin
 
         public DbSet<Role> Roles { get; set; }
 
-        public DbSet<Profile> Profiles { get; set; }
-
         public DbSet<LoginData> LoginDatas { get; set; }
 
 
@@ -28,13 +26,12 @@ namespace AuthorizeLogin
             modelBuilder.Entity<User>(e =>
             {
                 e.HasIndex(u => u.Login).IsUnique();
-                e.Property(b => b.CreatedAt).HasDefaultValue(DateTime.UtcNow);
             });
 
-            modelBuilder.Entity<Role>(e =>
-            {
-                e.Property(b => b.CreatedAt).HasDefaultValue(DateTime.UtcNow);
-            });
+            modelBuilder.Entity<User>()
+                .HasOne(u => u.UserLoginData)
+                .WithOne(ld => ld.LoginUser)
+                .HasForeignKey<LoginData>(ld => ld.Id);
 
             base.OnModelCreating(modelBuilder);
         }

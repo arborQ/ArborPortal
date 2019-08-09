@@ -1,0 +1,12 @@
+C:\Users\lwojcik\Portal\Backend\ClassLibrary1\bin\Debug\netstandard2.0\AuthorizeLogin.Persistance.Database.deps.json
+C:\Users\lwojcik\Portal\Backend\ClassLibrary1\bin\Debug\netstandard2.0\AuthorizeLogin.Persistance.Database.dll
+C:\Users\lwojcik\Portal\Backend\ClassLibrary1\bin\Debug\netstandard2.0\AuthorizeLogin.Persistance.Database.pdb
+C:\Users\lwojcik\Portal\Backend\ClassLibrary1\obj\Debug\netstandard2.0\Database.csprojAssemblyReference.cache
+C:\Users\lwojcik\Portal\Backend\ClassLibrary1\obj\Debug\netstandard2.0\Database.csproj.CoreCompileInputs.cache
+C:\Users\lwojcik\Portal\Backend\ClassLibrary1\obj\Debug\netstandard2.0\Database.AssemblyInfoInputs.cache
+C:\Users\lwojcik\Portal\Backend\ClassLibrary1\obj\Debug\netstandard2.0\Database.AssemblyInfo.cs
+C:\Users\lwojcik\Portal\Backend\ClassLibrary1\obj\Debug\netstandard2.0\AuthorizeLogin.Persistance.Database.dll
+C:\Users\lwojcik\Portal\Backend\ClassLibrary1\obj\Debug\netstandard2.0\AuthorizeLogin.Persistance.Database.pdb
+C:\Users\lwojcik\Portal\Backend\ClassLibrary1\bin\Debug\netstandard2.0\Microsoft.EntityFrameworkCore.dll
+C:\Users\lwojcik\Portal\Backend\ClassLibrary1\bin\Debug\netstandard2.0\Microsoft.EntityFrameworkCore.xml
+C:\Users\lwojcik\Portal\Backend\ClassLibrary1\obj\Debug\netstandard2.0\Database.csproj.CopyComplete

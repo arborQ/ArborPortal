@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29020.237
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthorizeLogin", "AuthorizeLogin.csproj", "{0193C57F-1F7A-4AAE-BE6D-E075FB24FC02}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthorizeLogin", "AuthorizeLogin.csproj", "{0193C57F-1F7A-4AAE-BE6D-E075FB24FC02}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Persistance", "Persistance", "{808234FE-18D7-4787-88A8-29E63DFA50F0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Database", "..\ClassLibrary1\Database.csproj", "{BB0069E4-506D-43FD-BA93-A3D1643EAC5B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,9 +19,16 @@ Global
 		{0193C57F-1F7A-4AAE-BE6D-E075FB24FC02}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0193C57F-1F7A-4AAE-BE6D-E075FB24FC02}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0193C57F-1F7A-4AAE-BE6D-E075FB24FC02}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB0069E4-506D-43FD-BA93-A3D1643EAC5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB0069E4-506D-43FD-BA93-A3D1643EAC5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB0069E4-506D-43FD-BA93-A3D1643EAC5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB0069E4-506D-43FD-BA93-A3D1643EAC5B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{BB0069E4-506D-43FD-BA93-A3D1643EAC5B} = {808234FE-18D7-4787-88A8-29E63DFA50F0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C330961B-43D2-44EA-8F94-D6F50984959F}
