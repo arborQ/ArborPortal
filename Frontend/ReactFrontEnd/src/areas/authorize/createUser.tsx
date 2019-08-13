@@ -14,6 +14,7 @@ import ArrowDropDownIcon from '@material-ui/icons/PersonAdd';
 import Button from '@material-ui/core/Button';
 import styled from 'styled-components';
 import { withRouter, RouteChildrenProps } from 'react-router';
+import CreateUserModel, { validateModel } from './models/createUser';
 
 interface ICreateUserProps extends RouteChildrenProps {
 
@@ -38,12 +39,7 @@ export default withRouter(
         const passwordTranslation = t('Password');
         const cancelTranslation = t('Cancel');
 
-        const [userData, changeUserData] = React.useState({
-            username: '',
-            password: '',
-            confirmPassword: '',
-            email: ''
-        });
+        const [userData, changeUserData] = React.useState(new CreateUserModel());
 
         return (
             <FormComponent onSubmit={async () => {
@@ -61,7 +57,11 @@ export default withRouter(
                                     disabled={value.isLoading}
                                     margin='normal'
                                     onChange={async (e) => {
-                                        changeUserData({ ...userData, username: e.target.value });
+                                        const newModel = { ...userData, username: e.target.value };
+                                        console.log({
+                                            errors: await validateModel(newModel)
+                                        });
+                                        changeUserData(newModel);
                                     }}
                                 />
                                 <TextField

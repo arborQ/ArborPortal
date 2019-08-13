@@ -22,6 +22,8 @@
     "@types/socket.io": "2.1.2",
     "@types/socket.io-client": "1.4.32",
     "@types/sockjs-client": "1.1.1",
+    "class-transformer": "^0.2.3",
+    "class-validator": "^0.10.0",
     "connect-history-api-fallback": "1.6.0",
     "dropzone": "5.5.1",
     "http-proxy": "1.17.0",
