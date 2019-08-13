@@ -8,9 +8,9 @@ namespace AuthorizeLogin.Persistance.Database.Models
         public long Id { get; set; }
 
         [Required, MaxLength(100)]
-        public string PasswordHash { get; set; }
+        public byte[] PasswordHash { get; set; }
 
         [Required, MaxLength(100)]
-        public string PasswordSalt { get; set; }
+        public int PasswordSalt { get; set; }
     }
 }

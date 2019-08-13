@@ -26,7 +26,7 @@
     "dropzone": "5.5.1",
     "http-proxy": "1.17.0",
     "http-proxy-middleware": "0.19.1",
-    "material-ui-dropzone": "2.3.5",
+    "material-ui-dropzone": "2.4.0",
     "notistack": "0.8.6",
     "react-hot-loader": "4.12.3",
     "socket.io": "2.2.0",
@@ -35,7 +35,7 @@
   "devDependencies": {
     "@babel/core": "7.5.5",
     "@loadable/component": "5.10.1",
-    "@material-ui/core": "4.3.1",
+    "@material-ui/core": "4.3.2",
     "@storybook/addon-actions": "5.1.1",
     "@storybook/addon-links": "5.1.1",
     "@storybook/addons": "5.1.1",

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using AuthorizeLogin.Areas.Authorize.Requests;
 using AuthorizeLogin.Areas.Authorize.Responses;
 using AuthorizeLogin.Persistance.Database;
+using AuthorizeLogin.Persistance.Database.Helpers;
 using AuthorizeLogin.Persistance.Database.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -40,6 +41,13 @@ namespace AuthorizeLogin.Areas.Authorize.Handlers
                 return await Task.FromResult(LoginResponse.FailResponse);
             }
 
+            var getHash = PasswordHashHelper.HashPassword(request.Password, user.LoginData.PasswordSalt);
+
+            if (!getHash.SequenceEqual(user.LoginData.PasswordHash))
+            {
+                return await Task.FromResult(LoginResponse.FailResponse);
+            }
+
             return await Task.FromResult(LoginResponse.SuccessResponse(CreateToken(user)));
         }
 
@@ -59,7 +67,7 @@ namespace AuthorizeLogin.Areas.Authorize.Handlers
                 }.Concat(new[] { "WithLoginData" }.Select(r => new Claim(ClaimTypes.Role, r)))),
                 Expires = DateTime.UtcNow.AddMinutes(_jwtConfiguration.ExpiresMinutes),
                 IssuedAt = DateTime.UtcNow,
-                Issuer= _jwtConfiguration.Issuer,
+                Issuer = _jwtConfiguration.Issuer,
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
 

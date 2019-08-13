@@ -15,7 +15,7 @@ namespace AuthorizeLogin.Persistance.Database.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.0-rtm-35687")
+                .HasAnnotation("ProductVersion", "2.2.6-servicing-10079")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -25,17 +25,24 @@ namespace AuthorizeLogin.Persistance.Database.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("PasswordHash")
+                    b.Property<byte[]>("PasswordHash")
                         .IsRequired()
                         .HasMaxLength(100);
 
-                    b.Property<string>("PasswordSalt")
-                        .IsRequired()
+                    b.Property<int>("PasswordSalt")
                         .HasMaxLength(100);
 
                     b.HasKey("Id");
 
                     b.ToTable("LoginData");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1L,
+                            PasswordHash = new byte[] { 64, 132, 230, 137, 197, 174, 107, 113, 72, 124, 130, 228, 15, 4, 253, 204, 216, 3, 97, 136 },
+                            PasswordSalt = -1150432778
+                        });
                 });
 
             modelBuilder.Entity("AuthorizeLogin.Persistance.Database.Models.User", b =>
@@ -65,6 +72,17 @@ namespace AuthorizeLogin.Persistance.Database.Migrations
                     b.HasIndex("LoginDataId");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1L,
+                            EmailAddress = "admint@admin.pl",
+                            FirstName = "admin",
+                            LastName = "admin",
+                            LoginDataId = 1L,
+                            UserName = "admin"
+                        });
                 });
 
             modelBuilder.Entity("AuthorizeLogin.Persistance.Database.Models.User", b =>

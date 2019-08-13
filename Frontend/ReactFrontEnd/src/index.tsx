@@ -14,10 +14,11 @@ import AuthorizeContext from '@bx-contexts/authorize.context';
 import { SnackbarProvider } from 'notistack';
 import { hot } from 'react-hot-loader/root';
 
-const socket = io();
-socket.on('core_user_channel', (msg) => {
-    console.log({ msg });
-});
+// const socket = io();
+// socket.on('core_user_channel', (msg) => {
+//     console.log({ msg });
+// });
+
 const StyledNavLink = styled(NavLink)`
     color: #FFF;
 
@@ -97,6 +98,9 @@ function Render(): JSX.Element | null {
                                     <Route
                                         path='/authorize/login'
                                         component={React.lazy(() => import('./areas/authorize/login'))} />
+                                    <Route
+                                        path='/authorize/create'
+                                        component={React.lazy(() => import('./areas/authorize/createUser'))} />
                                     <Route component={React.lazy(() => import('./lazy/404'))} />
                                 </Switch>
                             </CardContent>
