@@ -2,8 +2,8 @@ import * as React from 'react';
 import { useTranslation } from 'react-i18next';
 import AuthorizeContext from '@bx-contexts/authorize.context';
 import { useSnackbar } from 'notistack';
-import AsyncButton from '@bx-components/async.button.component';
 import { ButtonProps } from '@material-ui/core/Button';
+import Button from '@material-ui/core/Button';
 
 interface ILoginButtonProps extends ButtonProps {
 }
@@ -18,7 +18,7 @@ export default function ExternalProviderLogin(props: ILoginButtonProps): JSX.Ele
                 value => (
                     value.isAuthorized
                         ? null
-                        : <AsyncButton
+                        : <Button
                             {...props}
                             onClick={async () => {
                                 try {
