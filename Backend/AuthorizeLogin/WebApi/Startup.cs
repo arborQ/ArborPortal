@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Reflection;
+using AuthorizeLogin.Areas.Accounts.Models;
+using AuthorizeLogin.Areas.Accounts.Validators;
 using AuthorizeLogin.HealthChecks;
 using AuthorizeLogin.Persistance.Database;
+using AuthorizeLogin.Persistance.Database.Models;
+using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -43,6 +47,9 @@ namespace AuthorizeLogin
             services
                 .AddHealthChecks()
                 .AddCheck<DatabaseHealthCheck>("MsSql database exists check", failureStatus: HealthStatus.Degraded);
+
+            services.AddTransient<IValidator<User>, UserValidator>();
+            services.AddTransient<IValidator<CreateUserRequest>, CreateUserRequestValidator>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

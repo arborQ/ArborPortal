@@ -8,7 +8,7 @@ namespace AuthorizeLogin.Persistance.Database.Models
         [Key]
         public long Id { get; set; }
 
-        [Required, MaxLength(100)]
+        [Required, MaxLength(100), MinLength(4)]
         public string EmailAddress { get; set; }
 
         [Required, MaxLength(100)]

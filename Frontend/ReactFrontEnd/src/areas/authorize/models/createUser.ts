@@ -1,23 +1,43 @@
-import { validate, Length, IsEmail, Min, Equals } from "class-validator";
-import { plainToClass } from "class-transformer";
-import { object } from "prop-types";
-export default class createUser {
-    @Length(4, 50)
-    username: string = '';
+import { validateSync, Length, IsEmail } from 'class-validator';
+import { plainToClass } from 'class-transformer';
 
-    @Min(1)
-    password: string = '';
+export default class CreateUserModel {
+    @Length(4, 100)
+    userName: string = 'arbor';
 
-    @Equals('this.password')
-    confirmPassword: string = '';
+    @Length(1)
+    password: string = 'test';
+
+    @Length(1)
+    confirmPassword: string = 'test';
+
+    @Length(1)
+    firstName: string = 'test';
+
+    @Length(1)
+    lastName: string = 'test';
 
     @IsEmail()
-    email: string = '';
+    emailAddress: string = 'arbor@o2.pl';
 }
 
-export async function validateModel(model: createUser): Promise<string> {
-    const classModel = plainToClass(createUser, model);
-    const result = await validate(classModel);
-    console.log({ result });
-    return result.map(v => Object.values(v.constraints).join()).join();
+export type ValidationResult<T> = {
+    [P in keyof T]?: string;
+};
+
+export function validateModel(model: CreateUserModel): ValidationResult<CreateUserModel> {
+    const classModel = plainToClass(CreateUserModel, model);
+    const result = validateSync(classModel);
+
+    const confirmPasswordMissmatch = {
+        confirmPassword: classModel.password !== classModel.confirmPassword
+            ? 'password and confirm password must match'
+            : undefined
+    };
+
+    return result.reduce((pv, cv) => {
+        const [propertyValidation] = [...Object.values(cv.constraints), ...pv[cv.property]];
+
+        return { ...pv, [cv.property]: propertyValidation };
+    }, confirmPasswordMissmatch);
 }

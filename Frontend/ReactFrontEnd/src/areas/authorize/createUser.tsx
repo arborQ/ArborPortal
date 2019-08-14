@@ -3,30 +3,57 @@ import TextField from '@material-ui/core/TextField';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
-import LoginButton from '@bx-components/login.button';
 import AsyncButton from '@bx-components/async.button.component';
 import { useTranslation } from 'react-i18next';
 import { post } from '@bx-utils/ajax';
-import AuthorizeContext from '@bx-contexts/authorize.context';
 import FormComponent from '@bx-components/form.consumer';
-import ButtonGroup from '@material-ui/core/ButtonGroup';
-import ArrowDropDownIcon from '@material-ui/icons/PersonAdd';
 import Button from '@material-ui/core/Button';
-import styled from 'styled-components';
 import { withRouter, RouteChildrenProps } from 'react-router';
-import CreateUserModel, { validateModel } from './models/createUser';
+import CreateUserModel, { validateModel, ValidationResult } from './models/createUser';
 
 interface ICreateUserProps extends RouteChildrenProps {
 
 }
 
-function createUserAction(): Promise<ILoginResponse> {
-    return post('/api/users', {});
+function createUserAction(data: CreateUserModel): Promise<ICreateUserResponse> {
+    return post('/api/users/user', data);
 }
 
-interface ILoginResponse {
+interface ICreateUserResponse {
     isSuccessfull: boolean;
-    token: string | null;
+    createdUserId: number | null;
+    errors: Array<{ propertyName: string, errorMessage: string }>;
+}
+
+interface ICreateUserReducerState {
+    userData: CreateUserModel;
+    validation: {
+        [P in keyof CreateUserModel]?: string;
+    };
+}
+
+function updateFormDataReducer(
+    state: ICreateUserReducerState,
+    action: { type: string, data: Partial<CreateUserModel> | ICreateUserResponse }) {
+
+    if (action.type === 'SERVER_RESPONSE') {
+        const { errors } = action.data as ICreateUserResponse;
+        const validation: ValidationResult<CreateUserModel> = errors.reduce((pv, cv) => {
+            return { ...pv, [cv.propertyName]: cv.errorMessage };
+        }, {});
+
+        return {
+            ...state, validation
+        };
+    } else {
+
+        const userData = { ...state.userData, ...action.data };
+        const validation = validateModel(userData);
+
+        return {
+            ...state, userData, validation
+        };
+    }
 }
 
 export default withRouter(
@@ -38,12 +65,34 @@ export default withRouter(
         const saveTranslation = t('Save');
         const passwordTranslation = t('Password');
         const cancelTranslation = t('Cancel');
+        const initData = {
+            userData: new CreateUserModel(),
+            validation: validateModel(new CreateUserModel())
+        };
 
-        const [userData, changeUserData] = React.useState(new CreateUserModel());
+        const [state, changeUserData] = React.useReducer(updateFormDataReducer, initData);
+
+        const updateState = React.useCallback((partialData: Partial<CreateUserModel>) => {
+            changeUserData({
+                type: 'UPDATE_FORM',
+                data: partialData
+            });
+        }, [{}]);
+
+        const { userData, validation } = state;
 
         return (
             <FormComponent onSubmit={async () => {
-                await createUserAction();
+                const response = await createUserAction(userData);
+
+                if (response.isSuccessfull) {
+                    history.push(`/authorize/edit/${response.createdUserId}`);
+                } else {
+                    changeUserData({
+                        type: 'SERVER_RESPONSE',
+                        data: response
+                    });
+                }
             }}>
                 {
                     value => (
@@ -52,27 +101,53 @@ export default withRouter(
                                 <TextField
                                     id='username'
                                     label={userNameTranslation}
-                                    value={userData.username}
+                                    value={userData.userName}
                                     fullWidth
                                     disabled={value.isLoading}
                                     margin='normal'
-                                    onChange={async (e) => {
-                                        const newModel = { ...userData, username: e.target.value };
-                                        console.log({
-                                            errors: await validateModel(newModel)
-                                        });
-                                        changeUserData(newModel);
+                                    error={!!validation.userName}
+                                    helperText={t(validation.userName || '')}
+                                    onChange={(e) => {
+                                        updateState({ userName: e.target.value });
+                                    }}
+                                />
+                                <TextField
+                                    id='firstName'
+                                    label={userNameTranslation}
+                                    value={userData.firstName}
+                                    fullWidth
+                                    disabled={value.isLoading}
+                                    margin='normal'
+                                    error={!!validation.firstName}
+                                    helperText={t(validation.firstName || '')}
+                                    onChange={(e) => {
+                                        updateState({ firstName: e.target.value });
+                                    }}
+                                />
+                                <TextField
+                                    id='lastName'
+                                    label={userNameTranslation}
+                                    value={userData.lastName}
+                                    fullWidth
+                                    disabled={value.isLoading}
+                                    margin='normal'
+                                    error={!!validation.lastName}
+                                    helperText={t(validation.lastName || '')}
+                                    onChange={(e) => {
+                                        updateState({ lastName: e.target.value });
                                     }}
                                 />
                                 <TextField
                                     id='email'
                                     label={emailTranslation}
-                                    value={userData.email}
+                                    value={userData.emailAddress}
                                     fullWidth
                                     disabled={value.isLoading}
                                     margin='normal'
-                                    onChange={async (e) => {
-                                        changeUserData({ ...userData, email: e.target.value });
+                                    error={!!validation.emailAddress}
+                                    helperText={t(validation.emailAddress || '')}
+                                    onChange={(e) => {
+                                        updateState({ emailAddress: e.target.value });
                                     }}
                                 />
                                 <TextField
@@ -82,21 +157,25 @@ export default withRouter(
                                     fullWidth
                                     disabled={value.isLoading}
                                     margin='normal'
+                                    error={!!validation.password}
+                                    helperText={t(validation.password || '')}
                                     type='password'
-                                    onChange={async (e) => {
-                                        changeUserData({ ...userData, password: e.target.value });
+                                    onChange={(e) => {
+                                        updateState({ password: e.target.value });
                                     }}
                                 />
                                 <TextField
-                                    id='password'
+                                    id='confirmPassword'
                                     label={passwordTranslation}
                                     value={userData.confirmPassword}
                                     fullWidth
                                     disabled={value.isLoading}
                                     margin='normal'
+                                    error={!!validation.confirmPassword}
+                                    helperText={t(validation.confirmPassword || '')}
                                     type='password'
-                                    onChange={async (e) => {
-                                        changeUserData({ ...userData, confirmPassword: e.target.value });
+                                    onChange={(e) => {
+                                        updateState({ confirmPassword: e.target.value });
                                     }}
                                 />
                             </CardContent>
@@ -104,6 +183,7 @@ export default withRouter(
                                 <AsyncButton
                                     type='submit'
                                     variant='contained'
+                                    // disabled={Object.keys(validation).filter(k => !!k).length > 0}
                                     loading={value.isLoading}
                                     color='primary'>
                                     {saveTranslation}
