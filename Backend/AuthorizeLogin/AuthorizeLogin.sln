@@ -13,11 +13,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Database", "Persistance\Dat
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Integration", "Integration", "{AB3DA5AC-87F9-41CB-B9E7-F1279E2CD658}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExternalUsersIntegrationService", "Integration\ExternalUsersIntegrationService\ExternalUsersIntegrationService.csproj", "{FA79CD3C-D6E4-4011-B867-F5CB69A18422}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{DF1396D1-098B-461A-9566-A3E21E2557F7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi.Tests", "Tests\WebApi.Tests\WebApi.Tests.csproj", "{EC7D3202-78D5-48E3-B0A1-75891BCC7CC4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi.Tests", "Tests\WebApi.Tests\WebApi.Tests.csproj", "{EC7D3202-78D5-48E3-B0A1-75891BCC7CC4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExternalUsersIntegrationService", "Integration\ExternalUsersIntegrationService\ExternalUsersIntegrationService.csproj", "{C8A4FA3D-A2CB-4E3C-A590-178E536D8CB6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoSqlDatabase", "Persistance\NoSqlDatabase\NoSqlDatabase.csproj", "{24F76E25-30A9-41A6-B5AC-AD768C10C46A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,14 +35,18 @@ Global
 		{745B700B-1B7E-4418-9CDA-AF738A6ED1F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{745B700B-1B7E-4418-9CDA-AF738A6ED1F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{745B700B-1B7E-4418-9CDA-AF738A6ED1F7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FA79CD3C-D6E4-4011-B867-F5CB69A18422}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FA79CD3C-D6E4-4011-B867-F5CB69A18422}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FA79CD3C-D6E4-4011-B867-F5CB69A18422}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FA79CD3C-D6E4-4011-B867-F5CB69A18422}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EC7D3202-78D5-48E3-B0A1-75891BCC7CC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EC7D3202-78D5-48E3-B0A1-75891BCC7CC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EC7D3202-78D5-48E3-B0A1-75891BCC7CC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EC7D3202-78D5-48E3-B0A1-75891BCC7CC4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C8A4FA3D-A2CB-4E3C-A590-178E536D8CB6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8A4FA3D-A2CB-4E3C-A590-178E536D8CB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8A4FA3D-A2CB-4E3C-A590-178E536D8CB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8A4FA3D-A2CB-4E3C-A590-178E536D8CB6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{24F76E25-30A9-41A6-B5AC-AD768C10C46A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24F76E25-30A9-41A6-B5AC-AD768C10C46A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24F76E25-30A9-41A6-B5AC-AD768C10C46A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24F76E25-30A9-41A6-B5AC-AD768C10C46A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -48,8 +54,9 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{C67DB624-C102-47BC-8556-22B49889C103} = {405E2E85-E571-447C-B191-D744AFD7DEDE}
 		{745B700B-1B7E-4418-9CDA-AF738A6ED1F7} = {808234FE-18D7-4787-88A8-29E63DFA50F0}
-		{FA79CD3C-D6E4-4011-B867-F5CB69A18422} = {AB3DA5AC-87F9-41CB-B9E7-F1279E2CD658}
 		{EC7D3202-78D5-48E3-B0A1-75891BCC7CC4} = {DF1396D1-098B-461A-9566-A3E21E2557F7}
+		{C8A4FA3D-A2CB-4E3C-A590-178E536D8CB6} = {AB3DA5AC-87F9-41CB-B9E7-F1279E2CD658}
+		{24F76E25-30A9-41A6-B5AC-AD768C10C46A} = {808234FE-18D7-4787-88A8-29E63DFA50F0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C330961B-43D2-44EA-8F94-D6F50984959F}
