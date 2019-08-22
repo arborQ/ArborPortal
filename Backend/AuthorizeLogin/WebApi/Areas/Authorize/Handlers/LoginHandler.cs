@@ -64,7 +64,7 @@ namespace AuthorizeLogin.Areas.Authorize.Handlers
                     new Claim(ClaimTypes.Email, user.EmailAddress),
                     new Claim(ClaimTypes.Name, user.UserName),
                     new Claim("sessionKey", Guid.NewGuid().ToString())
-                }.Concat(new[] { "WithLoginData" }.Select(r => new Claim(ClaimTypes.Role, r)))),
+                }.Concat(new[] { "WithLoginData", "users" }.Select(r => new Claim(ClaimTypes.Role, r)))),
                 Expires = DateTime.UtcNow.AddMinutes(_jwtConfiguration.ExpiresMinutes),
                 IssuedAt = DateTime.UtcNow,
                 Issuer = _jwtConfiguration.Issuer,

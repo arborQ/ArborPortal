@@ -14,6 +14,7 @@ namespace AuthorizeLogin.Areas.Authorize.Controllers
     public class LoginController : ControllerBase
     {
         private readonly IMediator _mediator;
+        private const string AuthorizationHeaderKey = "Authorization";
 
         public LoginController(IMediator mediator)
         {
@@ -29,9 +30,9 @@ namespace AuthorizeLogin.Areas.Authorize.Controllers
         }
 
         [HttpDelete]
-        public async Task LogoutUser()
+        public void LogoutUser()
         {
-
+            HttpContext.Response.Cookies.Delete(AuthorizationHeaderKey);
         }
     }
 }
