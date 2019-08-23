@@ -58,17 +58,19 @@ export default withRouter(ensureTranslationsDecorator<ILoginProps>({ namespace: 
             <AuthorizeContext.Consumer>
                 {
                     context => (
-                        <FormComponent onSubmit={async () => {
-                            const loginResponse = await authorizeAction(loginData.username, loginData.password);
-                            const {
-                                token, isSuccessfull
-                            } = loginResponse;
+                        <FormComponent
+                            model={loginData}
+                            onSubmit={async () => {
+                                const loginResponse = await authorizeAction(loginData.username, loginData.password);
+                                const {
+                                    token, isSuccessfull
+                                } = loginResponse;
 
-                            if (isSuccessfull && token !== null) {
-                                atuhorizeStore.update({ token });
-                                context.changeAuthorize(true);
-                            }
-                        }}>
+                                if (isSuccessfull && token !== null) {
+                                    atuhorizeStore.update({ token });
+                                    context.changeAuthorize(true);
+                                }
+                            }}>
                             {
                                 value => (
                                     <Card>
