@@ -17,9 +17,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{DF1396D1
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi.Tests", "Tests\WebApi.Tests\WebApi.Tests.csproj", "{EC7D3202-78D5-48E3-B0A1-75891BCC7CC4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExternalUsersIntegrationService", "Integration\ExternalUsersIntegrationService\ExternalUsersIntegrationService.csproj", "{C8A4FA3D-A2CB-4E3C-A590-178E536D8CB6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExternalUsersIntegrationService", "Integration\ExternalUsersIntegrationService\ExternalUsersIntegrationService.csproj", "{C8A4FA3D-A2CB-4E3C-A590-178E536D8CB6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoSqlDatabase", "Persistance\NoSqlDatabase\NoSqlDatabase.csproj", "{24F76E25-30A9-41A6-B5AC-AD768C10C46A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NoSqlDatabase", "Persistance\NoSqlDatabase\NoSqlDatabase.csproj", "{24F76E25-30A9-41A6-B5AC-AD768C10C46A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EventsIntegration", "EventsIntegration", "{F50904C0-05CA-4BDC-88A4-A96A0B86DEFD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExternalUsersEvents", "EventsIntegration\ExternalUserEvents\ExternalUsersEvents.csproj", "{EEF38039-0107-464B-9DBD-464EE608530C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,6 +51,10 @@ Global
 		{24F76E25-30A9-41A6-B5AC-AD768C10C46A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{24F76E25-30A9-41A6-B5AC-AD768C10C46A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{24F76E25-30A9-41A6-B5AC-AD768C10C46A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EEF38039-0107-464B-9DBD-464EE608530C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EEF38039-0107-464B-9DBD-464EE608530C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EEF38039-0107-464B-9DBD-464EE608530C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EEF38039-0107-464B-9DBD-464EE608530C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -57,6 +65,7 @@ Global
 		{EC7D3202-78D5-48E3-B0A1-75891BCC7CC4} = {DF1396D1-098B-461A-9566-A3E21E2557F7}
 		{C8A4FA3D-A2CB-4E3C-A590-178E536D8CB6} = {AB3DA5AC-87F9-41CB-B9E7-F1279E2CD658}
 		{24F76E25-30A9-41A6-B5AC-AD768C10C46A} = {808234FE-18D7-4787-88A8-29E63DFA50F0}
+		{EEF38039-0107-464B-9DBD-464EE608530C} = {F50904C0-05CA-4BDC-88A4-A96A0B86DEFD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C330961B-43D2-44EA-8F94-D6F50984959F}

@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Text;
 using System.Threading.Tasks;
 using ExternalUsersIntegrationService.Jobs;
 using Quartz;
@@ -11,7 +9,7 @@ namespace ExternalUsersIntegrationService
 {
     internal static class StartQuartz
     {
-        public static async Task Start()
+        public static async Task Start(IServiceProvider serviceProvider)
         {
             NameValueCollection props = new NameValueCollection
                 {
@@ -21,18 +19,19 @@ namespace ExternalUsersIntegrationService
 
             // get a scheduler
             IScheduler sched = await factory.GetScheduler();
+
+            sched.JobFactory = new JobFactory(serviceProvider);
+
             await sched.Start();
 
             // define the job and tie it to our HelloJob class
-            IJobDetail job = JobBuilder.Create<HelloJob>()
+            IJobDetail job = JobBuilder.Create<ExternalUsersSync>()
                 .Build();
 
             // Trigger the job to run now, and then every 40 seconds
             ITrigger trigger = TriggerBuilder.Create()
                 .StartNow()
-                .WithSimpleSchedule(x => x
-                    .WithIntervalInSeconds(10)
-                    .RepeatForever())
+                .WithCronSchedule("0 0 1 * * ?")
             .Build();
 
             await sched.ScheduleJob(job, trigger);

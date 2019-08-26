@@ -60,7 +60,7 @@ class UserRepository extends BaseRepository<IUserModel> {
             roles: dbUser.roles ? [...dbUser.roles, ...roles] : roles,
             logins: [...dbUser.logins || [], loginInfo]
         };
-        console.log({ updatedDbUser });
+
         return await super.update(updatedDbUser._id, updatedDbUser);
     }
 

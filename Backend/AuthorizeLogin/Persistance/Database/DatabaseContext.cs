@@ -5,10 +5,9 @@ using AuthorizeLogin.Persistance.Database.Helpers;
 using AuthorizeLogin.Persistance.Database.Models;
 using Microsoft.EntityFrameworkCore;
 
-[assembly: InternalsVisibleTo("AuthorizeLogin")]
 namespace AuthorizeLogin.Persistance.Database
 {
-    internal class DatabaseContext : DbContext, IDatabaseContext
+    public class DatabaseContext : DbContext, IDatabaseContext
     {
         public DatabaseContext(DbContextOptions options)
             : base(options)

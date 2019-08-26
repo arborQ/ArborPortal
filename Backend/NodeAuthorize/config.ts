@@ -9,7 +9,8 @@ cleanEnv(process.env, {
     DEV_APP_PORT: isPort(),
     DEV_APP_PATH: str(),
     MONGO_CONNECTION_STRING: url(),
-    REDIS_PASSWORD: str()
+    REDIS_PASSWORD: str(),
+    LOGGER_URL: url()
 });
 
 
@@ -40,6 +41,9 @@ const port = parseInt(process.env.DEV_APP_PORT) || 8011;
 const apiPath = process.env.DEV_APP_PATH || '/api';
 
 export const env = process.env.NODE_ENV;
+export const logger = {
+    url: process.env.LOGGER_URL
+}
 export const jwt = {
     tokenKey: jwtPublicTokenKey,
     privateTokenKey: jwtPrivateTokenKey,

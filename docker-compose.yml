@@ -5,6 +5,15 @@ volumes:
   esdata01:
     driver: local
 services:
+  seq:
+    image: datalust/seq:latest
+    ports:
+      - "5342:80"
+    environment:
+      ACCEPT_EULA: Y
+    restart: unless-stopped
+    volumes:
+      - ./seq-data:/data
   redis:
     image: redis:4-alpine
     container_name: redis
@@ -33,18 +42,28 @@ services:
       - 9200:9200
   rabbitmq:
     image: "rabbitmq:latest"
-    hostname: "rabbitmq"
-    environment:
-      RABBITMQ_ERLANG_COOKIE: "SWQOKODSQALRPCLNMEQG"
-      RABBITMQ_DEFAULT_USER: "rabbitmq"
-      RABBITMQ_DEFAULT_PASS: "rabbitmq"
-      RABBITMQ_DEFAULT_VHOST: "/"
     ports:
-      - "15672:15672"
-    expose:
-      - 15672
-    labels:
-      NAME: "rabbitmq"
+      - "5673:5672"
+    volumes:
+      - "./rabbitmq:/var/lib/rabbitmq"
+
+
+
+
+  # db:
+  #   container_name: db
+  #   image: "microsoft/mssql-server-linux"
+  #   restart: always
+  #   ports:
+  #     - "1433:1433"
+  #   expose: 
+  #     - 1433
+  #   volumes:
+  #     - ./db/data/mssql:/var/opt/mssql/data
+  #     - ./db/logs/mssql:/var/opt/mssql/log
+  #   environment:
+  #     ACCEPT_EULA: "Y"
+  #     SA_PASSWORD: "D.`(>q8'5d,ngL>H"
   # vue:
   #   build: ./VueFrontEnd
   #   container_name: vueweb
@@ -93,17 +112,4 @@ services:
   #   volumes:
   #     - ./nginx/nginx.conf:/etc/nginx/nginx.conf
   #     - ./nginx/logs:/var/log/nginx/
-  # db:
-  #   container_name: db
-  #   image: "microsoft/mssql-server-linux"
-  #   restart: always
-  #   ports:
-  #     - "1433:1433"
-  #   expose: 
-  #     - 1433
-  #   volumes:
-  #     - ./db/data/mssql:/var/opt/mssql/data
-  #     - ./db/logs/mssql:/var/opt/mssql/log
-  #   environment:
-  #     ACCEPT_EULA: "Y"
-  #     SA_PASSWORD: "D.`(>q8'5d,ngL>H"
+
