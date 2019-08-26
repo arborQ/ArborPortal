@@ -4,6 +4,7 @@ import { jwt } from '../../config';
 import { userRepository, IUserModel } from '@bx-database';
 import notifyNewUser from '../../queues/userQueue';
 import { ILoginInfoModel } from '../../repository/user';
+import { LogInfo, LogError } from '../../repository/logger';
 import express from 'express';
 import newGuid from 'uuid/v4';
 import { blackListedSessions } from '@bx-cache';
@@ -75,10 +76,8 @@ function getLoginInfo(req: express.Request): ILoginInfoModel {
 
 router.post("/", async (request: express.Request, reply, next) => {
     const { token } = request.body;
-
     try {
         const payload: any = verify(token, auth0Key, { algorithms: ['RS256'] });
-
         if (!!payload) {
             const userData = convertPayloadToUser(payload);
             const info = getLoginInfo(request);
@@ -86,6 +85,8 @@ router.post("/", async (request: express.Request, reply, next) => {
                 ...userData,
                 roles: ['regular']
             }, info);
+
+            LogInfo(`NodeAuthorize: External token authorized: ${userData.login || userData.email}`);
             await notifyNewUser(userData);
 
             const newPayload = {
@@ -109,6 +110,7 @@ router.post("/", async (request: express.Request, reply, next) => {
                 });
         }
     } catch (error) {
+        LogError(`NodeAuthorize: External token authorize Failed`);
         next(error);
     }
 });
