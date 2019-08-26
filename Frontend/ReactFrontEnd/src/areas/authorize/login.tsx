@@ -16,6 +16,7 @@ import ArrowDropDownIcon from '@material-ui/icons/PersonAdd';
 import Button from '@material-ui/core/Button';
 import styled from 'styled-components';
 import { withRouter, RouteChildrenProps } from 'react-router';
+import LoginModel from './models/loginModel';
 
 interface ILoginProps extends ITranslationsProps, RouteChildrenProps {
 
@@ -52,16 +53,16 @@ export default withRouter(ensureTranslationsDecorator<ILoginProps>({ namespace: 
         const loginButtonTranslation = t('Login');
         const externalLoginButtonTranslation = t('External provider login');
         const createNewUserTranslation = t('Create new user');
-        const [loginData, changeLoginData] = React.useState({ username: '', password: '', rememverMe: false });
 
         return (
             <AuthorizeContext.Consumer>
                 {
                     context => (
                         <FormComponent
-                            model={loginData}
-                            onSubmit={async () => {
-                                const loginResponse = await authorizeAction(loginData.username, loginData.password);
+                            model={new LoginModel()}
+                            validator={LoginModel}
+                            onSubmit={async (loginData) => {
+                                const loginResponse = await authorizeAction(loginData.login, loginData.password);
                                 const {
                                     token, isSuccessfull
                                 } = loginResponse;
@@ -72,30 +73,38 @@ export default withRouter(ensureTranslationsDecorator<ILoginProps>({ namespace: 
                                 }
                             }}>
                             {
-                                value => (
+                                ({ isLoading, model, updateModel, validation }) => (
                                     <Card>
                                         <CardContent>
                                             <TextField
-                                                id='username'
+                                                id='login'
                                                 label={userNameTranslation}
-                                                value={loginData.username}
+                                                value={model.login}
                                                 fullWidth
-                                                disabled={value.isLoading}
+                                                disabled={isLoading}
+                                                {...validation.login}
                                                 margin='normal'
+                                                onBlur={async (e) => {
+                                                    updateModel({ login: e.target.value });
+                                                }}
                                                 onChange={async (e) => {
-                                                    changeLoginData({ ...loginData, username: e.target.value });
+                                                    updateModel({ login: e.target.value }, false);
                                                 }}
                                             />
                                             <TextField
                                                 id='password'
                                                 label={passwordTranslation}
-                                                value={loginData.password}
+                                                value={model.password}
                                                 fullWidth
                                                 type='password'
-                                                disabled={value.isLoading}
+                                                disabled={isLoading}
+                                                {...validation.password}
                                                 margin='normal'
+                                                onBlur={async (e) => {
+                                                    updateModel({ password: e.target.value });
+                                                }}
                                                 onChange={async (e) => {
-                                                    changeLoginData({ ...loginData, password: e.target.value });
+                                                    updateModel({ password: e.target.value }, false);
                                                 }}
                                             />
                                         </CardContent>
@@ -103,7 +112,8 @@ export default withRouter(ensureTranslationsDecorator<ILoginProps>({ namespace: 
                                             <AsyncButton
                                                 type='submit'
                                                 variant='contained'
-                                                loading={value.isLoading}
+                                                disabled={Object.entries(validation).some(a => !!a)}
+                                                loading={isLoading}
                                                 color='primary'>
                                                 {loginButtonTranslation}
                                             </AsyncButton>
@@ -111,7 +121,7 @@ export default withRouter(ensureTranslationsDecorator<ILoginProps>({ namespace: 
                                                 variant='outlined'
                                                 color='primary'
                                                 aria-label='split button'>
-                                                <LoginButton color='primary' type='button' disabled={value.isLoading}>
+                                                <LoginButton color='primary' type='button' disabled={isLoading}>
                                                     {externalLoginButtonTranslation}
                                                 </LoginButton>
                                                 <IconButton

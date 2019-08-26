@@ -61,54 +61,33 @@ export default withRouter(
         const { t } = useTranslation();
 
         const userNameTranslation = t('User Name');
+        const firstNameTranslation = t('First Name');
+        const lastNameTranslation = t('Last Name');
         const emailTranslation = t('Email');
         const saveTranslation = t('Save');
         const passwordTranslation = t('Password');
         const cancelTranslation = t('Cancel');
-        const initData = {
-            userData: new CreateUserModel(),
-            validation: validateModel(new CreateUserModel())
-        };
-
-        const [state, changeUserData] = React.useReducer(updateFormDataReducer, initData);
-
-        const updateState = React.useCallback((partialData: Partial<CreateUserModel>) => {
-            changeUserData({
-                type: 'UPDATE_FORM',
-                data: partialData
-            });
-        }, [{}]);
-
-        const { userData, validation } = state;
+        const confirmPasswordTranslation = t('Confirm Password');
 
         return (
             <FormComponent
-                model={userData}
-                onSubmit={async () => {
+                model={new CreateUserModel()}
+                validator={CreateUserModel}
+                onSubmit={async (userData) => {
                     const response = await createUserAction(userData);
-
-                    if (response.isSuccessfull) {
-                        history.push(`/authorize/edit/${response.createdUserId}`);
-                    } else {
-                        changeUserData({
-                            type: 'SERVER_RESPONSE',
-                            data: response
-                        });
-                    }
                 }}>
                 {
-                    ({ isLoading, updateModel }) => (
+                    ({ isLoading, model, validation, updateModel }) => (
                         <Card>
                             <CardContent>
                                 <TextField
                                     id='username'
                                     label={userNameTranslation}
-                                    value={userData.userName}
+                                    value={model.userName}
                                     fullWidth
                                     disabled={isLoading}
                                     margin='normal'
-                                    error={!!validation.userName}
-                                    helperText={t(validation.userName || '')}
+                                    {...validation.userName}
                                     onBlur={(e) => {
                                         updateModel({ userName: e.target.value }, true);
                                     }}
@@ -118,26 +97,24 @@ export default withRouter(
                                 />
                                 <TextField
                                     id='firstName'
-                                    label={userNameTranslation}
-                                    value={userData.firstName}
+                                    label={firstNameTranslation}
+                                    value={model.firstName}
                                     fullWidth
                                     disabled={isLoading}
                                     margin='normal'
-                                    error={!!validation.firstName}
-                                    helperText={t(validation.firstName || '')}
+                                    {...validation.firstName}
                                     onChange={(e) => {
                                         updateModel({ firstName: e.target.value });
                                     }}
                                 />
                                 <TextField
                                     id='lastName'
-                                    label={userNameTranslation}
-                                    value={userData.lastName}
+                                    label={lastNameTranslation}
+                                    value={model.lastName}
                                     fullWidth
                                     disabled={isLoading}
                                     margin='normal'
-                                    error={!!validation.lastName}
-                                    helperText={t(validation.lastName || '')}
+                                    {...validation.lastName}
                                     onChange={(e) => {
                                         updateModel({ lastName: e.target.value });
                                     }}
@@ -145,12 +122,11 @@ export default withRouter(
                                 <TextField
                                     id='email'
                                     label={emailTranslation}
-                                    value={userData.emailAddress}
+                                    value={model.emailAddress}
                                     fullWidth
                                     disabled={isLoading}
                                     margin='normal'
-                                    error={!!validation.emailAddress}
-                                    helperText={t(validation.emailAddress || '')}
+                                    {...validation.emailAddress}
                                     onChange={(e) => {
                                         updateModel({ emailAddress: e.target.value });
                                     }}
@@ -158,12 +134,11 @@ export default withRouter(
                                 <TextField
                                     id='password'
                                     label={passwordTranslation}
-                                    value={userData.password}
+                                    value={model.password}
                                     fullWidth
                                     disabled={isLoading}
                                     margin='normal'
-                                    error={!!validation.password}
-                                    helperText={t(validation.password || '')}
+                                    {...validation.password}
                                     type='password'
                                     onChange={(e) => {
                                         updateModel({ password: e.target.value });
@@ -171,13 +146,12 @@ export default withRouter(
                                 />
                                 <TextField
                                     id='confirmPassword'
-                                    label={passwordTranslation}
-                                    value={userData.confirmPassword}
+                                    label={confirmPasswordTranslation}
+                                    value={model.confirmPassword}
                                     fullWidth
                                     disabled={isLoading}
                                     margin='normal'
-                                    error={!!validation.confirmPassword}
-                                    helperText={t(validation.confirmPassword || '')}
+                                    {...validation.confirmPassword}
                                     type='password'
                                     onChange={(e) => {
                                         updateModel({ confirmPassword: e.target.value });
@@ -188,7 +162,7 @@ export default withRouter(
                                 <AsyncButton
                                     type='submit'
                                     variant='contained'
-                                    // disabled={Object.keys(validation).filter(k => !!k).length > 0}
+                                    disabled={Object.entries(validation).some(a => !!a)}
                                     loading={isLoading}
                                     color='primary'>
                                     {saveTranslation}

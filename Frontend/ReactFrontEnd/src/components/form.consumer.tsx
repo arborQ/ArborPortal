@@ -4,7 +4,10 @@ import { plainToClass } from 'class-transformer';
 import { ClassType } from 'class-transformer/ClassTransformer';
 
 type ValidationResult<T> = {
-    [P in keyof T]?: string;
+    [P in keyof T]?: {
+        error: boolean,
+        helperText: string
+    };
 };
 
 interface IInnerFormProps<T> {
@@ -12,10 +15,10 @@ interface IInnerFormProps<T> {
         isLoading: boolean,
         model: T,
         updateModel: (model: Partial<T>, validate?: boolean) => void,
-        validation: ValidationResult<T>
+        validation: ValidationResult<T>,
     }) => JSX.Element;
     disabled?: boolean;
-    onSubmit: () => Promise<void>;
+    onSubmit: (formModel: T) => Promise<T | void>;
     model: T;
     validator?: ClassType<T>;
 }
@@ -27,35 +30,54 @@ function validateModel<T>(model: T, classType: ClassType<T>): ValidationResult<T
     return result.reduce((pv, cv) => {
         const [propertyValidation] = [...Object.values(cv.constraints), ...pv[cv.property]];
 
-        return { ...pv, [cv.property]: propertyValidation };
+        return { ...pv, [cv.property]: { error: true, helperText: propertyValidation } };
     }, {});
 }
 
 export default function FormComponent<T>(props: IInnerFormProps<T>) {
-    const { children, onSubmit, disabled, model } = props;
-    const [isLoading, changeLoading] = React.useState(!!disabled);
+    const { children, onSubmit, disabled, model, validator } = props;
+    const [state, updateState] = React.useState({
+        isLoading: !!disabled,
+        formModel: model,
+        validation: {} as ValidationResult<T>,
+        serverError: ''
+    });
+
+    const { isLoading, formModel, validation } = state;
 
     return (
         <form className='context-form' onSubmit={async (e) => {
             e.preventDefault();
             if (!isLoading) {
-                changeLoading(true);
+                updateState({ ...state, isLoading: true });
                 try {
-                    await onSubmit();
-                } catch (ex) {
-                    console.log(ex);
-                } finally {
-                    changeLoading(false);
+                    await onSubmit(formModel);
+                    updateState({ ...state, isLoading: false });
+                } catch (serverError) {
+                    console.log(serverError)
+                    // updateState({ ...state, isLoading: false, serverError });
                 }
             }
         }}>
+            {
+                state.serverError
+                    ? <div>{state.serverError}</div>
+                    : null
+            }
             {children({
                 isLoading,
-                model,
+                model: formModel,
+                validation,
                 updateModel: (partial, validate = true) => {
-                    console.log({ partial, validate });
+                    const newModel: T = { ...formModel, ...partial };
+                    const validation = validate && !!validator ? validateModel(newModel, validator) : {} as ValidationResult<T>;
+
+                    updateState({
+                        ...state,
+                        validation,
+                        formModel: newModel
+                    });
                 },
-                validation: {}
             })}
         </form>
     );

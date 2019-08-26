@@ -3,22 +3,22 @@ import { plainToClass } from 'class-transformer';
 
 export default class CreateUserModel {
     @Length(4, 100)
-    userName: string = 'arbor';
+    userName: string = '';
 
     @Length(1)
-    password: string = 'test';
+    password: string = '';
 
     @Length(1)
-    confirmPassword: string = 'test';
+    confirmPassword: string = '';
 
     @Length(1)
-    firstName: string = 'test';
+    firstName: string = '';
 
     @Length(1)
-    lastName: string = 'test';
+    lastName: string = '';
 
     @IsEmail()
-    emailAddress: string = 'arbor@o2.pl';
+    emailAddress: string = '';
 }
 
 export type ValidationResult<T> = {
