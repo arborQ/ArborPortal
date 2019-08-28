@@ -14,57 +14,57 @@ import AddIcon from '@material-ui/icons/Add';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
 import CachedIcon from '@material-ui/icons/Cached';
 import { ensureIsAuthorized } from '@bx-utils/decorators/ensureIsAuthorized';
-
+import Search from '@bx-components/search';
 import { Route, Link, RouteComponentProps } from 'react-router-dom';
 import { ensureApiDataDecorator } from '@bx-utils/decorators/ensureApiDataDecorator';
+import { Divider } from '@material-ui/core';
+import { parse as parseSearch } from 'query-string';
+import { useTranslation } from 'react-i18next';
+import ErrorComponent from '@bx-components/error';
 
 interface IRecipeListProps
     extends RouteComponentProps, Utils.Decorators.ILoadDataProps<Utils.Api.IQueryResponse<Areas.Recipes.IRecipe>> {
 }
 
-function ActionMenu({ path, refresh }) {
-    return (
-        <BottomNavigation showLabels={false} >
-            <BottomNavigationAction label='Create' icon={<Link to={`${path}/add`}><AddIcon /></Link>} />
-            <BottomNavigationAction label='Copy' icon={<FileCopyIcon />} />
-            <BottomNavigationAction label='Refresh' icon={<CachedIcon />} onClick={refresh} />
-        </BottomNavigation>
-    );
+interface ISearchQueryParams {
+    search?: string;
 }
 
-const ensureApiData = ensureApiDataDecorator({ url: '/recipes/recipe' });
-function RecipesComponent({ data, reloadDataCallback, match, history }: IRecipeListProps) {
-    return (
-        <div>
-            <Paper>
-                <ActionMenu path={match.path} refresh={reloadDataCallback} />
-                <List>
-                    {data.items.map(value => {
-                        const labelId = `checkbox-list-secondary-label-${value.id}`;
+const ensureApiData = ensureApiDataDecorator({ url: '/recipes' });
+function RecipesComponent({ data, reloadDataCallback, location, history }: IRecipeListProps) {
+    const { search } = parseSearch(location.search) as ISearchQueryParams;
+    const items = data.items.filter(r => !search || r.recipeName.indexOf(search) !== -1);
+    const { t } = useTranslation();
 
-                        return (
-                            <ListItem key={value.id} button >
-                                <ListItemAvatar>
-                                    <Avatar
-                                        alt={value.recipeName}
-                                    />
-                                </ListItemAvatar>
-                                <ListItemText id={labelId} primary={value.recipeName} />
-                                <ListItemSecondaryAction>
-                                    <Checkbox
-                                        edge='end'
-                                        onChange={() => history.push(`${match.path}/details/${value.id}`)}
-                                        checked={false}
-                                        inputProps={{ 'aria-labelledby': labelId }}
-                                    />
-                                </ListItemSecondaryAction>
-                            </ListItem>
-                        );
-                    })}
-                </List>
-                <ActionMenu path={match.path} refresh={reloadDataCallback} />
-            </Paper>
-        </div>
+    if (items.length === 0) {
+        return (
+            <ErrorComponent
+                message={!!search ? `Can't find any recipes for '${search}'` : 'No Data'}
+                code='???'
+                actionText='Add new recipe'
+                action={() => { history.replace('/recipes/add'); }} />
+        );
+    }
+
+    return (
+        <Paper>
+            <List>
+                {items.map(value => {
+                    const labelId = `checkbox-list-secondary-label-${value.id}`;
+
+                    return (
+                        <ListItem key={value.id} button >
+                            <ListItemAvatar>
+                                <Avatar
+                                    alt={value.recipeName}
+                                />
+                            </ListItemAvatar>
+                            <ListItemText id={labelId} primary={value.recipeName} />
+                        </ListItem>
+                    );
+                })}
+            </List>
+        </Paper>
     );
 }
 

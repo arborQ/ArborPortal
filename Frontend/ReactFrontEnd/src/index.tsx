@@ -40,14 +40,14 @@ const StyledNavLink = styled(NavLink)`
 const links = [
     { text: 'Home', path: '/' },
     { text: 'List', path: '/account/users?sortBy=login&sortDirection=asc' },
-    { text: 'Recepies', path: '/recipes/recipe/list' },
+    { text: 'Recepies', path: '/recipes/list' },
     { text: 'Error', path: '/error' },
 ];
 
 const anonymousLinks = [
     { text: 'Home', path: '/' },
     { text: 'Login', path: '/authorize/login' },
-    { text: 'Recepies', path: '/recipes/recipe/list' },
+    { text: 'Recepies', path: '/recipes/list' },
     { text: 'Error', path: '/error' },
 ];
 
@@ -106,8 +106,8 @@ function Render(): JSX.Element | null {
                                             path='/account/users/edit'
                                             component={React.lazy(() => import('./areas/account/user.edit'))} />
                                         <Route
-                                            path='/recipes/recipe'
-                                            component={React.lazy(() => import('./areas/recipes/recipe.cardIndex'))} />
+                                            path='/recipes'
+                                            component={React.lazy(() => import('./areas/recipes/recipes'))} />
                                         <Route
                                             path='/authorize/login'
                                             component={React.lazy(() => import('./areas/authorize/login'))} />
