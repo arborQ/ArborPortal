@@ -68,4 +68,4 @@ function RecipesComponent({ data, reloadDataCallback, match, history }: IRecipeL
     );
 }
 
-export default ensureIsAuthorized(ensureApiData(RecipesComponent));
+export default ensureApiData(RecipesComponent);

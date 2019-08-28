@@ -47,6 +47,7 @@ const links = [
 const anonymousLinks = [
     { text: 'Home', path: '/' },
     { text: 'Login', path: '/authorize/login' },
+    { text: 'Recepies', path: '/recipes/recipe/list' },
     { text: 'Error', path: '/error' },
 ];
 
@@ -99,7 +100,8 @@ function Render(): JSX.Element | null {
                                         <Route
                                             path='/account/users'
                                             exact
-                                            component={React.lazy(async () => await import('./areas/account/user.list'))} />
+                                            component={
+                                                React.lazy(async () => await import('./areas/account/user.list'))} />
                                         <Route
                                             path='/account/users/edit'
                                             component={React.lazy(() => import('./areas/account/user.edit'))} />
