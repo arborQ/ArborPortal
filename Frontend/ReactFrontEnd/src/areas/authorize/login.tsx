@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next';
 import { post } from '@bx-utils/ajax';
 import AuthorizeContext from '@bx-contexts/authorize.context';
 import { atuhorizeStore } from '@bx-utils/storage';
-import FormComponent from '@bx-components/form.consumer';
+import FormComponent, { IconValidationProps } from '@bx-components/form.consumer';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import ArrowDropDownIcon from '@material-ui/icons/PersonAdd';
 import Button from '@material-ui/core/Button';
@@ -73,7 +73,7 @@ export default withRouter(ensureTranslationsDecorator<ILoginProps>({ namespace: 
                                 }
                             }}>
                             {
-                                ({ isLoading, model, updateModel, validation }) => (
+                                ({ isLoading, model, updateModel, validation, touched }) => (
                                     <Card>
                                         <CardContent>
                                             <TextField
@@ -82,13 +82,10 @@ export default withRouter(ensureTranslationsDecorator<ILoginProps>({ namespace: 
                                                 value={model.login}
                                                 fullWidth
                                                 disabled={isLoading}
-                                                {...validation.login}
+                                                {...IconValidationProps(validation.login, touched.login)}
                                                 margin='normal'
-                                                onBlur={async (e) => {
-                                                    updateModel({ login: e.target.value });
-                                                }}
                                                 onChange={async (e) => {
-                                                    updateModel({ login: e.target.value }, false);
+                                                    updateModel({ login: e.target.value });
                                                 }}
                                             />
                                             <TextField
@@ -98,13 +95,10 @@ export default withRouter(ensureTranslationsDecorator<ILoginProps>({ namespace: 
                                                 fullWidth
                                                 type='password'
                                                 disabled={isLoading}
-                                                {...validation.password}
+                                                {...IconValidationProps(validation.password, touched.password)}
                                                 margin='normal'
-                                                onBlur={async (e) => {
-                                                    updateModel({ password: e.target.value });
-                                                }}
                                                 onChange={async (e) => {
-                                                    updateModel({ password: e.target.value }, false);
+                                                    updateModel({ password: e.target.value });
                                                 }}
                                             />
                                         </CardContent>

@@ -6,7 +6,7 @@ import CardActions from '@material-ui/core/CardActions';
 import AsyncButton from '@bx-components/async.button.component';
 import { useTranslation } from 'react-i18next';
 import { post } from '@bx-utils/ajax';
-import FormComponent from '@bx-components/form.consumer';
+import FormComponent, { IconValidationProps, TextValidationProps } from '@bx-components/form.consumer';
 import Button from '@material-ui/core/Button';
 import { withRouter, RouteChildrenProps } from 'react-router';
 import CreateUserModel, { validateModel, ValidationResult } from './models/createUser';
@@ -77,7 +77,7 @@ export default withRouter(
                     const response = await createUserAction(userData);
                 }}>
                 {
-                    ({ isLoading, model, validation, updateModel }) => (
+                    ({ isLoading, model, validation, updateModel, touched }) => (
                         <Card>
                             <CardContent>
                                 <TextField
@@ -87,10 +87,7 @@ export default withRouter(
                                     fullWidth
                                     disabled={isLoading}
                                     margin='normal'
-                                    {...validation.userName}
-                                    onBlur={(e) => {
-                                        updateModel({ userName: e.target.value }, true);
-                                    }}
+                                    {...IconValidationProps(validation.userName, touched.userName)}
                                     onChange={(e) => {
                                         updateModel({ userName: e.target.value });
                                     }}
@@ -102,7 +99,7 @@ export default withRouter(
                                     fullWidth
                                     disabled={isLoading}
                                     margin='normal'
-                                    {...validation.firstName}
+                                    {...TextValidationProps(validation.firstName, touched.firstName)}
                                     onChange={(e) => {
                                         updateModel({ firstName: e.target.value });
                                     }}
@@ -114,7 +111,7 @@ export default withRouter(
                                     fullWidth
                                     disabled={isLoading}
                                     margin='normal'
-                                    {...validation.lastName}
+                                    {...IconValidationProps(validation.lastName, touched.lastName)}
                                     onChange={(e) => {
                                         updateModel({ lastName: e.target.value });
                                     }}
@@ -126,7 +123,7 @@ export default withRouter(
                                     fullWidth
                                     disabled={isLoading}
                                     margin='normal'
-                                    {...validation.emailAddress}
+                                    {...IconValidationProps(validation.emailAddress, touched.emailAddress)}
                                     onChange={(e) => {
                                         updateModel({ emailAddress: e.target.value });
                                     }}
@@ -138,7 +135,7 @@ export default withRouter(
                                     fullWidth
                                     disabled={isLoading}
                                     margin='normal'
-                                    {...validation.password}
+                                    {...IconValidationProps(validation.password, touched.password)}
                                     type='password'
                                     onChange={(e) => {
                                         updateModel({ password: e.target.value });
@@ -151,7 +148,7 @@ export default withRouter(
                                     fullWidth
                                     disabled={isLoading}
                                     margin='normal'
-                                    {...validation.confirmPassword}
+                                    {...IconValidationProps(validation.confirmPassword, touched.confirmPassword)}
                                     type='password'
                                     onChange={(e) => {
                                         updateModel({ confirmPassword: e.target.value });

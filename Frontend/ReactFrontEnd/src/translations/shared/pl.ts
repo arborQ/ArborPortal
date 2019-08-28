@@ -1,4 +1,4 @@
-const translations =  {
+const translations = {
   'home': 'Testowa aplikacja React\'owa',
   'Save': 'Zapisz',
   'Cancel': 'Anuluj',
@@ -8,10 +8,12 @@ const translations =  {
   'Learn More': 'Dowiedz się więcej',
   'No data': 'Brak danych',
   'Login': 'Zaloguj się',
-  'Logout' : 'Wyloguj się',
+  'Logout': 'Wyloguj się',
   'Loading': 'Ładowanie...',
   'NotAuthorizedForThisAction': 'Nie masz odpowiednich uprawnień...',
-  'Rerurn to homepage' : 'Idź do głównej strony'
+  'Rerurn to homepage': 'Idź do głównej strony',
+  'Field is required': 'Pole jest wymagane',
+  'Ok message': 'Wszystko dobrze',
 };
 
 export default translations;

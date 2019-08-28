@@ -13,6 +13,16 @@ import { isAuthorized as isAuthorizedAction } from '@bx-services/account';
 import AuthorizeContext from '@bx-contexts/authorize.context';
 import { SnackbarProvider } from 'notistack';
 import { hot } from 'react-hot-loader/root';
+import { createMuiTheme } from '@material-ui/core/styles';
+import { ThemeProvider } from '@material-ui/styles';
+
+const theme = createMuiTheme({
+    palette: {
+        primary: { main: '#2C73D2' }, // Purple and green play nicely together.
+        secondary: { main: '#008F7A' }, // This is just green.A700 as hex.
+        error: { main: '#C34A36' },
+    },
+});
 
 // const socket = io();
 // socket.on('core_user_channel', (msg) => {
@@ -57,57 +67,59 @@ function Render(): JSX.Element | null {
 
     return (
         <Router>
-            <AuthorizeContext.Provider value={{ isAuthorized, changeAuthorize }}>
-                <SnackbarProvider maxSnack={5}>
-                    <div>
-                        <AppBar position='static'>
-                            <Toolbar>
-                                {(isAuthorized ? links : anonymousLinks)
-                                    .map(l => (
-                                        <StyledNavLink
-                                            className={'MuiButtonBase-root MuiButton-root MuiButton-text'}
-                                            exact={l.path === '/'}
-                                            key={l.path}
-                                            to={l.path}
-                                            activeClassName='selected'>
-                                            {l.text}
-                                        </StyledNavLink>))}
-                                {!isAuthorized
-                                    ? null
-                                    : <LogOutButton onUnauthorized={() => changeAuthorize(false)} />
-                                }
-                                <ChangeLanguageButton name={''} />
-                            </Toolbar>
-                        </AppBar>
-                    </div>
-                    <Container maxWidth='md'>
-                        <React.Suspense fallback={<div>Loading ...</div>}>
-                            <CardContent >
-                                <Switch>
-                                    <Route path='/' exact component={React.lazy(() => import('./lazy/home'))} />
-                                    <Route
-                                        path='/account/users'
-                                        exact
-                                        component={React.lazy(async () => await import('./areas/account/user.list'))} />
-                                    <Route
-                                        path='/account/users/edit'
-                                        component={React.lazy(() => import('./areas/account/user.edit'))} />
-                                    <Route
-                                        path='/recipes/recipe'
-                                        component={React.lazy(() => import('./areas/recipes/recipe.cardIndex'))} />
-                                    <Route
-                                        path='/authorize/login'
-                                        component={React.lazy(() => import('./areas/authorize/login'))} />
-                                    <Route
-                                        path='/authorize/create'
-                                        component={React.lazy(() => import('./areas/authorize/createUser'))} />
-                                    <Route component={React.lazy(() => import('./lazy/404'))} />
-                                </Switch>
-                            </CardContent>
-                        </React.Suspense>
-                    </Container>
-                </SnackbarProvider>
-            </AuthorizeContext.Provider>
+            <ThemeProvider theme={theme}>
+                <AuthorizeContext.Provider value={{ isAuthorized, changeAuthorize }}>
+                    <SnackbarProvider maxSnack={5}>
+                        <div>
+                            <AppBar position='static'>
+                                <Toolbar>
+                                    {(isAuthorized ? links : anonymousLinks)
+                                        .map(l => (
+                                            <StyledNavLink
+                                                className={'MuiButtonBase-root MuiButton-root MuiButton-text'}
+                                                exact={l.path === '/'}
+                                                key={l.path}
+                                                to={l.path}
+                                                activeClassName='selected'>
+                                                {l.text}
+                                            </StyledNavLink>))}
+                                    {!isAuthorized
+                                        ? null
+                                        : <LogOutButton onUnauthorized={() => changeAuthorize(false)} />
+                                    }
+                                    <ChangeLanguageButton name={''} />
+                                </Toolbar>
+                            </AppBar>
+                        </div>
+                        <Container maxWidth='md'>
+                            <React.Suspense fallback={<div>Loading ...</div>}>
+                                <CardContent >
+                                    <Switch>
+                                        <Route path='/' exact component={React.lazy(() => import('./lazy/home'))} />
+                                        <Route
+                                            path='/account/users'
+                                            exact
+                                            component={React.lazy(async () => await import('./areas/account/user.list'))} />
+                                        <Route
+                                            path='/account/users/edit'
+                                            component={React.lazy(() => import('./areas/account/user.edit'))} />
+                                        <Route
+                                            path='/recipes/recipe'
+                                            component={React.lazy(() => import('./areas/recipes/recipe.cardIndex'))} />
+                                        <Route
+                                            path='/authorize/login'
+                                            component={React.lazy(() => import('./areas/authorize/login'))} />
+                                        <Route
+                                            path='/authorize/create'
+                                            component={React.lazy(() => import('./areas/authorize/createUser'))} />
+                                        <Route component={React.lazy(() => import('./lazy/404'))} />
+                                    </Switch>
+                                </CardContent>
+                            </React.Suspense>
+                        </Container>
+                    </SnackbarProvider>
+                </AuthorizeContext.Provider>
+            </ThemeProvider>
         </Router>
     );
 }

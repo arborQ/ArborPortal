@@ -1,9 +1,9 @@
-import { Length } from 'class-validator';
+import { MinLength } from 'class-validator';
 
 export default class LoginModel {
-    @Length(4, 100)
+    @MinLength(1, { message: 'Field is required' })
     login: string = '';
 
-    @Length(1)
+    @MinLength(1, { message: 'Field is required' })
     password: string = '';
 }

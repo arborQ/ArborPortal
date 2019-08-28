@@ -8,10 +8,12 @@ const translations = {
   'Learn More': 'Learn More',
   'No data': 'No data',
   'Login': 'Log In',
-  'Logout' : 'Log Out',
+  'Logout': 'Log Out',
   'Loading': 'Loading...',
   'NotAuthorizedForThisAction': 'Not authorized for this action...',
-  'Rerurn to homepage' : 'Rerurn to homepage'
+  'Rerurn to homepage': 'Rerurn to homepage',
+  'Field is required': 'Field is required',
+  'Ok message': 'Everything is ok',
 };
 
 export default translations;

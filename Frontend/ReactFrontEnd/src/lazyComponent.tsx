@@ -1,11 +1,9 @@
-import * as React from "react";
-import Button from '@material-ui/core/Button';
+import * as React from 'react';
 import AppBar from '@material-ui/core/AppBar';
 
-export default function (): JSX.Element {
+export default function LazyComponent(): JSX.Element {
     return (
-    <AppBar position="static">
-        dsa
-    </AppBar>
+        <AppBar position='static'>
+        </AppBar>
     );
 }
