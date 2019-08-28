@@ -2,7 +2,7 @@ import * as React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import InputBase from '@material-ui/core/InputBase';
-import IconButton from '@material-ui/core/IconButton';
+import IconButton, { IconButtonProps } from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import DirectionsIcon from '@material-ui/icons/NoteAddRounded';
@@ -32,10 +32,15 @@ export interface ISearchProps {
     onSearch: (search: string) => Promise<void> | void;
     onType?: (search: string) => Promise<void> | void;
     onEscape?: (originalSearch: string) => void;
+    actions?: Array<{
+        tooltip: string;
+        icon: React.ReactElement;
+    } & IconButtonProps>;
 }
+
 export default function CustomizedInputBase(props: ISearchProps) {
     const classes = useStyles();
-    const { helperText, onSearch, onType, onEscape, search } = props;
+    const { helperText, onSearch, onType, onEscape, search, actions } = props;
     const [searchState, updateSearchText] = React.useState({
         searchText: search,
         isSearching: false
@@ -79,11 +84,21 @@ export default function CustomizedInputBase(props: ISearchProps) {
                 <IconButton onClick={() => { triggerSearch(); }} className={classes.iconButton} aria-label='search'>
                     <SearchIcon />
                 </IconButton>
-                <Tooltip title='Create new recipe'>
-                    <IconButton color='primary' className={classes.iconButton} aria-label='directions'>
-                        <DirectionsIcon />
-                    </IconButton>
-                </Tooltip>
+                {
+                    actions === undefined
+                        ? null
+                        : actions.map((a, index) => {
+                            const { tooltip, icon, ...iconProps } = a;
+
+                            return (
+                                <Tooltip title={tooltip} key={index}>
+                                    <IconButton className={classes.iconButton} {...iconProps}>
+                                        {icon}
+                                    </IconButton>
+                                </Tooltip>
+                            );
+                        })
+                }
             </Paper>
         </form>
     );

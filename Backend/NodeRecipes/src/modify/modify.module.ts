@@ -4,6 +4,10 @@ import { CreateController } from './create/create.controller';
 import { DeleteController } from './delete/delete.controller';
 
 @Module({
-  controllers: [EditController, CreateController, DeleteController]
+  controllers: [
+    EditController,
+    CreateController,
+    DeleteController,
+  ]
 })
 export class ModifyModule {}

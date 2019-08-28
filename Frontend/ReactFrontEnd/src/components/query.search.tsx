@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Search from './search';
 import { parse as parseSearch } from 'query-string';
+import { IconButtonProps } from '@material-ui/core/IconButton';
 
 export interface IQuerySearchProps {
     queryKey: string;
@@ -8,6 +9,10 @@ export interface IQuerySearchProps {
     onSearch: (search: string) => Promise<void> | void;
     onType?: (search: string) => Promise<void> | void;
     onEscape?: (originalSearch: string) => void;
+    actions?: Array<{
+        tooltip: string;
+        icon: React.ReactElement;
+    } & IconButtonProps>;
 }
 
 function getSearchValue(key: string): string {
