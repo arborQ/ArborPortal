@@ -17,6 +17,8 @@ import Button from '@material-ui/core/Button';
 import styled from 'styled-components';
 import { withRouter, RouteChildrenProps } from 'react-router';
 import LoginModel from './models/loginModel';
+import inMemoryStorage from '@bx-utils/storages/inMemoryStorage';
+import inBrowserStorage from '@bx-utils/storages/inBrowserStorage';
 
 interface ILoginProps extends ITranslationsProps, RouteChildrenProps {
 
@@ -61,6 +63,7 @@ export default withRouter(ensureTranslationsDecorator<ILoginProps>({ namespace: 
                         <FormComponent
                             model={new LoginModel()}
                             validator={LoginModel}
+                            interceptor={inBrowserStorage<LoginModel>('loginForm')}
                             onSubmit={async (loginData) => {
                                 const loginResponse = await authorizeAction(loginData.login, loginData.password);
                                 const {

@@ -3,18 +3,17 @@ import { validateSync } from 'class-validator';
 import { plainToClass } from 'class-transformer';
 import { ClassType } from 'class-transformer/ClassTransformer';
 import { ErrorAdornment, SuccessAdornment } from './adornment';
+import { async } from 'q';
 
 export enum ValidationScope {
     Info, Warning, Error, Success
 }
 
-type ValidationResult<T> = {
-    [P in keyof T]?: IPropertyValidationResult;
-};
+type PartialKeyOf<T, K> = { [P in keyof T]?: K; };
 
-type TouchedResult<T> = {
-    [P in keyof T]?: boolean;
-};
+type ValidationResult<T> = PartialKeyOf<T, IPropertyValidationResult>;
+
+type TouchedResult<T> = PartialKeyOf<T, boolean>;
 
 interface IInnerFormProps<T> {
     children: (props: {
@@ -24,6 +23,7 @@ interface IInnerFormProps<T> {
         validation: ValidationResult<T>,
         touched: TouchedResult<T>
     }) => JSX.Element;
+    interceptor?: Utils.Storage.IDataStorage<T>;
     disabled?: boolean;
     onSubmit: (formModel: T) => Promise<T | void>;
     model: T;
@@ -60,7 +60,7 @@ function validateModel<T>(model: T, classType: ClassType<T>): ValidationResult<T
 }
 
 export default function FormComponent<T>(props: IInnerFormProps<T>) {
-    const { children, onSubmit, disabled, model, validator } = props;
+    const { children, onSubmit, disabled, model, validator, interceptor } = props;
     const [state, updateState] = React.useState({
         isLoading: !!disabled,
         formModel: model,
@@ -68,6 +68,21 @@ export default function FormComponent<T>(props: IInnerFormProps<T>) {
         touched: {} as TouchedResult<T>,
         serverError: ''
     });
+    React.useEffect(() => {
+        if (!!interceptor) {
+            updateState({ ...state, isLoading: true });
+            Promise.resolve(interceptor.getData())
+                .then(data => {
+                    updateState({
+                        ...state,
+                        isLoading: false,
+                        formModel: data,
+                        validation: !!validator ? validateModel(data, validator) : {},
+                        touched: {} as TouchedResult<T>
+                    });
+                });
+        }
+    }, [1]);
 
     const { isLoading, formModel, validation, touched } = state;
 
@@ -95,12 +110,16 @@ export default function FormComponent<T>(props: IInnerFormProps<T>) {
                 model: formModel,
                 validation,
                 touched,
-                updateModel: (partial, validate = true) => {
+                updateModel: async (partial, validate = true) => {
                     const newModel: T = { ...formModel, ...partial };
                     const touchedProperties = calculateTouched(partial, state.touched);
                     const validated = validate && !!validator
                         ? validateModel(newModel, validator)
                         : {} as ValidationResult<T>;
+
+                    if (!!interceptor) {
+                        await interceptor.updateData(newModel);
+                    }
 
                     updateState({
                         ...state,
