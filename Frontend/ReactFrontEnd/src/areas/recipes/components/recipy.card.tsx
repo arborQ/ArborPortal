@@ -21,6 +21,7 @@ import { makeStyles } from '@material-ui/styles';
 import { red } from '@material-ui/core/colors';
 import clsx from 'clsx';
 import FastfoodIcon from '@material-ui/icons/Fastfood';
+import FavouriteComponent from '../../../components/favourite';
 
 const useStyles = makeStyles((theme: Theme) => ({
     card: {
@@ -41,7 +42,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
 }));
 
-export default function RecipyCardComponent(props: { name: string, onCookClick: () => void }) {
+export default function RecipyCardComponent(props: { name: string, id: string, onCookClick: () => void }) {
     const classes = useStyles();
     const [expanded, setExpanded] = React.useState(false);
 
@@ -49,7 +50,7 @@ export default function RecipyCardComponent(props: { name: string, onCookClick: 
         setExpanded(!expanded);
     }
 
-    const { name, onCookClick } = props;
+    const { name, id, onCookClick } = props;
 
     return (
         <Card className={classes.card}>
@@ -77,9 +78,7 @@ export default function RecipyCardComponent(props: { name: string, onCookClick: 
             </CardActionArea>
             <CardActions>
                 <Grid container justify='space-between' alignItems='center'>
-                    <IconButton aria-label='add to favorites' disabled>
-                        <FavoriteIcon />
-                    </IconButton>
+                    <FavouriteComponent title='add recipe favourite' storageKey={`recipe_fav_${id}`} />
                     <IconButton aria-label='share' disabled>
                         <ShareIcon />
                     </IconButton>

@@ -51,8 +51,9 @@ function RecipesComponent({ data, reloadDataCallback, location, history }: IReci
         <Grid container spacing={3}>
             {
                 items.map(value => (
-                    <Grid item xs={12} sm={6} md={4} lg={3} xl={2}>
+                    <Grid item xs={12} sm={6} md={4} lg={4} xl={4}>
                         <RecipyCardComponent
+                            id={value.id}
                             name={value.recipeName}
                             onCookClick={() => {
                                 history.push(`/recipes/cook/${value.id}`);
