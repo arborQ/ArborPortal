@@ -17,10 +17,11 @@ import { ensureIsAuthorized } from '@bx-utils/decorators/ensureIsAuthorized';
 import Search from '@bx-components/search';
 import { Route, Link, RouteComponentProps } from 'react-router-dom';
 import { ensureApiDataDecorator } from '@bx-utils/decorators/ensureApiDataDecorator';
-import { Divider } from '@material-ui/core';
+import { Divider, Grid } from '@material-ui/core';
 import { parse as parseSearch } from 'query-string';
 import { useTranslation } from 'react-i18next';
 import ErrorComponent from '@bx-components/error';
+import RecipyCardComponent from './components/recipy.card';
 
 interface IRecipeListProps
     extends RouteComponentProps, Utils.Decorators.ILoadDataProps<Utils.Api.IQueryResponse<Areas.Recipes.IRecipe>> {
@@ -47,24 +48,20 @@ function RecipesComponent({ data, reloadDataCallback, location, history }: IReci
     }
 
     return (
-        <Paper>
-            <List>
-                {items.map(value => {
-                    const labelId = `checkbox-list-secondary-label-${value.id}`;
-
-                    return (
-                        <ListItem key={value.id} button >
-                            <ListItemAvatar>
-                                <Avatar
-                                    alt={value.recipeName}
-                                />
-                            </ListItemAvatar>
-                            <ListItemText id={labelId} primary={value.recipeName} />
-                        </ListItem>
-                    );
-                })}
-            </List>
-        </Paper>
+        <Grid container spacing={3}>
+            {
+                items.map(value => (
+                    <Grid item xs={12} sm={6} md={4} lg={3} xl={2}>
+                        <RecipyCardComponent
+                            name={value.recipeName}
+                            onCookClick={() => {
+                                history.push(`/recipes/cook/${value.id}`);
+                            }}
+                        />
+                    </Grid >
+                ))
+            }
+        </Grid >
     );
 }
 

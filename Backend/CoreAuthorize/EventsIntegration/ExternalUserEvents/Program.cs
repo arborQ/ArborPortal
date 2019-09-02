@@ -1,5 +1,7 @@
 ﻿using System;
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 using AuthorizeLogin.Persistance.Database;
 using ExternalUsersEvents;
 using ExternalUsersEvents.EventHandlers;
@@ -12,7 +14,7 @@ namespace ExternalUserEvents
 {
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             IConfiguration config = new ConfigurationBuilder()
                      .SetBasePath(Directory.GetCurrentDirectory())
@@ -42,7 +44,16 @@ namespace ExternalUserEvents
 
             var provider = services.BuildServiceProvider();
             var queue = provider.GetService<QueueConnection>();
-            queue.Connect();
+
+            var cts = new CancellationTokenSource();
+            Task.Run(async () => {
+                queue.Connect(cts.Token);
+            });
+            Console.WriteLine("Publish message?");
+            await queue.Publish(Console.ReadLine());
+            Console.WriteLine("Terminate?");
+            Console.ReadLine();
+            cts.Cancel();
         }
     }
 }

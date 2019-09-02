@@ -5,6 +5,7 @@ import { Divider } from '@material-ui/core';
 import RecipeList from './recipe.list';
 import recipeAdd from './recipe.add';
 import NoteAddRounded from '@material-ui/icons/NoteAddRounded';
+import RecipeCookComponent from './components/recipy.cook';
 
 
 interface IRecipeListProps
@@ -43,6 +44,9 @@ export default function RecipesComponent({ history, match, location }: IRecipeLi
             <Route
                 path={`${match.url}/add`}
                 component={recipeAdd} />
+            <Route
+                path={`${match.url}/cook/:id`}
+                component={RecipeCookComponent} />
         </div>
     );
 }

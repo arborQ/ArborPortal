@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Specialized;
+using System.Threading;
 using System.Threading.Tasks;
 using ExternalUsersIntegrationService.Jobs;
 using Quartz;
@@ -21,8 +22,9 @@ namespace ExternalUsersIntegrationService
             IScheduler sched = await factory.GetScheduler();
 
             sched.JobFactory = new JobFactory(serviceProvider);
+            var cts = new CancellationTokenSource();
 
-            await sched.Start();
+            await sched.Start(cts.Token);
 
             // define the job and tie it to our HelloJob class
             IJobDetail job = JobBuilder.Create<ExternalUsersSync>()
@@ -31,10 +33,21 @@ namespace ExternalUsersIntegrationService
             // Trigger the job to run now, and then every 40 seconds
             ITrigger trigger = TriggerBuilder.Create()
                 .StartNow()
-                .WithCronSchedule("0 0 1 * * ?")
+                .WithSimpleSchedule(a => a.WithIntervalInSeconds(100).RepeatForever())
             .Build();
-
-            await sched.ScheduleJob(job, trigger);
+            await sched.ScheduleJob(job, trigger, cancellationToken: cts.Token);
+            Task.Run(async () =>
+            {
+                await Console.Out.WriteLineAsync("Wait 5s");
+                await Task.Delay(5000);
+                await Console.Out.WriteLineAsync("Start Killing!");
+                await sched.Interrupt(job.Key, cts.Token);
+                await Console.Out.WriteLineAsync("Killed!");
+            });
+            Console.ReadLine();
+            
+            //cts.Cancel();
+            //await sched.Shutdown(true, cts.Token);
         }
     }
 }

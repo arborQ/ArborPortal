@@ -42,10 +42,14 @@ services:
       - 9200:9200
   rabbitmq:
     image: "rabbitmq:latest"
+    environment:
+        RABBITMQ_DEFAULT_USER: "rabbitmq"
+        RABBITMQ_DEFAULT_PASS: "rabbitmq"
     ports:
-      - "5673:5672"
+      - "5672:5672"
     volumes:
-      - "./rabbitmq:/var/lib/rabbitmq"
+        - "./rabbitmq:/var/lib/rabbitmq"
+        - "./enabled_plugins:/etc/rabbitmq/enabled_plugins"
 
 
 
