@@ -14,7 +14,8 @@ const translations = {
   'Rerurn to homepage': 'Rerurn to homepage',
   'Field is required': 'Field is required',
   'Ok message': 'Everything is ok',
-  'add recipe favourite': 'Add recipe to favourites'
+  'add recipe favourite': 'Add recipe to favourites',
+  'uploadImages': 'Send photos'
 };
 
 export default translations;

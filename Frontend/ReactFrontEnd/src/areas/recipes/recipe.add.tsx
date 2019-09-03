@@ -1,56 +1,113 @@
 import * as React from 'react';
-import { drawerDecorator } from '@bx-utils/decorators/drawerDecorator'
 import { RouteComponentProps } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import RecipyForm from './components/recipy.form';
-import { post } from '@bx-utils/ajax';
-import { Stepper, Step, StepLabel, StepContent } from '@material-ui/core';
+import FileUploadComponent from '@bx-components/upload.files';
+import {
+    TextField,
+    Card,
+    CardHeader,
+    Avatar,
+    CardMedia,
+    CardContent,
+    Typography,
+    CardActions,
+    Grid,
+    Button,
+    makeStyles,
+    Theme
+} from '@material-ui/core';
 
 interface IRecipeDetailsProps extends RouteComponentProps, Utils.Decorators.ILoadDataProps<Areas.Recipes.IRecipe> {
 
 }
 
-function RecipeDetailsComponent({ history, location }: IRecipeDetailsProps) {
+const useStyles = makeStyles((theme: Theme) => ({
+    card: {
+    },
+    media: {
+        cursor: 'pointer',
+        height: 0,
+        paddingTop: '25%', // 16:9
+    },
+    expand: {
+        transform: 'rotate(0deg)',
+        marginLeft: 'auto',
+        transition: theme.transitions.create('transform', {
+            duration: theme.transitions.duration.shortest,
+        }),
+    },
+    expandOpen: {
+        transform: 'rotate(180deg)',
+    },
+}));
+
+function RecipeDetailsComponent() {
+    const classes = useStyles();
     const { t } = useTranslation();
-
-    const data: Areas.Recipes.IRecipe = {
-        id: 0,
-        recipeName: '',
-        mainFileName: ''
-    };
-
-    const [recipeForm, updateForm] = React.useState({
-        activeStep: 0
+    const [addState, updateRecipeState] = React.useState<{
+        recipe: Areas.Recipes.IRecipe
+    }>({
+        recipe: {
+            id: '',
+            recipeName: '',
+            recipeDescription: '',
+            mainFileName: ''
+        }
     });
 
+    const updateRecipe = (partialRecipe: Partial<Areas.Recipes.IRecipe>) => {
+        updateRecipeState({
+            ...addState,
+            recipe: { ...addState.recipe, ...partialRecipe }
+        });
+    };
+
+    const {
+        recipeName: name,
+        recipeDescription: description,
+        mainFileName: imageUrl
+    } = addState.recipe;
+
     return (
-        <div>
-            <Stepper activeStep={recipeForm.activeStep} orientation='vertical'>
-                <Step key={'step1'}>
-                    <StepLabel>{t('Recipe name')}</StepLabel>
-                    <StepContent>
-                        <div>step 1</div>
-                    </StepContent>
-                </Step>
-                <Step key={'step2'}>
-                    <StepLabel>{'step2'}</StepLabel>
-                    <StepContent>
-                        <div>step 2</div>
-                    </StepContent>
-                </Step>
-                <Step key={'step3'}>
-                    <StepLabel>{'step3'}</StepLabel>
-                    <StepContent>
-                        <div>step 3</div>
-                    </StepContent>
-                </Step>
-            </Stepper>
-        </div>
-        // <RecipyForm
-        //     data={data}
-        //     title={'recipy_add'}
-        //     cancelAction={goBack}
-        //     saveAction={returnData => post('/api/recipes/list', returnData)} />
+        <Card>
+            <CardHeader
+                avatar={
+                    <Avatar aria-label='recipe'>
+                        {name[0]}
+                    </Avatar>
+                }
+                title={<TextField
+                    label={t('Recipe name')}
+                    value={name}
+                    fullWidth
+                    autoFocus
+                    autoComplete={'off'}
+                    onChange={e => updateRecipe({ recipeName: e.target.value })} />}
+            />
+            {
+                !!imageUrl ?
+                    <CardMedia
+                        className={classes.media}
+                        image={imageUrl}
+                        title={name}
+                    /> : null
+            }
+            <CardContent>
+                <TextField
+                    label={t('Recipe description')}
+                    value={description}
+                    fullWidth
+                    multiline
+                    onChange={e => updateRecipe({ recipeDescription: e.target.value })} />
+                <FileUploadComponent onFileAdded={f => {
+                    // console.log({ f });
+                }} />
+            </CardContent>
+            <CardActions>
+                <Button color='primary' variant='contained' type='submit'>Save</Button>
+                <Button>Cancel</Button>
+            </CardActions>
+        </Card>
     );
 }
 

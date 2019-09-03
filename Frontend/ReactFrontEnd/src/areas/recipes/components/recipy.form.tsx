@@ -29,7 +29,13 @@ export default function ({ data, title, saveAction, cancelAction }: IRecipyFormP
     return (
         <div>
             <Typography variant='h4' component='h2' style={{ padding: 10 }}>
-                {t(title)}
+                <TextField
+                    id='recipe-name'
+                    label={t('recipe-name')}
+                    value={'values.name'}
+                    // onChange={handleChange('name')}
+                    margin='normal'
+                />
             </Typography>
             <Divider />
             <form onSubmit={(e) => { e.preventDefault(); }}>

@@ -2,6 +2,7 @@ declare namespace Areas.Recipes {
     export interface IRecipe {
         id: string;
         recipeName: string;
-        mainFileName: string;
+        recipeDescription: string;
+        mainFileName: string | null;
     }
 }

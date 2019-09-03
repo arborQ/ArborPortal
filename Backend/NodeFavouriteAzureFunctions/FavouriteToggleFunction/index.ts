@@ -1,13 +1,17 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions"
+import { FavouriteModel, createRepository } from '../repository/favourites';
+import { plainToClass } from 'class-transformer';
+import { validate } from 'class-validator';
 
 const httpTrigger: AzureFunction = async function (context: Context, req: HttpRequest): Promise<void> {
-    context.log('HTTP trigger function processed a request.');
-    const name = (req.query.name || (req.body && req.body.name));
+    const favouritesRepository = await createRepository();
+    const viewModel = plainToClass(FavouriteModel, req.query);
+    const validationResult = await validate(viewModel);
 
-    if (name) {
+    if (validationResult.length === 0) {
+        const newItem = await favouritesRepository.create(viewModel);
         context.res = {
-            // status: 200, /* Defaults to 200 */
-            body: "Hello " + (req.query.name || req.body.name)
+            body: newItem.url
         };
     }
     else {

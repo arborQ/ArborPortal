@@ -1,32 +1,32 @@
 import * as React from 'react';
 import * as Dropzone from 'dropzone';
 import { useTranslation } from 'react-i18next';
-import styled from 'styled-components';
-
-const DropContainer = styled.div.attrs({
-    className: 'dropzone'
-})`
-    border: 2px dashed #0087F7;
-    border-radius: 5px;
-    background: white;
-    min-height: 100px;
-    max-width: 650px;
-    cursor: pointer;
-`;
-
-const DropText = styled.span`
-    font-size: 0.9em;
-    color: #ccc;
-`;
+import { makeStyles } from '@material-ui/styles';
+import { Theme } from '@material-ui/core';
 
 interface IUploadFileProps {
     onFileAdded: (fileName: string) => void;
     maxFiles?: number;
 }
 
-export default function(props: IUploadFileProps) {
+const useStyles = makeStyles((theme: Theme) => ({
+    dropzone: {
+        'border': `2px dashed ${theme.palette.primary.main}`,
+        'border-radius': '5px',
+        'background-color': 'white',
+        'min-height': '100px',
+        'cursor': 'pointer'
+    },
+    text: {
+        'font-size': '0.9em',
+        'color': theme.palette.text.primary,
+    },
+}));
+
+export default function FileUploadComponent(props: IUploadFileProps) {
     const { t } = useTranslation();
     const [registered, register] = React.useState(false);
+    const classes = useStyles();
 
     function registerDropzone(element: HTMLDivElement) {
         if (!registered) {
@@ -48,7 +48,9 @@ export default function(props: IUploadFileProps) {
     }
 
     return (
-        <DropContainer ref={element => { if (!!element) { registerDropzone(element); } }}>
-        </DropContainer>
+        <div
+            className={`dropzone ${classes.dropzone}`}
+            ref={element => { if (!!element) { registerDropzone(element); } }}>
+        </div>
     );
 }
