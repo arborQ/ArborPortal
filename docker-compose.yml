@@ -23,7 +23,7 @@ services:
     expose:
       - 6379
   es01:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.2.0
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.3.1
     container_name: es01
     environment:
       - node.name=es01
@@ -40,6 +40,26 @@ services:
       - esdata01:/usr/share/elasticsearch/data
     ports:
       - 9200:9200
+    networks:
+      - esnet
+  es02:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.3.1
+    container_name: es02
+    environment:
+      - node.name=es02
+      - discovery.seed_hosts=es01
+      - cluster.initial_master_nodes=es01,es02
+      - cluster.name=docker-cluster
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - esdata02:/usr/share/elasticsearch/data
+    networks:
+      - esnet
   rabbitmq:
     image: "rabbitmq:latest"
     environment:
@@ -50,24 +70,28 @@ services:
     volumes:
         - "./rabbitmq:/var/lib/rabbitmq"
         - "./enabled_plugins:/etc/rabbitmq/enabled_plugins"
-
-
-
-
-  # db:
-  #   container_name: db
-  #   image: "microsoft/mssql-server-linux"
-  #   restart: always
-  #   ports:
-  #     - "1433:1433"
-  #   expose: 
-  #     - 1433
-  #   volumes:
-  #     - ./db/data/mssql:/var/opt/mssql/data
-  #     - ./db/logs/mssql:/var/opt/mssql/log
-  #   environment:
-  #     ACCEPT_EULA: "Y"
-  #     SA_PASSWORD: "D.`(>q8'5d,ngL>H"
+  db:
+    container_name: db
+    image: "microsoft/mssql-server-linux"
+    restart: always
+    ports:
+      - "1433:1433"
+    expose: 
+      - 1433
+    volumes:
+      - ./db/data/mssql:/var/opt/mssql/data
+      - ./db/logs/mssql:/var/opt/mssql/log
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "D.`(>q8'5d,ngL>H"
+networks:
+  esnet:
+volumes:
+  esdata01:
+    driver: local
+  esdata02:
+    driver: local
+    
   # vue:
   #   build: ./VueFrontEnd
   #   container_name: vueweb

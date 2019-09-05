@@ -1,42 +1,19 @@
 import { Controller, Get, UseGuards } from '@nestjs/common';
 import { AuthorizedGuard } from '../../authorized.guard';
-
-interface IRecipe {
-    id: number;
-    recipeName: string;
-    mainFileName?: string;
-}
+import { ElasticSearchClientService } from '../../elastic-search-client/elastic-search-client.service';
 
 @Controller('/api/recipes')
 @UseGuards(AuthorizedGuard)
 export class ListController {
-    @Get()
-    findAll(): {
-        totalCount: number,
-        items: IRecipe[],
-    } {
-        const recipres: IRecipe[] = [
-            {
-                id: 1,
-                recipeName: 'Gulasz',
-            },
-            {
-                id: 2,
-                recipeName: 'Karkówka',
-            },
-            {
-                id: 3,
-                recipeName: 'Rosół',
-            },
-            {
-                id: 4,
-                recipeName: 'Flaczki drobiowe',
-            },
-        ];
+    constructor(private readonly elasticSearch: ElasticSearchClientService) { }
 
-        return {
-            totalCount: recipres.length,
-            items: recipres,
-        }
+    @Get()
+    async findAll(): Promise<{
+        totalCount: number,
+        items: any[],
+    }> {
+        const results = await this.elasticSearch.search('recipes', '');
+
+        return results;
     }
 }

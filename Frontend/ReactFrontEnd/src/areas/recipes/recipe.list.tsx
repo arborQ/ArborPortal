@@ -55,6 +55,7 @@ function RecipesComponent({ data, reloadDataCallback, location, history }: IReci
                         <RecipyCardComponent
                             id={value.id}
                             name={value.recipeName}
+                            description={value.recipeDescription}
                             onCookClick={() => {
                                 history.push(`/recipes/cook/${value.id}`);
                             }}

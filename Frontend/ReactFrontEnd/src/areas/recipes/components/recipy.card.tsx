@@ -11,7 +11,8 @@ import {
     Collapse,
     Theme,
     CardActionArea,
-    Grid
+    Grid,
+    Tooltip
 } from '@material-ui/core';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
@@ -42,7 +43,12 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
 }));
 
-export default function RecipyCardComponent(props: { name: string, id: string, onCookClick: () => void }) {
+export default function RecipyCardComponent(props: {
+    name: string,
+    description: string,
+    id: string,
+    onCookClick: () => void
+}) {
     const classes = useStyles();
     const [expanded, setExpanded] = React.useState(false);
 
@@ -50,7 +56,7 @@ export default function RecipyCardComponent(props: { name: string, id: string, o
         setExpanded(!expanded);
     }
 
-    const { name, id, onCookClick } = props;
+    const { name, description, id, onCookClick } = props;
 
     return (
         <Card className={classes.card}>
@@ -67,13 +73,16 @@ export default function RecipyCardComponent(props: { name: string, id: string, o
                 <CardMedia
                     className={classes.media}
                     image='https://material-ui.com/static/images/cards/paella.jpg'
-                    title='Paella dish'
+                    title={name}
                 />
                 <CardContent>
-                    <Typography variant='body2' color='textSecondary' component='p'>
-                        This impressive paella is a perfect party dish and a fun meal to cook together with your
-                        guests. Add 1 cup of frozen peas along with the mussels, if you like.
-                    </Typography>
+                    <Tooltip title={description} enterDelay={600}>
+                        <Typography variant='body2' color='textSecondary' component='p'>
+                            {description.length > 100
+                                ? `${description.substr(0, 100)}...`
+                                : description}
+                        </Typography>
+                    </Tooltip>
                 </CardContent>
             </CardActionArea>
             <CardActions>
