@@ -3,6 +3,7 @@ declare namespace Areas.Recipes {
         id: string;
         recipeName: string;
         recipeDescription: string;
+        products: string[];
         mainFileName: string | null;
     }
 }

@@ -4,7 +4,6 @@ import { RouteComponentProps } from 'react-router-dom';
 import NotExists from '../../lazy/404';
 import { useTranslation } from 'react-i18next';
 import { ensureApiDataDecorator } from '@bx-utils/decorators/ensureApiDataDecorator';
-import RecipyForm from './components/recipy.form';
 import { update } from '@bx-utils/ajax';
 
 interface IRecipeDetailsProps extends RouteComponentProps {
@@ -35,11 +34,7 @@ function RecipeDetailsComponent({ history, location, match, data }: IRecipeDetai
     }
 
     return (
-        <RecipyForm
-            data={data.item}
-            title={'recipy_details'}
-            cancelAction={goBack}
-            saveAction={responseData => update('/api/recipes/recipe', responseData)} />
+        <div>not implemented</div>
     );
 }
 
