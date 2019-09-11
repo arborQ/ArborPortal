@@ -8,5 +8,7 @@ namespace AuthorizeLogin.Areas.Accounts.Models
         public string SortBy { get; set; }
 
         public string SortDirection { get; set; }
+
+        public string Search { get; set; }
     }
 }

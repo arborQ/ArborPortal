@@ -14,6 +14,7 @@ import Search from '@bx-components/query.search';
 import NoteAddRounded from '@material-ui/icons/NoteAddRounded';
 import { RouteComponentProps } from 'react-router';
 import { Divider } from '@material-ui/core';
+import { parse } from 'query-string';
 
 interface IUserListProps
     extends Utils.Decorators.ILoadDataProps<Utils.Types.CollectionResponse<Areas.Account.IUser>>, RouteComponentProps {
@@ -22,9 +23,9 @@ interface IUserListProps
 
 interface IUserListState {
     data: Areas.Account.IUser[];
-    sortOrder: 'asc' | 'desc';
-    sortBy: string;
-    search: string;
+    // sortOrder: 'asc' | 'desc';
+    // sortBy: string;
+    // search: string;
 }
 
 interface IUserListApiResponse {
@@ -39,23 +40,28 @@ function UserListComponentHook(props: IUserListProps) {
     const isActiveTranslation = t('Is Active');
     const { history, match } = props;
 
+    const { sortBy, sortOrder, search } = {
+        ...{
+            sortBy: 'login',
+            sortOrder: 'asc',
+            search: ''
+        }, ...parse(location.search)
+    };
+
     const [searchModel, changeSearchModel] = React.useState<IUserListState>({
-        sortBy: 'Login',
-        sortOrder: 'asc',
-        search: '',
         data: []
     });
 
     const changeSortBy = (sortByKey: string) {
-        changeSearchModel({
-            ...searchModel,
-            sortBy: sortByKey,
-            sortOrder: searchModel.sortOrder === 'asc' ? 'desc' : 'asc'
-        });
+        const newSortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+        history.replace(`${match.url}?sortBy=${sortByKey}&sortOrder=${newSortOrder}&search=${search}`);
     };
 
+    const changeSearchText = (newSearch: string) => {
+        history.replace(`${match.url}?sortBy=${sortBy}&sortOrder=${sortOrder}&search=${newSearch}`);
+    };
 
-    const { sortBy, sortOrder, search, data } = searchModel;
+    const { data } = searchModel;
     React.useEffect(() => {
         const abortController = new AbortController();
         (async () => {
@@ -73,7 +79,7 @@ function UserListComponentHook(props: IUserListProps) {
             <Search
                 queryKey='search'
                 helperText={t('Search users')}
-                onSearch={newSearch => history.push(`${match.url}?search=${newSearch}`)}
+                onSearch={changeSearchText}
                 actions={
                     [
                         {
@@ -83,7 +89,7 @@ function UserListComponentHook(props: IUserListProps) {
                             onClick: e => {
                                 e.preventDefault();
                                 e.stopPropagation();
-                                history.push(`${match.url}/add`);
+                                history.push('/authorize/create');
                             }
                         }
                     ]}

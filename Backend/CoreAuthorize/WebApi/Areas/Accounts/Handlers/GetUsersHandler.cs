@@ -25,28 +25,30 @@ namespace AuthorizeLogin.Areas.Accounts.Handlers
         public async Task<GetUsersResponse> Handle(GetUsersRequest request, CancellationToken cancellationToken)
         {
             var users =
-                request.SortDirection == "asc" 
+                request.SortDirection == "asc"
                 ? _databaseContext.Users
                     .OrderBy(GetOrderByExpression(request.SortBy))
                 : _databaseContext.Users
                     .OrderByDescending(GetOrderByExpression(request.SortBy));
 
-            var usersModels = await users.Select(u => new AccountModel
-            {
-                Id = u.Id,
-                Login = u.UserName,
-                Email = u.EmailAddress,
-                FirstName = u.FirstName,
-                LastName = u.LastName,
-                IsActive = true
-            }).ToListAsync();
+            var usersModels = await users
+                .Where(u => string.IsNullOrEmpty(request.Search) || u.UserName.ToLowerInvariant().Contains(request.Search.ToLowerInvariant()))
+                .Select(u => new AccountModel
+                {
+                    Id = u.Id,
+                    Login = u.UserName,
+                    Email = u.EmailAddress,
+                    FirstName = u.FirstName,
+                    LastName = u.LastName,
+                    IsActive = true
+                }).ToListAsync();
 
             return new GetUsersResponse { Accounts = usersModels, IsSuccessfull = true };
         }
 
         private Expression<Func<User, string>> GetOrderByExpression(string orderBy)
         {
-            switch(orderBy)
+            switch (orderBy)
             {
                 case nameof(AccountModel.Login):
                     return u => u.UserName;
