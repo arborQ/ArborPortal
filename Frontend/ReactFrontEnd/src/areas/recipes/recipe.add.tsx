@@ -1,7 +1,9 @@
 import * as React from 'react';
-import { RouteComponentProps } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import FileUploadComponent from '@bx-components/upload.files';
+import TabPanel from '@bx-components/tab.panel';
+import RecipeProducts from './components/recipe.products';
+import FormComponent from '@bx-components/form.consumer';
+import AddRecipeModel from './models/add.recipe.model';
 
 import {
     TextField,
@@ -10,40 +12,16 @@ import {
     Avatar,
     CardMedia,
     CardContent,
-    Typography,
     CardActions,
-    Grid,
     Button,
     makeStyles,
     Theme,
-    Chip,
-    Box,
-    createStyles
+    createStyles,
+    Tabs,
+    Tab,
 } from '@material-ui/core';
-import FastfoodIcon from '@material-ui/icons/Fastfood';
-
-interface IRecipeDetailsProps extends RouteComponentProps, Utils.Decorators.ILoadDataProps<Areas.Recipes.IRecipe> {
-
-}
-
-const useChipStyles = makeStyles((theme: Theme) =>
-    createStyles({
-        root: {
-            display: 'flex',
-            justifyContent: 'start',
-            flexWrap: 'wrap',
-            marginLeft: -theme.spacing(1),
-            marginRight: -theme.spacing(1),
-        },
-        chip: {
-            margin: theme.spacing(1),
-        },
-        avatar: {
-            width: '2.5em',
-            height: '2.5em',
-        }
-    }),
-);
+import FileUploadComponent from '@bx-components/upload.files';
+import { validateModel } from '../authorize/models/createUser';
 
 const useStyles = makeStyles((theme: Theme) => ({
     card: {
@@ -67,92 +45,105 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 function RecipeDetailsComponent() {
     const classes = useStyles();
-    const chipClasses = useChipStyles();
     const { t } = useTranslation();
     const [addState, updateRecipeState] = React.useState<{
-        recipe: Areas.Recipes.IRecipe
+        selectedTab: number,
     }>({
-        recipe: {
-            id: '',
-            recipeName: '',
-            recipeDescription: 'Do @Woda dodaj @Kurczak',
-            mainFileName: '',
-            products: ['Woda', 'Kurczak']
-        }
+        selectedTab: 0
     });
 
-    const updateRecipe = (partialRecipe: Partial<Areas.Recipes.IRecipe>) => {
-        updateRecipeState({
-            ...addState,
-            recipe: { ...addState.recipe, ...partialRecipe }
-        });
+    const { selectedTab } = addState;
+
+    const defaultRecipe: Areas.Recipes.IRecipe = {
+        id: '',
+        recipeName: 'Rosół na bidaka',
+        recipeDescription: 'Do Wodę dodaj Kurczaka',
+        mainFileName: '',
+        products: ['Woda', 'Kurczak']
     };
 
-    const {
-        recipeName: name,
-        recipeDescription: description,
-        mainFileName: imageUrl,
-        products
-    } = addState.recipe;
-
     return (
-        <Card>
-            <CardHeader
-                avatar={
-                    <Avatar aria-label='recipe'>
-                        {name[0]}
-                    </Avatar>
-                }
-                title={<TextField
-                    label={t('Recipe name')}
-                    value={name}
-                    fullWidth
-                    autoFocus
-                    autoComplete={'off'}
-                    onChange={e => updateRecipe({ recipeName: e.target.value })} />}
-            />
-            {
-                !!imageUrl ?
-                    <CardMedia
-                        className={classes.media}
-                        image={imageUrl}
-                        title={name}
-                    /> : null
-            }
-            <CardContent>
-                <TextField
-                    label={t('Recipe description')}
-                    value={description}
-                    fullWidth
-                    multiline
-                    onChange={e => updateRecipe({ recipeDescription: e.target.value })} />
-                <Box className={chipClasses.root}>
-                    {
-                        products.map(p => (
-                            <Chip
+        <FormComponent
+            validator={AddRecipeModel}
+            onSubmit={async (model) => { console.log(model); }}
+            model={defaultRecipe}>
+            {({ model, updateModel, validation }) => {
+                console.log({ validation });
+                const {
+                    recipeName: name,
+                    products,
+                    recipeDescription: description,
+                    mainFileName: imageUrl } = model;
+
+                return (
+                    <Card>
+                        <CardHeader
+                            avatar={
+                                <Avatar aria-label='recipe'>
+                                    {name[0]}
+                                </Avatar>
+                            }
+                            title={<TextField
+                                label={t('Recipe name')}
+                                value={name}
+                                fullWidth
+                                autoFocus
+                                autoComplete={'off'}
+                                onChange={e => updateModel({ recipeName: e.target.value })} />}
+                        />
+                        {
+                            !!imageUrl ?
+                                <CardMedia
+                                    className={classes.media}
+                                    image={imageUrl}
+                                    title={name}
+                                /> : null
+                        }
+                        <CardContent>
+                            <TextField
+                                label={t('Recipe description')}
+                                value={description}
+                                fullWidth
+                                multiline
+                                onChange={e => updateModel({ recipeDescription: e.target.value })} />
+
+                            <Tabs
+                                value={selectedTab}
+                                indicatorColor='primary'
+                                textColor='primary'
+                                onChange={(a, tab) => { updateRecipeState({ ...addState, selectedTab: tab }); }}
+                            >
+                                <Tab label={t('ProductsTab')} disabled />
+                                <Tab label={t('ImagesTab')} />
+                                <Tab label={t('RecipeStepsTab')} />
+                            </Tabs>
+                            <div>
+                                <TabPanel value={0} index={selectedTab}>
+                                    <RecipeProducts products={products} />
+                                </TabPanel>
+                                <TabPanel value={1} index={selectedTab}>
+                                    <FileUploadComponent onFileAdded={() => {
+                                        // console.log({ f });
+                                    }} />
+                                </TabPanel>
+                                <TabPanel value={2} index={selectedTab}>
+                                    tab 3
+                        </TabPanel>
+                            </div>
+                        </CardContent>
+                        <CardActions>
+                            <Button
+                                disabled={!!validation.invalid}
                                 color='primary'
-                                size='small'
-                                label={p}
-                                clickable
-                                className={chipClasses.chip}
-                                onDelete={() => { }}
-                                avatar={(
-                                    <Avatar className={chipClasses.avatar}>
-                                        <FastfoodIcon />
-                                    </Avatar>
-                                )} />
-                        ))
-                    }
-                </Box>
-                {/* <FileUploadComponent onFileAdded={f => {
-                    // console.log({ f });
-                }} /> */}
-            </CardContent>
-            <CardActions>
-                <Button color='primary' variant='contained' type='submit'>Save</Button>
-                <Button>Cancel</Button>
-            </CardActions>
-        </Card>
+                                variant='contained'
+                                type='submit'>{t('Save')}</Button>
+                            <Button>{t('Cancel')}</Button>
+                        </CardActions>
+                    </Card>
+                );
+            }
+            }
+        </FormComponent>
     );
 }
 

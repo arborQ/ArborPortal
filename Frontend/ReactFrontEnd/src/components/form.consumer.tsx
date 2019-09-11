@@ -11,7 +11,7 @@ export enum ValidationScope {
 
 type PartialKeyOf<T, K> = { [P in keyof T]?: K; };
 
-type ValidationResult<T> = PartialKeyOf<T, IPropertyValidationResult>;
+type ValidationResult<T> = PartialKeyOf<T, IPropertyValidationResult> & { invalid?: boolean };
 
 type TouchedResult<T> = PartialKeyOf<T, boolean>;
 
@@ -51,12 +51,14 @@ function validateModel<T>(model: T, classType: ClassType<T>): ValidationResult<T
         const [propertyValidation] = Object.values(cv.constraints);
 
         return {
-            ...pv, [cv.property]: {
+            ...pv,
+            invalid: pv.invalid || !!propertyValidation,
+            [cv.property]: {
                 scope: ValidationScope.Error,
                 message: propertyValidation
             }
         };
-    }, {} as ValidationResult<T>);
+    }, { invalid: false } as ValidationResult<T>);
 }
 
 export default function FormComponent<T>(props: IInnerFormProps<T>) {
@@ -77,7 +79,7 @@ export default function FormComponent<T>(props: IInnerFormProps<T>) {
                         ...state,
                         isLoading: false,
                         formModel: data,
-                        validation: !!validator ? validateModel(data, validator) : {},
+                        validation: !!validator ? validateModel(data, validator) : { invalid: false },
                         touched: {} as TouchedResult<T>
                     });
                 });
