@@ -3,7 +3,6 @@ import { validateSync } from 'class-validator';
 import { plainToClass } from 'class-transformer';
 import { ClassType } from 'class-transformer/ClassTransformer';
 import { ErrorAdornment, SuccessAdornment } from './adornment';
-import { async } from 'q';
 
 export enum ValidationScope {
     Info, Warning, Error, Success
@@ -97,8 +96,7 @@ export default function FormComponent<T>(props: IInnerFormProps<T>) {
                     await onSubmit(formModel);
                     updateState({ ...state, isLoading: false });
                 } catch (serverError) {
-                    console.log(serverError)
-                    // updateState({ ...state, isLoading: false, serverError });
+                    updateState({ ...state, isLoading: false, serverError });
                 }
             }
         }}>

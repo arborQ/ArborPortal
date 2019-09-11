@@ -14,7 +14,7 @@ const unauthorizedAvatar = (
     <Avatar aria-label='Unauthorized'>U</Avatar>
 );
 
-export function ensureIsAuthorized<P>(Component: React.ComponentClass<P>): any {
+export function ensureIsAuthorized<P>(Component: any): any {
     return (props: P): JSX.Element => {
         const { t } = useTranslation();
 

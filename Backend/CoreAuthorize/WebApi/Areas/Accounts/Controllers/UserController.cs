@@ -13,7 +13,7 @@ namespace AuthorizeLogin.Areas.Accounts.Controllers
 {
 
     [Route("api/[area]/[controller]")]
-    [Area("Users")]
+    [Area("Accounts")]
     [ApiController]
     [ExcludeFromCodeCoverage]
     public class UserController : ControllerBase
@@ -42,6 +42,14 @@ namespace AuthorizeLogin.Areas.Accounts.Controllers
                 };
             }
 
+            var response = await _mediator.Send(model);
+
+            return response;
+        }
+
+        [HttpGet]
+        public async Task<GetUsersResponse> GetUsers([FromQuery]GetUsersRequest model)
+        {
             var response = await _mediator.Send(model);
 
             return response;

@@ -109,7 +109,7 @@ export default withRouter(ensureTranslationsDecorator<ILoginProps>({ namespace: 
                                             <AsyncButton
                                                 type='submit'
                                                 variant='contained'
-                                                disabled={Object.entries(validation).some(a => !!a)}
+                                                disabled={!!validation.invalid}
                                                 loading={isLoading}
                                                 color='primary'>
                                                 {loginButtonTranslation}

@@ -1,6 +1,6 @@
 declare namespace Areas.Account {
   export interface IUser {
-    _id: string;
+    id: string;
     isActive: boolean;
     login: string;
     firstName: string | null;
@@ -14,7 +14,7 @@ declare namespace Areas.Account {
     page?: string;
   }
 
-  export interface IUserListProps extends IUserFilterModel {}
+  export interface IUserListProps extends IUserFilterModel { }
 
   export interface IUserListState {
     loading: boolean;
