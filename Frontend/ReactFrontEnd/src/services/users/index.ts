@@ -1,4 +1,4 @@
-import { get, post, update, remove, patch } from "@bx-utils/ajax";
+import { get, post, update, remove, patch } from '@bx-utils/ajax';
 
 interface IUserSearch {
   loginSearch?: string;
@@ -7,7 +7,9 @@ interface IUserSearch {
 }
 
 export function loadUsers(search: IUserSearch): Promise<Areas.Account.IUser[]> {
-  return get<Utils.Api.IQueryResponse<Areas.Account.IUser>>(`/api/account/users?search=${search.loginSearch || ""}&page=${search.page || "1"}&pageSize=10`).then(response => response.items);
+  return get<Utils.Api.IQueryResponse<Areas.Account.IUser>>(
+    `/api/account/users?search=${search.loginSearch || ''}&page=${search.page || '1'}&pageSize=10`)
+    .then(response => response.items);
 }
 
 export function getUser(userId: number): Promise<Areas.Account.IUser> {
@@ -17,13 +19,13 @@ export function getUser(userId: number): Promise<Areas.Account.IUser> {
 export function editUser(
   user: Areas.Account.IUser
 ): Promise<Areas.Account.IUser> {
-  return patch(`/api/account/users/edit/${user._id}`, user);
+  return patch(`/api/account/users/edit/${user.id}`, user);
 }
 
 export function createUser(
   user: Areas.Account.IUser
 ): Promise<Areas.Account.IUser> {
-  return post("/api/account/users", user);
+  return post('/api/account/users', user);
 }
 
 export function deleteUser(

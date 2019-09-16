@@ -52,7 +52,7 @@ function UserListComponentHook(props: IUserListProps) {
         data: []
     });
 
-    const changeSortBy = (sortByKey: string) {
+    const changeSortBy = (sortByKey: string) => {
         const newSortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
         history.replace(`${match.url}?sortBy=${sortByKey}&sortOrder=${newSortOrder}&search=${search}`);
     };

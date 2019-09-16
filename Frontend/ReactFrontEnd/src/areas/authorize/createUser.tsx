@@ -16,7 +16,7 @@ interface ICreateUserProps extends RouteChildrenProps {
 }
 
 function createUserAction(data: CreateUserModel): Promise<ICreateUserResponse> {
-    return post('/api/users/user', data);
+    return post('/api/accounts/user', data);
 }
 
 interface ICreateUserResponse {
@@ -159,7 +159,7 @@ export default withRouter(
                                 <AsyncButton
                                     type='submit'
                                     variant='contained'
-                                    disabled={Object.entries(validation).some(a => !!a)}
+                                    disabled={validation.invalid}
                                     loading={isLoading}
                                     color='primary'>
                                     {saveTranslation}
