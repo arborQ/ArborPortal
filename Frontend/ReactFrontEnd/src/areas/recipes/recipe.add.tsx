@@ -4,6 +4,7 @@ import TabPanel from '@bx-components/tab.panel';
 import RecipeProducts from './components/recipe.products';
 import FormComponent from '@bx-components/form.consumer';
 import AddRecipeModel from './models/add.recipe.model';
+import { createNewRecipe } from '@bx-services/recipe/recipe.service';
 
 import {
     TextField,
@@ -21,7 +22,6 @@ import {
     Tab,
 } from '@material-ui/core';
 import FileUploadComponent from '@bx-components/upload.files';
-import { validateModel } from '../authorize/models/createUser';
 
 const useStyles = makeStyles((theme: Theme) => ({
     card: {
@@ -65,10 +65,9 @@ function RecipeDetailsComponent() {
     return (
         <FormComponent
             validator={AddRecipeModel}
-            onSubmit={async (model) => { console.log(model); }}
+            onSubmit={async (model) => { await createNewRecipe(model); }}
             model={defaultRecipe}>
             {({ model, updateModel, validation }) => {
-                console.log({ validation });
                 const {
                     recipeName: name,
                     products,
@@ -122,7 +121,7 @@ function RecipeDetailsComponent() {
                                     <RecipeProducts products={products} />
                                 </TabPanel>
                                 <TabPanel value={1} index={selectedTab}>
-                                    <FileUploadComponent onFileAdded={() => {
+                                    <FileUploadComponent maxFiles={5} onFileAdded={() => {
                                         // console.log({ f });
                                     }} />
                                 </TabPanel>

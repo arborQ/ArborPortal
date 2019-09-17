@@ -22,7 +22,9 @@ export class ElasticSearchClientService {
     }
 
     async createIndex(name: string): Promise<void> {
-        await this.client.indices.create({ index: name });
+        if (!await this.client.indices.exists({ index: name })) {
+            await this.client.indices.create({ index: name });
+        }
     }
 
     async deleteIndex(name: string): Promise<void> {
@@ -42,12 +44,14 @@ export class ElasticSearchClientService {
     }
 
     async switchIndexes(from: string, to: string): Promise<void> {
-        await this.client.reindex({
-            body: {
-                source: { index: from },
-                dest: { index: to },
-            },
-        });
+        // await this.client.indices.deleteAlias({ index: to, name: to });
+        await this.client.indices.putAlias({ index: to, name: to });
+        // await this.client.reindex({
+        //     body: {
+        //         source: { index: from },
+        //         dest: { index: to },
+        //     },
+        // });
     }
 
     allSearchQuery(_all: string) {

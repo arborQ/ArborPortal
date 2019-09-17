@@ -5,12 +5,17 @@ export default async function RegenerateRecipes() {
     const es = new ElasticSearchClientService();
     const recipes = await Recipes();
     const recipeList = await recipes.find().exec();
-    await es.clear('recipe_temp');
+    await es.clear('recipe');
+
     recipeList.forEach(recipe => {
-        console.log(recipe)
+        console.log(recipe);
         es.add('recipe_temp', { id: recipe._id, recipeName: 'xxxxxx', recipeDescription: recipe.recipeDescription });
     });
 
-    await es.switchIndexes('recipe_temp', 'recipe');
-    console.log('re-indexed');
+    try {
+        await es.switchIndexes('recipe_temp', 'recipe');
+        console.log('re-indexed');
+    } catch (ex) {
+        console.log('cant reindex', ex);
+    }
 }

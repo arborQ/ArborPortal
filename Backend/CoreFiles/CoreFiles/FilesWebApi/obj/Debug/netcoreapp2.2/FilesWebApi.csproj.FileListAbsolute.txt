@@ -1,0 +1,14 @@
+C:\Users\lwojcik\Portal\Backend\CoreFiles\CoreFiles\FilesWebApi\bin\Debug\netcoreapp2.2\FilesWebApi.deps.json
+C:\Users\lwojcik\Portal\Backend\CoreFiles\CoreFiles\FilesWebApi\bin\Debug\netcoreapp2.2\FilesWebApi.runtimeconfig.json
+C:\Users\lwojcik\Portal\Backend\CoreFiles\CoreFiles\FilesWebApi\bin\Debug\netcoreapp2.2\FilesWebApi.runtimeconfig.dev.json
+C:\Users\lwojcik\Portal\Backend\CoreFiles\CoreFiles\FilesWebApi\bin\Debug\netcoreapp2.2\FilesWebApi.dll
+C:\Users\lwojcik\Portal\Backend\CoreFiles\CoreFiles\FilesWebApi\obj\Debug\netcoreapp2.2\FilesWebApi.csprojAssemblyReference.cache
+C:\Users\lwojcik\Portal\Backend\CoreFiles\CoreFiles\FilesWebApi\obj\Debug\netcoreapp2.2\FilesWebApi.csproj.CoreCompileInputs.cache
+C:\Users\lwojcik\Portal\Backend\CoreFiles\CoreFiles\FilesWebApi\obj\Debug\netcoreapp2.2\FilesWebApi.RazorAssemblyInfo.cache
+C:\Users\lwojcik\Portal\Backend\CoreFiles\CoreFiles\FilesWebApi\obj\Debug\netcoreapp2.2\FilesWebApi.RazorAssemblyInfo.cs
+C:\Users\lwojcik\Portal\Backend\CoreFiles\CoreFiles\FilesWebApi\obj\Debug\netcoreapp2.2\FilesWebApi.AssemblyInfoInputs.cache
+C:\Users\lwojcik\Portal\Backend\CoreFiles\CoreFiles\FilesWebApi\obj\Debug\netcoreapp2.2\FilesWebApi.AssemblyInfo.cs
+C:\Users\lwojcik\Portal\Backend\CoreFiles\CoreFiles\FilesWebApi\obj\Debug\netcoreapp2.2\FilesWebApi.RazorTargetAssemblyInfo.cache
+C:\Users\lwojcik\Portal\Backend\CoreFiles\CoreFiles\FilesWebApi\bin\Debug\netcoreapp2.2\FilesWebApi.pdb
+C:\Users\lwojcik\Portal\Backend\CoreFiles\CoreFiles\FilesWebApi\obj\Debug\netcoreapp2.2\FilesWebApi.dll
+C:\Users\lwojcik\Portal\Backend\CoreFiles\CoreFiles\FilesWebApi\obj\Debug\netcoreapp2.2\FilesWebApi.pdb

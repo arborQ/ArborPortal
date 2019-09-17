@@ -5,5 +5,6 @@ module.exports = [
   proxyMiddleware(`${process.env.PROXY_LOGIN}/api/authorize/login**`),
   proxyMiddleware(`${process.env.PROXY_LOGIN}/api/accounts/user**`),
   proxyMiddleware(`${process.env.PROXY_RECIPES}/api/recipes**`),
+  proxyMiddleware(`${process.env.PROXY_FILES}/api/files/**`),
   // proxyMiddleware(`${process.env.WEB_SOCKET}/socket.io/**`, { ws: true, logLevel: 'debug' })
 ];

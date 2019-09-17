@@ -31,7 +31,7 @@ export default function FileUploadComponent(props: IUploadFileProps) {
     function registerDropzone(element: HTMLDivElement) {
         if (!registered) {
             const dropzone = new Dropzone(element, {
-                url: '/api/files/upload',
+                url: '/api/files/tempfiles',
                 dictDefaultMessage: t('uploadImages'),
                 maxFiles: props.maxFiles,
                 init() {
