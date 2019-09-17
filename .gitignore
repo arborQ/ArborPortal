@@ -7,7 +7,9 @@ logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-
+.vs
+bin
+obj
 # Runtime data
 pids
 *.pid
@@ -64,3 +66,4 @@ typings/
 .next
 *.coverage
 seq-data/*
+Backend/BlazorStart/.vs/BlazorStart/v15/Server/sqlite3/storage.ide-wal
