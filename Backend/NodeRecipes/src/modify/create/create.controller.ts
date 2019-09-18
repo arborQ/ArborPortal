@@ -14,11 +14,11 @@ export class CreateController {
             const Recipe = await Recipes();
             const newRecipe = new Recipe(model);
             await newRecipe.save();
-            // await this.elasticSearch.add('recipes', {
-            //     id: newRecipe._id,
-            //     recipeName: model.recipeName,
-            //     recipeDescription: model.recipeDescription,
-            // });
+            await this.elasticSearch.add('recipes', {
+                id: newRecipe._id,
+                recipeName: model.recipeName,
+                recipeDescription: model.recipeDescription,
+            });
 
             return newRecipe.id;
         } catch (e) {

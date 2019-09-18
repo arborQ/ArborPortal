@@ -1,46 +1,38 @@
-﻿@page "/fetchdata"
+﻿@page "/recipes"
 
 @using BlazorStart.Data
-@inject WeatherForecastService ForecastService
+@inject RecipeService recipeService
 
-<h1>Weather forecast</h1>
-
-<p>This component demonstrates fetching data from a service.</p>
-
-@if (forecasts == null)
+@if (recipes == null)
 {
-    <p><em>Loading...</em></p>
+    <div class="spinner-border text-primary" role="status">
+        <span class="sr-only">Loading...</span>
+    </div>
 }
 else
 {
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Date</th>
-                <th>Temp. (C)</th>
-                <th>Temp. (F)</th>
-                <th>Summary</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var forecast in forecasts)
+    <div class="row">
+        @foreach (var recipe in recipes)
             {
-                <tr>
-                    <td>@forecast.Date.ToShortDateString()</td>
-                    <td>@forecast.TemperatureC</td>
-                    <td>@forecast.TemperatureF</td>
-                    <td>@forecast.Summary</td>
-                </tr>
+                <div class="card col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 ml-2 mb-2">
+                    <img src="https://material-ui.com/static/images/cards/paella.jpg" class="card-img-top" alt="@recipe.RecipeName">
+                    <div class="card-body">
+                        <h5 class="card-title">@recipe.RecipeName</h5>
+                        <p class="card-text">@recipe.RecipeDescription</p>
+                        <NavLink class="btn btn-primary" href="@($"recipe/details/{recipe.Id}")">
+                            Details
+                        </NavLink>
+                    </div>
+                </div>
             }
-        </tbody>
-    </table>
+    </div>
 }
 
 @code {
-    WeatherForecast[] forecasts;
+    RecipeModel[] recipes;
 
     protected override async Task OnInitializedAsync()
     {
-        forecasts = await ForecastService.GetForecastAsync(DateTime.Now);
+        recipes = (await recipeService.SearchRecipes(string.Empty)).Items.ToArray();
     }
 }

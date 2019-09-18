@@ -12,8 +12,13 @@ export class ListController {
         totalCount: number,
         items: any[],
     }> {
-        const results = await this.elasticSearch.search('recipes', '');
+        try {
+            const results = await this.elasticSearch.search('recipes', '');
 
-        return results;
+            return results;
+        } catch (ex) {
+            console.log(ex);
+            return null;
+        }
     }
 }

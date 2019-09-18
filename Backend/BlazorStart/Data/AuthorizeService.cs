@@ -1,13 +1,14 @@
-using System;
-using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace BlazorStart.Data {
-    public class AuthorizeService {
-        public async Task<bool> AuthorizeUser (string login, string password) {
-            await Task.Delay (1500);
+    public class AuthorizeService : BaseApiClient {
+        public AuthorizeService (HttpClient client) : base (client, "http://localhost:5004/api/authorize/login") { }
 
-            return true;
+        public async Task<bool> AuthorizeUser (string login, string password) {
+            var response = await PostAsync<ResponseAuthorizeModel>(new RequestAuthorizeModel { Login = login, Password = password });
+
+            return response.IsSuccessfull;
         }
     }
 }

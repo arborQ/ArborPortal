@@ -1,42 +1,60 @@
 @using System.Net.Http
-@using System.Globalization
-@inject HttpClient Http
+@using System.Text
+@using Newtonsoft.Json
+@using BlazorStart.Data
+@inject AuthorizeService authorizeService
 
 @page "/login"
 
 <form @onsubmit="SubmitForm">
   <div class="form-group">
     <label for="exampleInputEmail1">Email address</label>
-    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+    <input 
+    type="text" 
+    @bind="username" 
+    class="form-control" 
+    id="exampleInputEmail1" 
+    aria-describedby="emailHelp" 
+    disabled="@isLoading"
+    placeholder="Enter email" />
+    <small id="emailHelp" class="form-text text-muted">@username</small>
   </div>
   <div class="form-group">
     <label for="exampleInputPassword1">Password</label>
-    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+    <input type="password" @bind="@password" class="form-control" disabled="@isLoading" id="exampleInputPassword1" placeholder="Password" />
   </div>
   <div class="form-group form-check">
-    <input type="checkbox" class="form-check-input" id="exampleCheck1">
+    <input type="checkbox" class="form-check-input" disabled="@isLoading" id="exampleCheck1">
     <label class="form-check-label" for="exampleCheck1">Check me out</label>
   </div>
-  <button type="submit" class="btn btn-primary">Submit</button>
+  <button type="submit" class="btn btn-primary" disabled="@isLoading">Submit</button>
+  @if(!string.IsNullOrEmpty(error)) {
+    <div class="alert alert-warning" role="alert">
+      @error
+    </div>
+  }
+ 
 </form>
 
 @code {
-    string username = "";
+    string username = "arbor";
     string password = "";
+    string error = "";
+    bool isLoading = false;
 
     async Task SubmitForm()
     {
-        var stringContent = new StringContent(Json.Serialize(new 
-        {
-            Username = username,
-            Password = password
-        }), Encoding.UTF8, "application/json");
+      try {
+          error = string.Empty;
+          await System.Console.Out.WriteLineAsync("Try submit");
+          isLoading = true;
+          var result = await authorizeService.AuthorizeUser(username, password);
 
-        await Http.SendAsync(new HttpRequestMessage {
-            Method = HttpMethod.Post,
-            RequestUri = new Uri("http://localhost:5001/api/authorize/login"),
-            Content = stringContent
-        })
+          await System.Console.Out.WriteLineAsync($"Done {result}");
+        } catch(Exception ex) {
+          await System.Console.Out.WriteLineAsync(ex.Message);
+        } finally {
+          isLoading = false;
+        }
     }
 }
