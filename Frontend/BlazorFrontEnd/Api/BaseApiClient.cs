@@ -13,13 +13,16 @@ public abstract class BaseApiClient {
         baseUrl = apiUrl;
     }
 
-    protected async Task<T> GetAsync<T>() {
-        var response = await _client
+    protected async Task<HttpResponseMessage> GetAsync(string queryParams = null) {
+        return await _client
             .SendAsync (new HttpRequestMessage {
                 Method = HttpMethod.Get,
-                RequestUri = new Uri (baseUrl),
+                RequestUri = new Uri ($"{baseUrl}{queryParams}"),
             });
+    }
 
+    protected async Task<T> GetAsync<T> (string queryParams = null) {
+        var response = await GetAsync(queryParams);
         var responseData = JsonConvert.DeserializeObject<T> (await response.Content.ReadAsStringAsync ());
 
         return responseData;

@@ -72,6 +72,7 @@ export class ElasticSearchClientService {
         totalCount: number,
         items: any[],
     }> {
+        await this.createIndex(index);
         const { hits } = await this.client.search({
             index,
             body: this.allSearchQuery(search),

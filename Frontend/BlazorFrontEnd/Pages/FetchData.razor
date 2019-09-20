@@ -2,6 +2,7 @@
 
 @using BlazorStart.Data
 @inject RecipeService recipeService
+@inject FavouriteService favouriteService
 
 @if (recipes == null)
 {
@@ -22,6 +23,7 @@ else
                         <NavLink class="btn btn-primary" href="@($"recipe/details/{recipe.Id}")">
                             Details
                         </NavLink>
+                        <button type="button" class="btn btn-warning" @onclick="async () => { await ToggleFavourite(recipe.Id); }">Favourite</button>
                     </div>
                 </div>
             }
@@ -33,6 +35,15 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        recipes = (await recipeService.SearchRecipes(string.Empty)).Items.ToArray();
+        var result = (await recipeService.SearchRecipes(string.Empty));
+
+        if (result != null && result.Items != null) {
+            recipes = result.Items.ToArray();
+        }
+    }
+
+    async Task ToggleFavourite(string recipeId) {
+        await Console.Out.WriteLineAsync(recipeId);
+        await favouriteService.ToggleFavourite(recipeId);
     }
 }

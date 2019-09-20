@@ -2,11 +2,9 @@ import { IsInt, Length } from "class-validator";
 import cosmosRepository from '../cosmosRepository';
 
 export class FavouriteModel {
-    @Length(3, 10)
     storageKey: string;
 
-    @IsInt()
-    itemId: number;
+    itemId: string;
 }
 
 export async function createRepository() {

@@ -28,11 +28,6 @@
     <label class="form-check-label" for="exampleCheck1">Check me out</label>
   </div>
   <button type="submit" class="btn btn-primary" disabled="@isLoading">Submit</button>
-  @if(!string.IsNullOrEmpty(error)) {
-    <div class="alert alert-warning" role="alert">
-      @error
-    </div>
-  }
  
 </form>
 
