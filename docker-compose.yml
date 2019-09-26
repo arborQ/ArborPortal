@@ -1,9 +1,4 @@
 version: '3'
-volumes:
-  node_modules_react:
-  node_modules_vue:
-  esdata01:
-    driver: local
 services:
   seq:
     image: datalust/seq:latest
@@ -22,20 +17,21 @@ services:
       - '6379:6379'
     expose:
       - 6379
-  # kibana:
-  #   image: docker.elastic.co/kibana/kibana:7.3.2
-  #   container_name: kibana
-  #   ports:
-  #     - "5601:5601"
-  #   environment:
-  #     ELASTICSEARCH_HOSTS: http://elasticsearch:9200
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.3.2
+    container_name: kibana
+    ports:
+      - "5601:5601"
+    environment:
+      ELASTICSEARCH_HOSTS: http://es01:9200
+    depends_on:
+      - es01
   es01:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.3.2
     container_name: es01
     environment:
       - node.name=es01
-      - discovery.seed_hosts=es02
-      - cluster.initial_master_nodes=es01,es02
+      - cluster.initial_master_nodes=es01
       - cluster.name=docker-cluster
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
@@ -44,29 +40,9 @@ services:
         soft: -1
         hard: -1
     volumes:
-      - esdata01:/usr/share/elasticsearch/data
+      - ./esdata01:/usr/share/elasticsearch/data
     ports:
       - 9200:9200
-    networks:
-      - esnet
-  es02:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.3.2
-    container_name: es02
-    environment:
-      - node.name=es02
-      - discovery.seed_hosts=es01
-      - cluster.initial_master_nodes=es01,es02
-      - cluster.name=docker-cluster
-      - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-    volumes:
-      - esdata02:/usr/share/elasticsearch/data
-    networks:
-      - esnet
   rabbitmq:
     image: "rabbitmq:latest"
     environment:
@@ -92,10 +68,10 @@ services:
       ACCEPT_EULA: "Y"
       SA_PASSWORD: "D.`(>q8'5d,ngL>H"
 volumes:
+  node_modules_react:
+  node_modules_vue:
   esdata01:
-    driver: local
   esdata02:
-    driver: local
 networks:
   esnet:
     

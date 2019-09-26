@@ -1,4 +1,5 @@
 # Logs
+esdata01/*
 db
 .vscode/settings.json
 logs
@@ -66,4 +67,6 @@ typings/
 .next
 *.coverage
 seq-data/*
-Backend/BlazorStart/.vs/BlazorStart/v15/Server/sqlite3/storage.ide-wal
+.vs/*
+
+esdata01/*

@@ -1,17 +1,24 @@
 @import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
 
-html, body {
+html,
+body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
-a, .btn-link {
+a,
+a:hover {
+    text-decoration: none;
+    color: #333;
+}
+
+.btn-link {
     color: #0366d6;
 }
 
 .btn-primary {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
 }
 
 app {
@@ -36,7 +43,7 @@ app {
     justify-content: flex-end;
 }
 
-.main .top-row > a {
+.main .top-row>a {
     margin-left: 1.5rem;
 }
 
@@ -45,7 +52,7 @@ app {
 }
 
 .sidebar .top-row {
-    background-color: rgba(0,0,0,0.4);
+    background-color: rgba(0, 0, 0, 0.4);
 }
 
 .sidebar .navbar-brand {
@@ -82,12 +89,12 @@ app {
 }
 
 .nav-item a.active {
-    background-color: rgba(255,255,255,0.25);
+    background-color: rgba(255, 255, 255, 0.25);
     color: white;
 }
 
 .nav-item a:hover {
-    background-color: rgba(255,255,255,0.1);
+    background-color: rgba(255, 255, 255, 0.1);
     color: white;
 }
 
@@ -134,7 +141,7 @@ app {
         top: 0;
     }
 
-    .main > div {
+    .main>div {
         padding-left: 2rem !important;
         padding-right: 1.5rem !important;
     }
