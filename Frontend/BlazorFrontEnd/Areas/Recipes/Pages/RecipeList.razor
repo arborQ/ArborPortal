@@ -18,15 +18,16 @@ else
                 {
                     <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
                         <div class="card shadow-sm">
-                            <NavLink href="@($"recipes/details/{recipe.Id}")">
                                 <img src="https://material-ui.com/static/images/cards/paella.jpg" class="card-img-top" alt="@recipe.RecipeName">
                                 <div class="card-body">
                                     <h5 class="card-title">@recipe.RecipeName</h5>
                                     <p class="card-text">@recipe.RecipeDescription</p>
                                 </div>
-                            </NavLink>
                             <div class="card-body">
-                                <button type="button" class="btn btn-dark" @onclick="async () => { await ToggleFavourite(recipe.Id); }">
+                            <NavLink type="button" class="btn btn-primary stretched-link" href="@($"recipes/details/{recipe.Id}")">
+                                Details
+                            </NavLink>
+                                <button type="button" class="btn btn-light" @onclick="async () => { await ToggleFavourite(recipe.Id); }">
                                     <i class="fas fa-heart"></i>
                                 </button>
                             </div>
