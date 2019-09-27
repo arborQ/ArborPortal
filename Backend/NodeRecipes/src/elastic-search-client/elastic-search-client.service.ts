@@ -60,10 +60,11 @@ export class ElasticSearchClientService {
         } else {
             return {
                 query: {
-                    match: {
-                        _all,
+                    query_string: {
+                        fields: ['recipeName'],
+                        query: `*${_all}*`,
                     },
-                },
+                }
             };
         }
     }

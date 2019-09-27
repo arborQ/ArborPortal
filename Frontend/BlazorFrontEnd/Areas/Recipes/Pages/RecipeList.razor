@@ -4,7 +4,7 @@
 @inject RecipeService recipeService
 @inject FavouriteService favouriteService
 
-@if (recipes == null)
+@if (IsLoading)
 {
     <div class="spinner-border text-primary" role="status">
         <span class="sr-only">Loading...</span>
@@ -12,42 +12,74 @@
 }
 else
 {
-    <div class="card shadow p-3">
+    <div class="container">
         <div class="row">
-            @foreach (var recipe in recipes)
-                {
-                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
-                        <div class="card shadow-sm">
-                                <img src="https://material-ui.com/static/images/cards/paella.jpg" class="card-img-top" alt="@recipe.RecipeName">
-                                <div class="card-body">
-                                    <h5 class="card-title">@recipe.RecipeName</h5>
-                                    <p class="card-text">@recipe.RecipeDescription</p>
-                                </div>
-                            <div class="card-body">
-                            <NavLink type="button" class="btn btn-primary stretched-link" href="@($"recipes/details/{recipe.Id}")">
-                                Details
-                            </NavLink>
-                                <button type="button" class="btn btn-light" @onclick="async () => { await ToggleFavourite(recipe.Id); }">
-                                    <i class="fas fa-heart"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                }
+            <SearchBox 
+                SearchPlaceholder="Szukaj przepisów..." 
+                SearchValue="@Search"
+                OnSearch="@TriggerSearch"
+                >
+            </SearchBox>
         </div>
+        @if(recipes.Length > 0) {
+        <div class="row justify-content-md-center">
+            <div class="card shadow p-3">
+                <div class="row">
+                    @foreach (var recipe in recipes)
+                        {
+                            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+                                <div class="card shadow-sm">
+                                        <img src="https://material-ui.com/static/images/cards/paella.jpg" class="card-img-top" alt="@recipe.RecipeName">
+                                        <div class="card-body">
+                                            <h5 class="card-title">@recipe.RecipeName</h5>
+                                            <p class="card-text">@recipe.RecipeDescription</p>
+                                        </div>
+                                    <div class="card-body">
+                                    <NavLink type="button" class="btn btn-primary stretched-link" href="@($"recipes/details/{recipe.Id}")">
+                                        Details
+                                    </NavLink>
+                                        <button type="button" class="btn btn-light" @onclick="async () => { await ToggleFavourite(recipe.Id); }">
+                                            <i class="fas fa-heart"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        }else {
+            <div class="jumbotron shadow">
+                <div class="container">
+                    <h1 class="display-4">No items found for search fraze</h1>
+                    <p class="lead">@Search</p>
+                </div>
+            </div>
+        }
     </div>
 }
 
 @code {
     RecipeModel[] recipes;
 
+    [Parameter]
+    public string Search { get; set; }
+
+    public bool IsLoading { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
-        var result = (await recipeService.SearchRecipes(string.Empty));
+        await TriggerSearch(string.Empty);
+    }
 
-        if (result != null && result.Items != null) {
-            recipes = result.Items.ToArray();
-        }
+    async Task TriggerSearch(string searchValue) {
+        Search = searchValue;
+        IsLoading = true;
+        var result = await recipeService.SearchRecipes(searchValue);
+        await Console.Out.WriteLineAsync($"Items: {result.Items.Count}");
+        recipes = result.Items.ToArray();
+        IsLoading = false;
+        StateHasChanged();
     }
 
     async Task ToggleFavourite(string recipeId) {

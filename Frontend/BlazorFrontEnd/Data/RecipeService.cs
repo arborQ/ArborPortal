@@ -3,13 +3,10 @@ using System.Threading.Tasks;
 
 namespace BlazorStart.Data {
     public class RecipeService : BaseApiClient {
-        public RecipeService(HttpClient client) 
-            : base(client, "http://localhost:8012/api/recipes")
-        {
-        }
+        public RecipeService (HttpClient client) : base (client, "http://localhost:8012/api/recipes") { }
 
         public async Task<RecipeSearchResponse> SearchRecipes (string search) {
-            var response = await GetAsync<RecipeSearchResponse> ();
+            var response = await GetAsync<RecipeSearchResponse> ($"?search={search}");
 
             return response;
         }

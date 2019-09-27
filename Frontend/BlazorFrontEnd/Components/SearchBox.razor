@@ -1,0 +1,30 @@
+<form class="input-group mb-3 shadow p-3" onsubmit-prevent-default @onsubmit="@SubmitSearchForm">
+    <input type="text" class="form-control border-0" @bind="@SearchValue" />
+    <div class="input-group-append">
+        <button class="btn btn-outline-secondary" type="button" @onclick="@ClearForm">
+            <i class="fas fa-eraser"></i>
+        </button>
+        <button class="btn btn-outline-secondary" type="submit">
+            <i class="fas fa-search"></i>
+        </button>
+    </div>
+</form>
+
+@code {
+    [Parameter]
+    public string SearchPlaceholder { get; set; }
+
+    [Parameter]
+    public string SearchValue { get; set; }
+
+    [Parameter]
+    public Func<string, Task> OnSearch { get; set; }
+
+    public void ClearForm() {
+        OnSearch(string.Empty);
+    }
+
+    public void SubmitSearchForm() {
+        OnSearch(SearchValue);
+    }
+}
