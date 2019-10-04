@@ -11,6 +11,12 @@ export interface IRecipe extends mongoose.Document, IRecipeDto {
 
 }
 
+export class RecipeViewModel {
+    Id?: string;
+    RecipeName: string;
+    RecipeDescription: string;
+}
+
 export class RecipeDto {
     id?: string;
     recipeName: string;

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace BlazorStart.Data {
+namespace BlazorStart.Recipes.Models {
     public class RecipeSearchResponse {
         public List<RecipeModel> Items { get; set; }
 

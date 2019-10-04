@@ -1,43 +1,46 @@
 ﻿@page "/recipes/details/{recipeId}"
 
-@using BlazorStart.Data
+@using BlazorStart.Recipes.Services;
+@using BlazorStart.Recipes.Models;
+@using BlazorStart.Data;
 @using BlazorFrontEnd.Areas.Recipes.Models
 @inject RecipeService recipeService
 @inject FavouriteService favouriteService
-
-<div>
-    <div class="card shadow p-3">
+@if(RecipeDetailsData == null) {
+    <div>Loading...</div>
+} else {
+    <form @onsubmit="SubmitForm">
         <div class="card shadow p-3">
-            <div class="form-group">
-                <label for="recipe-name">Recipe name</label>
-                <input type="text" class="form-control" id="recipe-name" placeholder="Recipe name" @bind="@RecipeDetailsData.RecipeName" />
-                <small id="emailHelp" class="form-text text-muted">Give recipe name</small>
-            </div>
-            <nav>
-                <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                    <button class="nav-item nav-link @((selectedTab == 1 ? "active" : string.Empty))" @onclick="@(() => selectTab(1))">Description</button>
-                    <button class="nav-item nav-link @((selectedTab == 2 ? "active" : string.Empty))" @onclick="@(() => selectTab(2))">Ingridients</button>
-                    <button class="nav-item nav-link @((selectedTab == 3 ? "active" : string.Empty))" @onclick="@(() => selectTab(3))">Images</button>
-                </div>
-            </nav>
-            @if (selectedTab == 1) 
-            {
+            <div class="card shadow p-3">
                 <div class="form-group">
-                    <label for="recipe-description">Recipe description</label>
-                    <textarea class="form-control" id="recipe-description" rows="3" placeholder="Recipe description" @bind="@RecipeDetailsData.RecipeDescription"></textarea>
+                    <label for="recipe-name">Recipe name</label>
+                    <input type="text" class="form-control" id="recipe-name" placeholder="Recipe name" @bind="@RecipeDetailsData.RecipeName" />
+                    <small id="emailHelp" class="form-text text-muted">Give recipe name</small>
                 </div>
-            }
-                <div>
-        <button type="submit" class="btn btn-primary">Save</button>
-        <NavLink class="btn" href="@($"recipes")">
-            Cancel
-        </NavLink>
-    </div>
+                <nav>
+                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                        <button class="nav-item nav-link @((selectedTab == 1 ? "active" : string.Empty))" @onclick="@(() => selectTab(1))">Description</button>
+                        <button class="nav-item nav-link @((selectedTab == 2 ? "active" : string.Empty))" @onclick="@(() => selectTab(2))">Ingridients</button>
+                        <button class="nav-item nav-link @((selectedTab == 3 ? "active" : string.Empty))" @onclick="@(() => selectTab(3))">Images</button>
+                    </div>
+                </nav>
+                @if (selectedTab == 1) 
+                {
+                    <div class="form-group">
+                        <label for="recipe-description">Recipe description</label>
+                        <textarea class="form-control" id="recipe-description" rows="3" placeholder="Recipe description" @bind="@RecipeDetailsData.RecipeDescription"></textarea>
+                    </div>
+                }
+                    <div>
+                <button type="submit" class="btn btn-primary">Save</button>
+                <NavLink class="btn" href="@($"recipes")">
+                    Cancel
+                </NavLink>
+                </div>
+            </div>
         </div>
-    </div>
-
-</div>
-
+    </form>
+}
 @code {
     [Parameter]
     public string RecipeId { get; set; } 
@@ -50,14 +53,26 @@
         selectedTab = index;
     }
 
-    protected override Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync()
     {
+        var data = await recipeService.GetRecipe(RecipeId);
+
         RecipeDetailsData = new RecipeDetailsModel 
         {
-            RecipeName = "new name", 
-            RecipeDescription = "new description"
+            RecipeName = data.ItemData.RecipeName, 
+            RecipeDescription = data.ItemData.RecipeDescription
         };
+    }
 
-        return Task.CompletedTask;
+    async Task GetData() {
+        var data = await recipeService.GetRecipe(RecipeId);
+    }
+
+    async Task SubmitForm() {
+        await recipeService.UpdateRecipe(new RecipeModel {
+            Id = RecipeId,
+            RecipeName = RecipeDetailsData.RecipeName, 
+            RecipeDescription = RecipeDetailsData.RecipeDescription
+        });
     }
 }

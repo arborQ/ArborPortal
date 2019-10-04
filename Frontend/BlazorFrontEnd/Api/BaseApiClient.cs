@@ -28,13 +28,21 @@ public abstract class BaseApiClient {
         return responseData;
     }
 
+    protected async Task<T> PutAsync<T>(object model) {
+        return await SendRequest<T>(model, HttpMethod.Put);
+    }
+
     protected async Task<T> PostAsync<T> (object model) {
+        return await SendRequest<T>(model, HttpMethod.Post);
+    }
+
+    private async Task<T> SendRequest<T>(object model, HttpMethod method) {
         var stringContent = new StringContent (
             JsonConvert.SerializeObject (model), Encoding.UTF8, "application/json");
 
         var response = await _client
             .SendAsync (new HttpRequestMessage {
-                Method = HttpMethod.Post,
+                Method = method,
                     RequestUri = new Uri (baseUrl),
                     Content = stringContent
             });

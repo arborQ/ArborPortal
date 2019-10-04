@@ -1,4 +1,4 @@
-namespace BlazorStart.Data {
+namespace BlazorStart.Recipes.Models {
     public class RecipeModel {
         public string Id { get; set; }
 

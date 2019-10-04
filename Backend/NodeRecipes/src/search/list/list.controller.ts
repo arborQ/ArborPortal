@@ -1,4 +1,4 @@
-import { Controller, Get, UseGuards, Query, Req } from '@nestjs/common';
+import { Controller, Get, UseGuards, Query, Req, Param } from '@nestjs/common';
 import { AuthorizedGuard } from '../../authorized.guard';
 import { ElasticSearchClientService } from '../../elastic-search-client/elastic-search-client.service';
 import { Request } from 'express';
