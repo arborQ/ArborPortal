@@ -70,3 +70,4 @@ seq-data/*
 .vs/*
 
 esdata01/*
+docker/rabbitmq/rabbitmq/rabbit@b7f0f4d218dd/quorum/rabbit@b7f0f4d218dd/00000001.wal
