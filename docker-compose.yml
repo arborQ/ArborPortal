@@ -9,14 +9,14 @@ services:
   #   restart: unless-stopped
   #   volumes:
   #     - ./seq-data:/data
-  # redis:
-  #   image: redis:4-alpine
-  #   container_name: redis
-  #   command: redis-server --requirepass yourpassword
-  #   ports:
-  #     - '6379:6379'
-  #   expose:
-  #     - 6379
+  redis:
+    image: redis:4-alpine
+    container_name: redis
+    command: redis-server --requirepass yourpassword
+    ports:
+      - '6379:6379'
+    expose:
+      - 6379
   # kibana:
   #   image: docker.elastic.co/kibana/kibana:7.3.2
   #   container_name: kibana
@@ -26,47 +26,52 @@ services:
   #     ELASTICSEARCH_HOSTS: http://es01:9200
   #   depends_on:
   #     - es01
-  # es01:
-  #   image: docker.elastic.co/elasticsearch/elasticsearch:7.3.2
-  #   container_name: es01
-  #   environment:
-  #     - node.name=es01
-  #     - cluster.initial_master_nodes=es01
-  #     - cluster.name=docker-cluster
-  #     - bootstrap.memory_lock=true
-  #     - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-  #   ulimits:
-  #     memlock:
-  #       soft: -1
-  #       hard: -1
-  #   volumes:
-  #     - ./esdata01:/usr/share/elasticsearch/data
-  #   ports:
-  #     - 9200:9200
+  es01:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.3.2
+    container_name: es01
+    environment:
+      - node.name=es01
+      - cluster.initial_master_nodes=es01
+      - cluster.name=docker-cluster
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - ./esdata01:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
   rabbitmq:
     image: "rabbitmq:latest"
     environment:
+        RABBITMQ_ERLANG_COOKIE: "SWQOKODSQALRPCLNMEQG"
         RABBITMQ_DEFAULT_USER: "rabbitmq"
         RABBITMQ_DEFAULT_PASS: "rabbitmq"
+        RABBITMQ_DEFAULT_VHOST: "/"
     ports:
       - "5672:5672"
     volumes:
-        - "./rabbitmq:/var/lib/rabbitmq"
-        - "./enabled_plugins:/etc/rabbitmq/enabled_plugins"
-  # db:
-  #   container_name: db
-  #   image: "microsoft/mssql-server-linux"
-  #   restart: always
-  #   ports:
-  #     - "1433:1433"
-  #   expose: 
-  #     - 1433
-  #   volumes:
-  #     - ./db/data/mssql:/var/opt/mssql/data
-  #     - ./db/logs/mssql:/var/opt/mssql/log
-  #   environment:
-  #     ACCEPT_EULA: "Y"
-  #     SA_PASSWORD: "D.`(>q8'5d,ngL>H"
+        - "./docker/rabbitmq/rabbitmq:/var/lib/rabbitmq/mnesia"
+  db:
+    container_name: db
+    image: "microsoft/mssql-server-linux"
+    restart: always
+    ports:
+      - "1433:1433"
+    expose: 
+      - 1433
+    volumes:
+      - ./db/data/mssql:/var/opt/mssql/data
+      - ./db/logs/mssql:/var/opt/mssql/log
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "D.`(>q8'5d,ngL>H"
+  mongo:
+    image: mongo
+    ports:
+    - "27018:27017"
 volumes:
   node_modules_react:
   node_modules_vue:

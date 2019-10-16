@@ -4,7 +4,7 @@ import config from '../config/config.service';
 
 @Injectable()
 export class ElasticSearchClientService {
-    private client: Client;
+    public client: Client;
 
     constructor() {
         this.client = new Client({
@@ -15,26 +15,46 @@ export class ElasticSearchClientService {
     async health(): Promise<boolean> {
         return new Promise<boolean>(resolve => {
             this.client.cluster.health({}, (_, resp) => {
-                console.log("-- Client Health --", resp);
+                console.log('-- Client Health --', resp);
                 resolve(resp.status === 'green');
             });
         });
     }
 
-    async createIndex(name: string): Promise<void> {
+    async ensureAlias(name: string): Promise<void> {
+        if (!await this.client.indices.existsAlias({ name, index: `${name}_temp*` })) {
+            const indexName = `${name}_temp`;
+            await this.createIndex(indexName);
+            await this.client.indices.updateAliases({
+                body: {
+                    actions: [
+                        { add: { index: indexName, alias: name } },
+                    ],
+                },
+            });
+            // await this.client.indices.putAlias({ name, index: indexName });
+            console.log(`Alias does not exits: ${name} / ${indexName}`);
+        } else {
+            console.log(`Alias already exits: ${name}`);
+        }
+    }
+
+    async createIndex(name: string, alias?: string): Promise<void> {
         if (!await this.client.indices.exists({ index: name })) {
-            await this.client.indices.create({ index: name });
+            await this.client.indices.create({ index: name, body: {  } });
         }
     }
 
     async deleteIndex(name: string): Promise<void> {
-        await this.client.indices.delete({ index: name });
+        if (await this.client.indices.exists({ index: name })) {
+            await this.client.indices.delete({ index: name });
+        }
     }
 
     async add<T>(index: string, body: T): Promise<void> {
         await this.client.index({
             index,
-            type: 'constituencies',
+            type: 'recipe',
             body,
         });
     }
@@ -43,15 +63,19 @@ export class ElasticSearchClientService {
         await this.client.indices.delete({ index });
     }
 
-    async switchIndexes(from: string, to: string): Promise<void> {
-        // await this.client.indices.deleteAlias({ index: to, name: to });
-        await this.client.indices.putAlias({ index: to, name: to });
-        // await this.client.reindex({
-        //     body: {
-        //         source: { index: from },
-        //         dest: { index: to },
-        //     },
-        // });
+    async switchAlias(index: string, alias: string): Promise<void> {
+        await this.client.indices.updateAliases({
+            body : {
+                actions: [
+                    {
+                        remove: { alias, index: `${alias}*` },
+                    },
+                    {
+                        add : { index, alias },
+                    },
+                ],
+            },
+        });
     }
 
     allSearchQuery(_all: string) {
@@ -64,7 +88,7 @@ export class ElasticSearchClientService {
                         fields: ['recipeName'],
                         query: `*${_all}*`,
                     },
-                }
+                },
             };
         }
     }

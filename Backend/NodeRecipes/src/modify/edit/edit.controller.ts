@@ -22,8 +22,10 @@ export class EditController {
 
     @Get(':id')
     async getRecipeById(@Param('id') id) {
+        console.log('Get details for ' + id);
         const Recipe = await Recipes();
         const itemData = await Recipe.findById(id);
+        console.log('Get details for ' + itemData);
         return {
             itemData,
         };
