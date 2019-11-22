@@ -39,7 +39,7 @@ namespace BlazorStart {
             services.AddScoped<FavouriteService>();
             services.AddScoped<HttpClient>(s => {
                 return new HttpClient {
-                BaseAddress = new Uri ("http://localhost:5000")
+                BaseAddress = new Uri ("http://localhost:8082")
                 };
             });
             services.AddLocalization (opts => { opts.ResourcesPath = "Resources"; });

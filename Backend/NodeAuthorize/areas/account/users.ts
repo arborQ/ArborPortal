@@ -6,14 +6,6 @@ var router = Router();
 
 router.use(isAuthorizedMiddleware([ 'users' ]));
 
-router.get("/", 
-async (request, reply) => {
-    const items = await userRepository.find();
-    reply
-        .status(200)
-        .send({ items, totalCount: items.length });
-});
-
 router.get('/edit/:id', async (request, reply) => {
     const { id } = request.params;
     const userDb = await userRepository.findById(id);

@@ -30,6 +30,7 @@
     "dropzone": "5.5.1",
     "http-proxy": "1.17.0",
     "http-proxy-middleware": "0.20.0",
+    "load-js": "^3.0.3",
     "lz-string": "^1.4.4",
     "material-ui-chip-input": "^1.0.0",
     "material-ui-dropzone": "2.4.1",

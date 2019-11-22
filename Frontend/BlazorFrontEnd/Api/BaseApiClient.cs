@@ -3,6 +3,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 public abstract class BaseApiClient {
     private readonly HttpClient _client;
@@ -37,8 +38,17 @@ public abstract class BaseApiClient {
     }
 
     private async Task<T> SendRequest<T>(object model, HttpMethod method) {
+        var contractResolver = new DefaultContractResolver
+        {
+            NamingStrategy = new CamelCaseNamingStrategy()
+        };
+
         var stringContent = new StringContent (
-            JsonConvert.SerializeObject (model), Encoding.UTF8, "application/json");
+            JsonConvert.SerializeObject(model, new JsonSerializerSettings
+                {
+                    ContractResolver = contractResolver,
+                    Formatting = Formatting.Indented
+                }), Encoding.UTF8, "application/json");
 
         var response = await _client
             .SendAsync (new HttpRequestMessage {

@@ -8,8 +8,6 @@ import * as configSetting from '../config';
 import apiRouter from '../areas';
 import jwtPayloadMiddleware from '@bx-middlewares/jwtPayload';
 
-
-
 connectToDatabase().then((connection) => {
     if (!connection) {
         return;
@@ -26,11 +24,11 @@ connectToDatabase().then((connection) => {
         response.status(error.code).send({ errorMessage: error.message });
     });
 
-    const socet = soi(server);
+    // const socet = soi(server);
 
-    socet.on('connection', function (socket) {
-        console.log('a user connected');
-    });
+    // socet.on('connection', function (socket) {
+    //     console.log('a user connected');
+    // });
 
     server.listen(configSetting.app.port, () => {
         console.log(`Express: server running at: http://localhost:${configSetting.app.port}${configSetting.app.apiPath}`);

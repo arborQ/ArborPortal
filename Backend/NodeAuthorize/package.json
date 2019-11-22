@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "ts-node-dev --respawn --transpileOnly ./bin/server.ts"
+    "start": "ts-node-dev --respawn --transpileOnly ./bin/server.ts",
+    "open": "ts-node ./bin/server.ts"
   },
   "_moduleAliases": {
     "@bx-database": "./repository/index.ts",
