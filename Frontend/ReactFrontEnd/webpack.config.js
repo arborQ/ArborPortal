@@ -12,7 +12,8 @@ const ResourceHintWebpackPlugin = require('resource-hints-webpack-plugin');
 
 var config = {
   entry: {
-    main: './src/index.tsx'
+    main: './src/index.tsx',
+    config: './src/config.ts'
   },
   output: {
     path: outPath,
@@ -22,7 +23,7 @@ var config = {
     chunkFilename: 'content/[name].[hash:8].js'
   },
   resolve: {
-    extensions: ['.js', '.ts', '.tsx'],
+    extensions: ['.js', '.ts', '.tsx', '.json'],
     mainFields: ['main'],
     alias: {
       "@bx-utils": path.resolve(__dirname, './src/utils'),

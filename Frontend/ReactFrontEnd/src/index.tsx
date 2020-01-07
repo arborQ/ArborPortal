@@ -16,6 +16,14 @@ import { hot } from 'react-hot-loader/root';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 
+async function loadConfig() {
+    const dd = await import('./settup.json');
+}
+
+loadConfig().then(result => {
+    console.log(result);
+});
+
 const theme = createMuiTheme({
     palette: {
         primary: { main: '#2C73D2' }, // Purple and green play nicely together.

@@ -102,7 +102,7 @@ function UserListComponentHook(props: IUserListProps) {
                             <TableCell>
                                 <TableSortLabel
                                     active={sortBy === 'Login'}
-                                    direction={sortOrder}
+                                    direction={'asc'}
                                     onClick={() => changeSortBy('Login')}>
                                     {userNameTranslation}
                                 </TableSortLabel>
@@ -110,7 +110,7 @@ function UserListComponentHook(props: IUserListProps) {
                             <TableCell align='right'>
                                 <TableSortLabel
                                     active={sortBy === 'Email'}
-                                    direction={sortOrder}
+                                    direction={'asc'}
                                     onClick={() => changeSortBy('Email')}>{emailTranslation}</TableSortLabel>
                             </TableCell>
                             <TableCell align='right'>

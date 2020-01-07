@@ -5,7 +5,7 @@ using BlazorStart.Data;
 
 namespace BlazorStart.Recipes.Services {
     public class RecipeService : BaseApiClient {
-        public RecipeService (HttpClient client) : base (client, "http://localhost:8012/api/recipes") { }
+        public RecipeService (HttpClient client) : base (client, "http://localhost:5010/api/recipes") { }
 
         public async Task<RecipeSearchResponse> SearchRecipes (string search) {
             var response = await GetAsync<RecipeSearchResponse> ($"?search={search}");
