@@ -7,7 +7,7 @@ export default StyleSheet.create({
     },
     card: {
         minWidth: 200,
-        maxHeight: 100,
+        maxHeight: 300,
         margin: 10,
         padding: 10,
         shadowColor: "#000",

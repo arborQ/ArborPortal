@@ -12,7 +12,7 @@ export default function App() {
           centerComponent={{ text: 'Arbor Portal', style: { color: '#fff' } }}
           rightComponent={{ icon: 'home', color: '#fff' }}
         />
-        <Tiles tiles={[{ name: 'tile 1' }, { name: 'tile 2' }, { name: 'tile 3' }, { name: 'tile other' }]} />
+        <Tiles tiles={[{ name: 'Toyota Yaris' }, { name: 'tile 2' }, { name: 'tile 3' }, { name: 'tile other' }]} />
       </ErrorCatch>
     </View>
   );
@@ -20,6 +20,7 @@ export default function App() {
 
 const styles = StyleSheet.create({
   container: {
+    marginTop: 40,
     display: 'flex',
     backgroundColor: '#fff',
     alignItems: 'flex-start',
