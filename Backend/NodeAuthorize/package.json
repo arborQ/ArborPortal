@@ -45,7 +45,7 @@
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
     "passport-remember-me": "0.0.1",
-    "pug": "^2.0.4",
+    "pug": "^3.0.1",
     "redis": "^2.8.0",
     "seq-logging": "^0.4.0",
     "socket.io": "^2.2.0",
